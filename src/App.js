@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 
-function toolbarButton(label, onClick) {
+function renderFlatBtn(label, onClick) {
   return (
     <button
       className="ml3 underline-hover pointer ttu bg-white bn blue pv1 ph2"
@@ -16,7 +16,7 @@ function toolbarButton(label, onClick) {
 const TopToolbar = observer(() => {
   const actions = useAppActions()
 
-  return <div className="mv3 nl3">{toolbarButton('Add', actions.add)}</div>
+  return <div className="mv3 nl3">{renderFlatBtn('Add', actions.add)}</div>
 })
 
 TopToolbar.displayName = 'TopToolbar'

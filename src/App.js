@@ -7,10 +7,10 @@ import { useFocusRef } from './hooks/useFocus'
 function renderFlatBtn(label, onClick) {
   return (
     <button
-      className="mh1 underline-hover pointer ttu bg-white bn blue"
+      className="pointer ttu bg-inherit bn color-inherit"
       onClick={onClick}
     >
-      {label}
+      <div className="underline-hover">{label}</div>
     </button>
   )
 }
@@ -18,7 +18,7 @@ const TopToolbar = observer(() => {
   const actions = useAppActions()
 
   return (
-    <div className="flex">
+    <div className="flex items-center">
       {renderFlatBtn('Add', actions.add)}
       {renderFlatBtn('Reset', actions.reset)}
     </div>
@@ -83,13 +83,11 @@ const App = observer(() => {
     <div className="h-100 flex flex-column">
       <div className="bg-black-80 white">
         <div className="w-90-ns center flex">
-          <div className="ttu tracked b pv2">Flat Notes</div>
+          <div className="flex-auto ttu tracked b pv2">Flat Notes</div>
+          <TopToolbar />
         </div>
       </div>
       <div className="w-90-ns center flex-auto flex flex-column bg-white">
-        <div className="">
-          <TopToolbar />
-        </div>
         <div className="flex-auto flex ">
           <div className="w-40 overflow-container ">
             <NoteListSideBar />

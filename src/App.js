@@ -85,7 +85,7 @@ const App = observer(() => {
   return (
     <div className="h-100 flex flex-column">
       <div className="bg-black-80 white shadow-1">
-        <div className="center w-100 mw-l flex ">
+        <div className="center max-app-width flex ">
           <div className="flex-auto ttu tracked b pa2">Flat Notes</div>
           <TopToolbar />
         </div>

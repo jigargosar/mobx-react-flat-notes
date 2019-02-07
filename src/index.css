@@ -19,6 +19,10 @@ body {
   height: 100vh;
 }
 
+.max-app-width {
+  max-width: calc(20em + 34em);
+}
+
 .btn {
   font-size: 1rem;
 }

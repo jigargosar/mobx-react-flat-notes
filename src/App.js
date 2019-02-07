@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
+import { useArrowKeys } from './hooks/useArrowKeys'
 
 function renderFlatBtn(label, onClick) {
   return (
@@ -49,11 +50,13 @@ NoteItem.displayName = 'NoteItem'
 
 const App = observer(() => {
   const state = useAppState()
+  const listRef = useRef(null)
+  useArrowKeys(listRef)
   return (
     <div className="w-90 center">
       <div className="mv3 ttu tracked b">Flat Notes</div>
       <TopToolbar />
-      <div className="mv3">
+      <div ref={listRef} className="mv3">
         {state.displayNotes.map(note => (
           <NoteItem key={note.id} note={note} />
         ))}

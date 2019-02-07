@@ -36,8 +36,8 @@ const NoteItem = observer(({ note }) => {
   return (
     <div onClick={selectNote}>
       <div
-        className={'pv1 ph2 ' + selectedClass}
-        tabIndex={0}
+        className={`pv1 ph2 ${selectedClass}`}
+        tabIndex={isSelected ? 0 : -1}
         onFocus={selectNote}
       >
         {note.title}

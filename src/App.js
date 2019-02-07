@@ -39,7 +39,7 @@ const App = observer(() => {
       <TopToolbar />
       <div className="mv3">
         {state.displayNotes.map(note => (
-          <NoteItem key={note.id} />
+          <NoteItem key={note.id} note={note} />
         ))}
       </div>
     </div>

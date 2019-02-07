@@ -58,7 +58,7 @@ const NoteListSideBar = observer(() => {
   const listRef = useRef(null)
   useArrowKeys(listRef)
   return (
-    <div ref={listRef} className="h-100 pv2 pl1">
+    <div ref={listRef} className="h-100 pv2">
       {state.displayNotes.map(note => (
         <NoteItem key={note.id} note={note} />
       ))}
@@ -71,7 +71,10 @@ NoteListSideBar.displayName = 'NoteListSideBar'
 const NoteEditorPane = observer(() => {
   return (
     <div className="h-100 flex">
-      <textarea className="flex-auto bn" defaultValue={'Lol Pop ppa'} />
+      <textarea
+        className="pa2 flex-auto bn outline-0 resize-none"
+        defaultValue={'Lol Pop ppa'}
+      />
     </div>
   )
 })
@@ -81,7 +84,7 @@ NoteEditorPane.displayName = 'NoteEditorPane'
 const App = observer(() => {
   return (
     <div className="h-100 flex flex-column">
-      <div className="bg-black-80 white">
+      <div className="bg-black-80 white shadow-1">
         <div className="w-90-ns center-ns flex">
           <div className="flex-auto ttu tracked b pa2">Flat Notes</div>
           <TopToolbar />
@@ -89,10 +92,10 @@ const App = observer(() => {
       </div>
       <div className="w-90-ns center-ns flex-auto flex flex-column">
         <div className="flex-auto flex ">
-          <div className="w-40 overflow-container ">
+          <div className="w-40 overflow-container pl1 ">
             <NoteListSideBar />
           </div>
-          <div className="w-60">
+          <div className="w-60 ba b--black-10">
             <NoteEditorPane />
           </div>
         </div>

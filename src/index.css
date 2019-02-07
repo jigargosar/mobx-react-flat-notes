@@ -32,6 +32,10 @@ code {
   user-select: none;
 }
 
+.resize-none {
+  resize: none;
+}
+
 .bg-dark {
   background-color: #282c34;
 }

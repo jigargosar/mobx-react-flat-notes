@@ -34,6 +34,9 @@ function createState() {
     isNoteSelected(note) {
       return R.eqProps('id', note, state.selectedNote)
     },
+    shouldFocusNote(note) {
+      return state.isNoteSelected(note)
+    },
   })
 }
 

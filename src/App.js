@@ -53,8 +53,22 @@ const NoteItem = observer(({ note }) => {
 })
 NoteItem.displayName = 'NoteItem'
 
-const App = observer(() => {
+const NoteListSideBar = observer(() => {
   const state = useAppState()
+  const listRef = useRef(null)
+  useArrowKeys(listRef)
+  return (
+    <div ref={listRef} className="pv3">
+      {state.displayNotes.map(note => (
+        <NoteItem key={note.id} note={note} />
+      ))}
+    </div>
+  )
+})
+
+NoteListSideBar.displayName = 'NoteListSideBar'
+
+const App = observer(() => {
   const listRef = useRef(null)
   useArrowKeys(listRef)
   return (
@@ -66,11 +80,9 @@ const App = observer(() => {
       <div className="mt3 flex flex-auto">
         <div
           ref={listRef}
-          className="w-40 pv3 ba b--black-20 overflow-container"
+          className="w-40 ba b--black-20 overflow-container"
         >
-          {state.displayNotes.map(note => (
-            <NoteItem key={note.id} note={note} />
-          ))}
+          <NoteListSideBar />
         </div>
         <div className="w-60 ba b--black-20">Editor</div>
       </div>

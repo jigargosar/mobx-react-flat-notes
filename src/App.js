@@ -6,4 +6,5 @@ const App = observer(() => {
 })
 
 App.displayName = 'App'
+
 export default App

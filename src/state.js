@@ -28,16 +28,24 @@ function startAutoPersist() {
   return autorun(() => setCache('app-state', toJS(state)))
 }
 
+function createNewNote() {
+  return {
+    id: `N:${nanoid()}`,
+    title: faker.name.lastName(null),
+  }
+}
+
+function insertNoteAt(idx, note) {
+  state.noteList.splice(idx, 0, note)
+}
+
 const actions = wrapActions({
   init() {
     hydrate()
     return startAutoPersist()
   },
   add() {
-    state.noteList.unshift({
-      id: `N:${nanoid()}`,
-      title: faker.name.lastName(null),
-    })
+    insertNoteAt(0, createNewNote())
   },
 })
 

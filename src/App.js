@@ -24,7 +24,9 @@ TopToolbar.displayName = 'TopToolbar'
 const NoteItem = observer(({ note }) => {
   return (
     <div className="">
-      <div className="pv1">{note.title}</div>
+      <div className="pv1 ph2" tabIndex={0}>
+        {note.title}
+      </div>
     </div>
   )
 })

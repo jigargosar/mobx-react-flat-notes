@@ -80,15 +80,17 @@ NoteEditorPane.displayName = 'NoteEditorPane'
 
 const App = observer(() => {
   return (
-    <div className="h-100 flex flex-column bg-white">
-      <div className="mt3 ttu tracked b">
-        <div className="w-90 center">Flat Notes</div>
+    <div className="h-100 flex flex-column">
+      <div className="bg-black-80 white">
+        <div className="w-90 center flex">
+          <div className="ttu tracked b pv2">Flat Notes</div>
+        </div>
       </div>
-      <div className="w-90 center">
-        <div className="mt3 ">
+      <div className="flex-auto w-90 center flex flex-column bg-white">
+        <div className="">
           <TopToolbar />
         </div>
-        <div className="mt3 flex-auto flex ">
+        <div className="flex-auto flex ">
           <div className="w-40 overflow-container ">
             <NoteListSideBar />
           </div>

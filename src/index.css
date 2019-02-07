@@ -14,6 +14,10 @@ body {
   color: #282c34;
 }
 
+#root {
+  height: 100vh;
+}
+
 .btn {
   font-size: 1rem;
 }

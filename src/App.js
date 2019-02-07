@@ -18,7 +18,7 @@ const TopToolbar = observer(() => {
   const actions = useAppActions()
 
   return (
-    <div className="mv3 flex">
+    <div className="flex">
       {renderFlatBtn('Add', actions.add)}
       {renderFlatBtn('Reset', actions.reset)}
     </div>
@@ -58,13 +58,21 @@ const App = observer(() => {
   const listRef = useRef(null)
   useArrowKeys(listRef)
   return (
-    <div className="w-90 center">
-      <div className="mv3 ttu tracked b">Flat Notes</div>
-      <TopToolbar />
-      <div ref={listRef} className="mv3">
-        {state.displayNotes.map(note => (
-          <NoteItem key={note.id} note={note} />
-        ))}
+    <div className="w-90 center h-100 flex flex-column">
+      <div className="mt3 ttu tracked b">Flat Notes</div>
+      <div className="mt3 ">
+        <TopToolbar />
+      </div>
+      <div className="mt3 flex flex-auto">
+        <div
+          ref={listRef}
+          className="w-40 pv3 ba b--black-20 overflow-container"
+        >
+          {state.displayNotes.map(note => (
+            <NoteItem key={note.id} note={note} />
+          ))}
+        </div>
+        <div className="w-60 ba b--black-20">Editor</div>
       </div>
     </div>
   )

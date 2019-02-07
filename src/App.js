@@ -25,8 +25,14 @@ const TopToolbar = observer(() => {
 TopToolbar.displayName = 'TopToolbar'
 
 const NoteItem = observer(({ note }) => {
+  const state = useAppState()
+  const actions = useAppActions()
+  const isSelected = state.isNoteSelected(note)
   return (
-    <div className="">
+    <div
+      className={`${isSelected ? 'bg-light-blue' : ''}`}
+      onClick={() => actions.setSelectedNote(note)}
+    >
       <div className="pv1 ph2" tabIndex={0}>
         {note.title}
       </div>

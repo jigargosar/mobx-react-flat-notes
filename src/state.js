@@ -4,6 +4,7 @@ import nanoid from 'nanoid'
 import faker from 'faker'
 import { getCached, setCache } from './dom-helpers'
 import * as R from 'ramda'
+import validate from 'aproba'
 
 function createState() {
   const state = observable.object(
@@ -22,7 +23,7 @@ function createState() {
       return state.noteList
     },
     get firstNote() {
-      return R.pathOr(null)([0])(state)
+      return R.pathOr(null)(['noteList', 0])(state)
     },
     get selectedNote() {
       const selectedById = R.pathOr(null, [
@@ -30,6 +31,9 @@ function createState() {
         state.selectedNoteId,
       ])(state)
       return selectedById || state.firstNote
+    },
+    isNoteSelected(note) {
+      return R.eqProps('id', note, state.selectedNote)
     },
   })
 }
@@ -77,6 +81,11 @@ const actions = wrapActions({
     insertNoteAt(0, createNewNote())
   },
   reset,
+  setSelectedNote(note) {
+    validate('O', arguments)
+
+    state.selectedNoteId = note.id
+  },
 })
 
 actions.init()

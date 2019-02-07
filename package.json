@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "aproba": "^2.0.0",
     "faker": "^4.1.0",
     "idx.macro": "^3.0.4",
     "mobx": "^5.9.0",

@@ -21,8 +21,15 @@ function createState() {
     get displayNotes() {
       return state.noteList
     },
+    get firstNote() {
+      return R.pathOr(null)([0])(state)
+    },
     get selectedNote() {
-      return R.path(['noteList', state.selectedNoteId])(state)
+      const selectedById = R.pathOr(null, [
+        'noteList',
+        state.selectedNoteId,
+      ])(state)
+      return selectedById || state.firstNote
     },
   })
 }

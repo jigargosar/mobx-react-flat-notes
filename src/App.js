@@ -5,7 +5,7 @@ import { useAppActions, useAppState } from './state'
 function renderFlatBtn(label, onClick) {
   return (
     <button
-      className="ml3 underline-hover pointer ttu bg-white bn blue"
+      className="mh1 underline-hover pointer ttu bg-white bn blue"
       onClick={onClick}
     >
       {label}
@@ -16,7 +16,12 @@ function renderFlatBtn(label, onClick) {
 const TopToolbar = observer(() => {
   const actions = useAppActions()
 
-  return <div className="mv3 nl3">{renderFlatBtn('Add', actions.add)}</div>
+  return (
+    <div className="mv3 flex">
+      {renderFlatBtn('Add', actions.add)}
+      {renderFlatBtn('Reset', actions.reset)}
+    </div>
+  )
 })
 
 TopToolbar.displayName = 'TopToolbar'

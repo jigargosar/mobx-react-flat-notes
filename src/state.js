@@ -5,9 +5,16 @@ import faker from 'faker'
 import { getCached, setCache } from './dom-helpers'
 
 function createState() {
-  const state = observable.object({ noteList: [] }, null, {
-    name: 'App State',
-  })
+  const state = observable.object(
+    {
+      noteList: [],
+      selectedId: null,
+    },
+    null,
+    {
+      name: 'App State',
+    },
+  )
 
   return extendObservable(state, {
     get displayNotes() {
@@ -24,8 +31,15 @@ function hydrate() {
   const cached = getCached('app-state')
   if (cached) {
     state.noteList = cached.noteList
+    state.selectedId = cached.selectedId
   }
 }
+
+function reset() {
+  state.noteList = []
+  state.selectedId = null
+}
+
 function startAutoPersist() {
   return autorun(() => setCache('app-state', toJS(state)))
 }
@@ -51,6 +65,7 @@ const actions = wrapActions({
   add() {
     insertNoteAt(0, createNewNote())
   },
+  reset,
 })
 
 actions.init()

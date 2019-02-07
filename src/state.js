@@ -18,6 +18,8 @@ function createState() {
 
 const state = createState()
 
+/*  ACTIONS HELPERS  */
+
 function hydrate() {
   const cached = getCached('app-state')
   if (cached) {
@@ -39,6 +41,8 @@ function insertNoteAt(idx, note) {
   state.noteList.splice(idx, 0, note)
 }
 
+/*  ACTIONS  */
+
 const actions = wrapActions({
   init() {
     hydrate()
@@ -50,6 +54,8 @@ const actions = wrapActions({
 })
 
 actions.init()
+
+/*  HOOKS  */
 
 export function useAppState() {
   return state

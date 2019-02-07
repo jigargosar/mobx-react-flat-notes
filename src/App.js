@@ -31,11 +31,16 @@ const NoteItem = observer(({ note }) => {
   const selectNote = () => actions.setSelectedNote(note)
 
   return (
-    <div
-      className={`${isSelected ? 'bg-light-blue' : ''}`}
-      onClick={selectNote}
-    >
-      <div className="pv1 ph2" tabIndex={0} onFocus={selectNote}>
+    <div onClick={selectNote}>
+      <div
+        className={`pv1 ph2 ${
+          isSelected
+            ? 'hover-bg-light-blue bg-lightest-blue'
+            : 'hover-bg-lightest-blue'
+        }`}
+        tabIndex={0}
+        onFocus={selectNote}
+      >
         {note.title}
       </div>
     </div>

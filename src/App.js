@@ -71,7 +71,7 @@ NoteListSideBar.displayName = 'NoteListSideBar'
 
 const NoteEditorPane = observer(() => {
   return (
-    <div className="h-100 ">
+    <div className="h-100 overflow-hidden">
       {/*<textarea*/}
       {/*  className="pa2 flex-auto bn outline-0 resize-none"*/}
       {/*  defaultValue={'Lol Pop ppa'}*/}

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useLayoutEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 import { useArrowKeys } from './hooks/useArrowKeys'
@@ -70,8 +70,10 @@ const NoteListSideBar = observer(() => {
 NoteListSideBar.displayName = 'NoteListSideBar'
 
 const NoteEditorPane = observer(() => {
+  const cRef = React.createRef()
+  useLayoutEffect(() => {})
   return (
-    <div className="h-100 overflow-hidden">
+    <div ref={cRef} className="h-100 overflow-hidden">
       {/*<textarea*/}
       {/*  className="pa2 flex-auto bn outline-0 resize-none"*/}
       {/*  defaultValue={'Lol Pop ppa'}*/}

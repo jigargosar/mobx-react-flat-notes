@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 
@@ -21,6 +21,16 @@ const TopToolbar = observer(() => {
 
 TopToolbar.displayName = 'TopToolbar'
 
+const NoteItem = observer(({ note }) => {
+  return (
+    <div className="">
+      <div className="pv1">{note.title}</div>
+    </div>
+  )
+})
+
+NoteItem.displayName = 'NoteItem'
+
 const App = observer(() => {
   const state = useAppState()
   return (
@@ -29,9 +39,7 @@ const App = observer(() => {
       <TopToolbar />
       <div className="mv3">
         {state.displayNotes.map(note => (
-          <Fragment key={note.id}>
-            <div className="pv1">{note.title}</div>
-          </Fragment>
+          <NoteItem key={note.id} />
         ))}
       </div>
     </div>

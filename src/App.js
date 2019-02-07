@@ -58,7 +58,7 @@ const NoteListSideBar = observer(() => {
   const listRef = useRef(null)
   useArrowKeys(listRef)
   return (
-    <div ref={listRef} className="pv3">
+    <div ref={listRef} className="ma1">
       {state.displayNotes.map(note => (
         <NoteItem key={note.id} note={note} />
       ))}
@@ -80,7 +80,7 @@ const App = observer(() => {
       <div className="mt3 flex flex-auto">
         <div
           ref={listRef}
-          className="w-40 ba b--black-20 overflow-container"
+          className="w-40 overflow-container flex flex-column bn b--black-20"
         >
           <NoteListSideBar />
         </div>

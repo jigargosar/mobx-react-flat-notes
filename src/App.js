@@ -31,14 +31,13 @@ const NoteItem = observer(({ note }) => {
   const isSelected = state.isNoteSelected(note)
   const selectNote = () => actions.setSelectedNote(note)
 
-  const selectedClass = isSelected
-    ? 'bg-light-blue'
-    : 'hover-bg-lightest-blue'
+  const selectedClass = isSelected ? 'bg-light-blue' : ''
   return (
     <div onClick={selectNote}>
       <div
         className={`pv1 ph2 ${selectedClass}`}
         tabIndex={isSelected ? 0 : -1}
+        data-is-focusable={true}
         onFocus={selectNote}
       >
         {note.title}

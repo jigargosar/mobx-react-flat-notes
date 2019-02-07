@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { observer } from 'mobx-react-lite'
+import { useAppState } from './state'
 
 const App = observer(() => {
-  return <div className="mv3 w-90 center">Flat Notes</div>
+  const state = useAppState()
+  return (
+    <div className="w-90 center">
+      <div className="mv3 ttu tracked b">Flat Notes</div>
+      <div className="mv3">
+        {state.displayNotes.map(note => (
+          <Fragment key={note.id}>
+            <div className="pv1">{note.title}</div>
+          </Fragment>
+        ))}
+      </div>
+    </div>
+  )
 })
 
 App.displayName = 'App'

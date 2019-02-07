@@ -3,12 +3,13 @@ import { wrapActions } from './mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { getCached, setCache } from './dom-helpers'
+import * as R from 'ramda'
 
 function createState() {
   const state = observable.object(
     {
       noteList: [],
-      selectedId: null,
+      selectedNoteId: null,
     },
     null,
     {
@@ -19,6 +20,9 @@ function createState() {
   return extendObservable(state, {
     get displayNotes() {
       return state.noteList
+    },
+    get selectedNote() {
+      return R.path(['noteList', state.selectedNoteId])(state)
     },
   })
 }
@@ -31,13 +35,13 @@ function hydrate() {
   const cached = getCached('app-state')
   if (cached) {
     state.noteList = cached.noteList
-    state.selectedId = cached.selectedId
+    state.selectedNoteId = cached.selectedNoteId
   }
 }
 
 function reset() {
   state.noteList = []
-  state.selectedId = null
+  state.selectedNoteId = null
 }
 
 function startAutoPersist() {

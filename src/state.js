@@ -26,10 +26,9 @@ function createState() {
       return R.pathOr(null)(['noteList', 0])(state)
     },
     get selectedNote() {
-      const selectedById = R.pathOr(null, [
-        'noteList',
-        state.selectedNoteId,
-      ])(state)
+      const selectedById = state.noteList.find(
+        R.propEq('id', state.selectedNoteId),
+      )
       return selectedById || state.firstNote
     },
     isNoteSelected(note) {

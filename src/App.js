@@ -28,12 +28,14 @@ const NoteItem = observer(({ note }) => {
   const state = useAppState()
   const actions = useAppActions()
   const isSelected = state.isNoteSelected(note)
+  const selectNote = () => actions.setSelectedNote(note)
+
   return (
     <div
       className={`${isSelected ? 'bg-light-blue' : ''}`}
-      onClick={() => actions.setSelectedNote(note)}
+      onClick={selectNote}
     >
-      <div className="pv1 ph2" tabIndex={0}>
+      <div className="pv1 ph2" tabIndex={0} onFocus={selectNote}>
         {note.title}
       </div>
     </div>

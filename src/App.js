@@ -34,9 +34,7 @@ const NoteItem = observer(({ note }) => {
     <div onClick={selectNote}>
       <div
         className={`pv1 ph2 ${
-          isSelected
-            ? 'hover-bg-light-blue bg-lightest-blue'
-            : 'hover-bg-lightest-blue'
+          isSelected ? 'bg-light-blue' : 'hover-bg-lightest-blue'
         }`}
         tabIndex={0}
         onFocus={selectNote}

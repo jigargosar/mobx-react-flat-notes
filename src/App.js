@@ -12,7 +12,6 @@ function renderFlatBtn(label, onClick) {
     </button>
   )
 }
-
 const TopToolbar = observer(() => {
   const actions = useAppActions()
 

@@ -5,7 +5,7 @@ import { useAppActions, useAppState } from './state'
 function renderFlatBtn(label, onClick) {
   return (
     <button
-      className="ml3 underline-hover pointer ttu bg-white bn blue pv1 ph2"
+      className="ml3 underline-hover pointer ttu bg-white bn blue"
       onClick={onClick}
     >
       {label}

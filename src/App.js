@@ -92,10 +92,13 @@ const App = observer(() => {
       </div>
       <div className="flex-auto flex flex-column items-center">
         <div className="flex-auto flex mw-100">
-          <div className="w-40 overflow-container pl1 ">
+          <div
+            className="overflow-container pl1"
+            style={{ width: '20rem' }}
+          >
             <NoteListSideBar />
           </div>
-          <div className="w-60 ba b--black-10" style={{ width: '32em' }}>
+          <div className="ba b--black-10" style={{ width: '34rem' }}>
             <NoteEditorPane />
           </div>
         </div>

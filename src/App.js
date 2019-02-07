@@ -85,20 +85,17 @@ const App = observer(() => {
   return (
     <div className="h-100 flex flex-column">
       <div className="bg-black-80 white shadow-1">
-        <div className="w-90-ns center-ns flex">
+        <div className="center w-100 mw-l flex ">
           <div className="flex-auto ttu tracked b pa2">Flat Notes</div>
           <TopToolbar />
         </div>
       </div>
-      <div className="flex-auto flex flex-column items-center">
-        <div className="flex-auto flex mw-100">
-          <div
-            className="overflow-container pl1"
-            style={{ width: '20rem' }}
-          >
+      <div className="flex-auto flex flex-column ">
+        <div className="flex-auto flex justify-center mw-100">
+          <div className="pl1  dn db-ns flex-auto measure-narrow overflow-container ">
             <NoteListSideBar />
           </div>
-          <div className="ba b--black-10" style={{ width: '34rem' }}>
+          <div className="flex-auto measure-wide ba b--black-10 ">
             <NoteEditorPane />
           </div>
         </div>

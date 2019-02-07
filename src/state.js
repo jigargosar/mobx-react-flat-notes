@@ -72,6 +72,11 @@ function insertNoteAt(idx, note) {
   state.noteList.splice(idx, 0, note)
 }
 
+function setSelectedNote(note) {
+  validate('O', arguments)
+  state.selectedNoteId = note.id
+}
+
 /*  ACTIONS  */
 
 const actions = wrapActions({
@@ -80,14 +85,12 @@ const actions = wrapActions({
     return startAutoPersist()
   },
   add() {
-    insertNoteAt(0, createNewNote())
+    const note = createNewNote()
+    insertNoteAt(0, note)
+    setSelectedNote(note)
   },
   reset,
-  setSelectedNote(note) {
-    validate('O', arguments)
-
-    state.selectedNoteId = note.id
-  },
+  setSelectedNote,
 })
 
 actions.init()

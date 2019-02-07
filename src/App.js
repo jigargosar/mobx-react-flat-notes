@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 import { useArrowKeys } from './hooks/useArrowKeys'
 import { useFocusRef } from './hooks/useFocus'
+import MonacoEditor from 'react-monaco-editor'
 
 function renderFlatBtn(label, onClick) {
   return (
@@ -70,11 +71,12 @@ NoteListSideBar.displayName = 'NoteListSideBar'
 
 const NoteEditorPane = observer(() => {
   return (
-    <div className="h-100 flex">
-      <textarea
-        className="pa2 flex-auto bn outline-0 resize-none"
-        defaultValue={'Lol Pop ppa'}
-      />
+    <div className="h-100 ">
+      {/*<textarea*/}
+      {/*  className="pa2 flex-auto bn outline-0 resize-none"*/}
+      {/*  defaultValue={'Lol Pop ppa'}*/}
+      {/*/>*/}
+      <MonacoEditor />
     </div>
   )
 })

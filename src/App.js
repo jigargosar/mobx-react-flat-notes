@@ -90,12 +90,12 @@ const App = observer(() => {
           <TopToolbar />
         </div>
       </div>
-      <div className="w-90-ns center-ns flex-auto flex flex-column">
-        <div className="flex-auto flex ">
+      <div className="flex-auto flex flex-column items-center">
+        <div className="flex-auto flex mw-100">
           <div className="w-40 overflow-container pl1 ">
             <NoteListSideBar />
           </div>
-          <div className="w-60 ba b--black-10">
+          <div className="w-60 ba b--black-10" style={{ width: '32em' }}>
             <NoteEditorPane />
           </div>
         </div>

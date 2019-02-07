@@ -37,13 +37,7 @@ const appActions = wrapActions({
 })
 
 appActions.hydrate()
-const persistDisposer = appActions.startAutoPersist()
-
-if (module.hot) {
-  module.hot.dispose(() => {
-    persistDisposer()
-  })
-}
+appActions.startAutoPersist()
 
 export function useAppState() {
   return appState

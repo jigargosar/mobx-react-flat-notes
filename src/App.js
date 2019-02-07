@@ -8,9 +8,9 @@ const App = observer(() => {
   return (
     <div className="w-90 center">
       <div className="mv3 ttu tracked b">Flat Notes</div>
-      <div className="mv3">
+      <div className="mv3 nl3">
         <button
-          className="underline-hover pointer ttu bg-white bn blue"
+          className="ml3 underline-hover pointer ttu bg-white bn blue pv1 ph2"
           onClick={actions.add}
         >
           Add

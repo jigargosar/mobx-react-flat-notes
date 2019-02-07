@@ -32,7 +32,7 @@ const NoteItem = observer(({ note }) => {
   const isSelected = state.isNoteSelected(note)
   const shouldFocus = state.shouldFocusNote(note)
   const selectNote = () => actions.setSelectedNote(note)
-  const selectedClass = isSelected ? 'bg-light-blue' : ''
+  const selectedClass = isSelected ? 'bg-light-blue ' : ''
   const titleRef = useRef(null)
 
   useFocusRef(titleRef, shouldFocus)
@@ -41,7 +41,7 @@ const NoteItem = observer(({ note }) => {
     <div onClick={selectNote}>
       <div
         ref={titleRef}
-        className={`pv1 ph2 outline-0 ${selectedClass}`}
+        className={`pv1 ph2 ${selectedClass}`}
         tabIndex={isSelected ? 0 : -1}
         data-is-focusable={true}
         onFocus={selectNote}
@@ -58,7 +58,7 @@ const NoteListSideBar = observer(() => {
   const listRef = useRef(null)
   useArrowKeys(listRef)
   return (
-    <div ref={listRef} className="h-100">
+    <div ref={listRef} className="h-100 pv2 pl1">
       {state.displayNotes.map(note => (
         <NoteItem key={note.id} note={note} />
       ))}
@@ -82,12 +82,12 @@ const App = observer(() => {
   return (
     <div className="h-100 flex flex-column">
       <div className="bg-black-80 white">
-        <div className="w-90-ns center flex">
-          <div className="flex-auto ttu tracked b pv2">Flat Notes</div>
+        <div className="w-90-ns center-ns flex">
+          <div className="flex-auto ttu tracked b pa2">Flat Notes</div>
           <TopToolbar />
         </div>
       </div>
-      <div className="w-90-ns center flex-auto flex flex-column">
+      <div className="w-90-ns center-ns flex-auto flex flex-column">
         <div className="flex-auto flex ">
           <div className="w-40 overflow-container ">
             <NoteListSideBar />

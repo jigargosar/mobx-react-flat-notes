@@ -71,7 +71,7 @@ NoteListSideBar.displayName = 'NoteListSideBar'
 const NoteEditorPane = observer(() => {
   return (
     <div className="h-100 flex">
-      <textarea className="flex-auto" defaultValue={'Lol Pop ppa'} />
+      <textarea className="flex-auto bn" defaultValue={'Lol Pop ppa'} />
     </div>
   )
 })
@@ -86,10 +86,10 @@ const App = observer(() => {
         <TopToolbar />
       </div>
       <div className="mt3 flex-auto flex ">
-        <div className="w-40 overflow-container ba">
+        <div className="w-40 overflow-container ">
           <NoteListSideBar />
         </div>
-        <div className="w-60 ba">
+        <div className="w-60">
           <NoteEditorPane />
         </div>
       </div>

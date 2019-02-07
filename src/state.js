@@ -16,37 +16,37 @@ function createState() {
   })
 }
 
-const appState = createState()
+const state = createState()
 
 function hydrate() {
   const cached = getCached('app-state')
   if (cached) {
-    appState.noteList = cached.noteList
+    state.noteList = cached.noteList
   }
 }
 function startAutoPersist() {
-  return autorun(() => setCache('app-state', toJS(appState)))
+  return autorun(() => setCache('app-state', toJS(state)))
 }
 
-const appActions = wrapActions({
+const actions = wrapActions({
   init() {
     hydrate()
     return startAutoPersist()
   },
   add() {
-    appState.noteList.unshift({
+    state.noteList.unshift({
       id: `N:${nanoid()}`,
       title: faker.name.lastName(null),
     })
   },
 })
 
-appActions.init()
+actions.init()
 
 export function useAppState() {
-  return appState
+  return state
 }
 
 export function useAppActions() {
-  return appActions
+  return actions
 }

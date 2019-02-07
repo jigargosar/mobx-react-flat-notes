@@ -1,8 +1,8 @@
-import { extendObservable, observable } from 'mobx'
+import { autorun, extendObservable, observable, toJS } from 'mobx'
 import { wrapActions } from './mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { getCached } from './dom-helpers'
+import { getCached, setCache } from './dom-helpers'
 
 function createState() {
   const state = observable.object({ noteList: [] }, null, {
@@ -31,9 +31,19 @@ const appActions = wrapActions({
       appState.noteList = cached.noteList
     }
   },
+  startAutoPersist() {
+    return autorun(() => setCache('app-state', toJS(appState)))
+  },
 })
 
 appActions.hydrate()
+const persistDisposer = appActions.startAutoPersist()
+
+if (module.hot) {
+  module.hot.dispose(() => {
+    persistDisposer()
+  })
+}
 
 export function useAppState() {
   return appState

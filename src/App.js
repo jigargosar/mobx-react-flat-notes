@@ -80,7 +80,7 @@ NoteEditorPane.displayName = 'NoteEditorPane'
 
 const App = observer(() => {
   return (
-    <div className="w-90 center h-100 flex flex-column">
+    <div className="w-90 center h-100 flex flex-column bg-white">
       <div className="mt3 ttu tracked b">Flat Notes</div>
       <div className="mt3 ">
         <TopToolbar />

@@ -69,8 +69,6 @@ const NoteListSideBar = observer(() => {
 NoteListSideBar.displayName = 'NoteListSideBar'
 
 const App = observer(() => {
-  const listRef = useRef(null)
-  useArrowKeys(listRef)
   return (
     <div className="w-90 center h-100 flex flex-column">
       <div className="mt3 ttu tracked b">Flat Notes</div>
@@ -78,10 +76,7 @@ const App = observer(() => {
         <TopToolbar />
       </div>
       <div className="mt3 flex flex-auto">
-        <div
-          ref={listRef}
-          className="w-40 overflow-container flex flex-column bn b--black-20"
-        >
+        <div className="w-40 overflow-container flex flex-column bn b--black-20">
           <NoteListSideBar />
         </div>
         <div className="w-60 ba b--black-20">Editor</div>

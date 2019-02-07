@@ -41,7 +41,7 @@ const NoteItem = observer(({ note }) => {
     <div onClick={selectNote}>
       <div
         ref={titleRef}
-        className={`pv1 ph2 ${selectedClass}`}
+        className={`pv1 ph2 outline-0 ${selectedClass}`}
         tabIndex={isSelected ? 0 : -1}
         data-is-focusable={true}
         onFocus={selectNote}
@@ -87,7 +87,7 @@ const App = observer(() => {
           <TopToolbar />
         </div>
       </div>
-      <div className="w-90-ns center flex-auto flex flex-column bg-white">
+      <div className="w-90-ns center flex-auto flex flex-column">
         <div className="flex-auto flex ">
           <div className="w-40 overflow-container ">
             <NoteListSideBar />

@@ -23,7 +23,6 @@ const TopToolbar = observer(() => {
     </div>
   )
 })
-
 TopToolbar.displayName = 'TopToolbar'
 
 const NoteItem = observer(({ note }) => {
@@ -35,7 +34,6 @@ const NoteItem = observer(({ note }) => {
     </div>
   )
 })
-
 NoteItem.displayName = 'NoteItem'
 
 const App = observer(() => {
@@ -52,7 +50,6 @@ const App = observer(() => {
     </div>
   )
 })
-
 App.displayName = 'App'
 
 export default App

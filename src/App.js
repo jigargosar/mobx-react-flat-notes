@@ -149,9 +149,18 @@ AppBar.displayName = 'AppBar'
 const PouchSettingsDialog = observer(() => {
   const state = useAppState()
   const actions = useAppActions()
+  const backdropRef = useRef(null)
   return (
     state.pouchSettingsDialogOpen && (
-      <div className="absolute absolute--fill flex items-center justify-center bg-black-50">
+      <div
+        className="absolute absolute--fill flex items-center justify-center bg-black-50"
+        ref={backdropRef}
+        onClick={e => {
+          if (e.target === backdropRef.current) {
+            actions.dismissPouchSettingsDialog()
+          }
+        }}
+      >
         <div
           className="relative w-80 mw6 bg-white shadow-1"
           // style={{ top: '-15%' }}

@@ -56,6 +56,7 @@ const NoteItem = observer(({ note }) => {
         onFocus={selectNote}
       >
         {note.title}
+        {note.rev}
       </div>
     </div>
   )

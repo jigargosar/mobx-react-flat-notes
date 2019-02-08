@@ -57,6 +57,10 @@ function noteToPouch({ id, rev, title }) {
   return { _id: id, _rev: rev, title: title }
 }
 
+function noteFromPouchDoc({ _id, _rev, title }) {
+  return { id: _id, rev: _rev, title }
+}
+
 /*  NOTE ACTIONS   */
 
 function setNoteRev(rev, note) {
@@ -79,11 +83,23 @@ function hydrateFromLocalStorage() {
   }
 }
 
-// function hydrateFromPouchDb() {}
+async function hydrateFromPouchDb() {
+  const allDocsRes = await notesDb.allDocs({ include_docs: true })
+  console.log(`allDocsRes`, allDocsRes)
+  const noteDocs = allDocsRes.rows.map(R.prop('doc')).map(noteFromPouchDoc)
+  console.log(`noteDocs`, noteDocs)
+  // state.noteList.replace(noteDocs)
+}
 
-function reset() {
+async function reset() {
   state.noteList.clear()
   state.selectedNoteId = null
+  const allDocsRes = await notesDb.allDocs({ include_docs: true })
+  const deletePromises = allDocsRes.rows
+    .map(R.prop('doc'))
+    .map(doc => notesDb.put({ ...doc, _deleted: true }))
+  const deleteRes = await Promise.all(deletePromises)
+  console.log(`deleteRes`, deleteRes)
 }
 
 const startAutoCache = () => m.autorun(persistAppState)
@@ -111,6 +127,7 @@ async function addNewNote() {
 const actions = wrapActions({
   init() {
     hydrateFromLocalStorage()
+    hydrateFromPouchDb()
     return startAutoCache()
   },
   addNewNote,

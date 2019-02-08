@@ -1053,7 +1053,7 @@
     "@uifabric/utilities" ">=6.28.0 <7.0.0"
     tslib "^1.7.1"
 
-"@uifabric/utilities@>=6.28.0 <7.0.0", "@uifabric/utilities@>=6.29.0 <7.0.0":
+"@uifabric/utilities@>=6.28.0 <7.0.0", "@uifabric/utilities@>=6.29.0 <7.0.0", "@uifabric/utilities@^6.29.0":
   version "6.29.0"
   resolved "https://registry.yarnpkg.com/@uifabric/utilities/-/utilities-6.29.0.tgz#f4f9f3877e2281d0c887007931cf760d7fd72bb8"
   integrity sha512-2VKRadp+pGV5PFubSYCUTU4Sg3NdztECFiEvgyVDIrGYZhSwOVHMwAKb+I9hr990OLCb+gSK3rekJp/To9NZFQ==

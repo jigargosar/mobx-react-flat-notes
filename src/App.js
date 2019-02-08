@@ -5,6 +5,7 @@ import { useArrowKeys } from './hooks/useArrowKeys'
 import { useFocusRef } from './hooks/useFocus'
 import MonacoEditor from 'react-monaco-editor'
 import { useWindowSize } from './hooks/global-listeners'
+import { DialogLargeHeaderExample } from './DialogExample'
 
 function renderFlatBtn(label, onClick) {
   return (
@@ -21,6 +22,7 @@ const TopToolbar = observer(() => {
 
   return (
     <div className="flex items-center">
+      <DialogLargeHeaderExample />
       {renderFlatBtn('Add', actions.addNewNote)}
       {renderFlatBtn('Reset', actions.reset)}
     </div>

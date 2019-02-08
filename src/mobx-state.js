@@ -1,4 +1,5 @@
 // @flow
+// @flow-runtime warn
 
 import * as mobx from 'mobx'
 import { autorun, extendObservable, toJS } from 'mobx'
@@ -6,7 +7,6 @@ import { wrapActions } from './mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { getCached, setCache } from './dom-helpers'
-import * as R from 'ramda'
 import validate from 'aproba'
 import t from 'flow-runtime'
 
@@ -26,38 +26,52 @@ flowRuntimeMobx(t, mobx)
 //
 // console.log(toJS(thing))
 
-type Note = {| id: string, title: string |}
-type State = {| noteList: Array<Note>, selectedNoteId: ?string |}
+type Note = { id: string, title: string }
+type StateData = { noteList: Array<Note>, selectedNoteId: ?string }
 
-function createState() {
-  const observableState: State = {
+type StateComputed = {
+  displayNotes: Note[],
+  firstNote: ?Note,
+  selectedNote: ?Note,
+}
+
+type StateView = {
+  isNoteSelected: Note => boolean,
+  shouldFocusNote: Note => boolean,
+}
+
+type AppState = StateData & StateComputed & StateView
+
+function createState(): AppState {
+  const observableState: StateData = {
     noteList: [],
     selectedNoteId: null,
   }
-  const state = extendObservable({}, observableState, null, {
+  const state: StateData = extendObservable({}, observableState, null, {
     name: 'AppState',
   })
 
-  return extendObservable(state, {
-    get displayNotes() {
+  const appState: AppState = extendObservable(state, {
+    get displayNotes(): Note[] {
       return state.noteList
     },
-    get firstNote() {
-      return R.pathOr(null)(['noteList', 0])(state)
+    get firstNote(): ?Note {
+      return state.noteList[0]
     },
-    get selectedNote() {
+    get selectedNote(): ?Note {
       const selectedById = state.noteList.find(
-        R.propEq('id', state.selectedNoteId),
+        n => n.id === state.selectedNoteId,
       )
-      return selectedById || state.firstNote
+      return selectedById || this.firstNote
     },
-    isNoteSelected(note: Note) {
-      return note.id === state.selectedNoteId
+    isNoteSelected(note: Note): boolean {
+      return note === appState.selectedNote
     },
-    shouldFocusNote(note: Note) {
-      return state.isNoteSelected(note)
+    shouldFocusNote(note: Note): boolean {
+      return appState.isNoteSelected(note)
     },
   })
+  return appState
 }
 
 const state = createState()

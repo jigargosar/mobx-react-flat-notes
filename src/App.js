@@ -149,15 +149,20 @@ AppBar.displayName = 'AppBar'
 const SyncSettingsDialog = observer(() => {
   return (
     <div className="absolute absolute--fill flex items-center justify-center bg-black-50">
-      <div className="relative w-80 mw6 bg-white " style={{ top: '-15%' }}>
-        <div className="pa4 f3 tc bg-blue white">Pouch Sync Settings</div>
+      <div
+        className="relative w-80 mw6 bg-white shadow-1"
+        style={{ top: '-15%' }}
+      >
+        <div className="pv4 ph3 f3 fw3 bg-blue white">
+          Pouch Sync Settings
+        </div>
         <div className="ph3 ">
           <p>Pouch Sync Settings Pouch</p>
           <p>Sync Settings Pouch</p>
           <p>Sync Settings Pouch Sync Settings</p>
         </div>
         <div className="ph3 pv2 bt b--moon-gray flex flex-row-reverse">
-          <button className="pv2 ph3 ma0 link pointer bn bg-blue white ">
+          <button className="pv2 ph3 ma0 link pointer bn bg-blue white">
             <div className="underline-hover">Save</div>
           </button>
           <button className="pv2 ph3 ma0 link pointer bn black-70">

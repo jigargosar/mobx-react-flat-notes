@@ -57,6 +57,14 @@ function noteToPouch({ id, rev, title }) {
   return { _id: id, _rev: rev, title: title }
 }
 
+/*  NOTE ACTIONS   */
+
+function setNoteRev(rev, note) {
+  note.rev = rev
+}
+
+const noteActions = wrapActions({ setNoteRev })
+
 /*  STATE ACTIONS HELPERS  */
 
 const getPersistedAppState = () => getCached('app-state')
@@ -90,11 +98,12 @@ function setSelectedNote(note) {
   state.selectedNoteId = note.id
 }
 
-function addNewNote() {
+async function addNewNote() {
   const note = createNewNote()
   insertNoteAt(0, note)
   setSelectedNote(note)
-  notesDb.put(noteToPouch(note))
+  const { rev } = await notesDb.put(noteToPouch(note))
+  noteActions.setNoteRev(rev, note)
 }
 
 /*  ACTIONS  */

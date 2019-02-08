@@ -80,6 +80,12 @@ function setSelectedNote(note) {
   state.selectedNoteId = note.id
 }
 
+function addNewNote() {
+  const note = createNewNote()
+  insertNoteAt(0, note)
+  setSelectedNote(note)
+}
+
 /*  ACTIONS  */
 
 const actions = wrapActions({
@@ -87,11 +93,7 @@ const actions = wrapActions({
     hydrate()
     return startAutoPersist()
   },
-  add() {
-    const note = createNewNote()
-    insertNoteAt(0, note)
-    setSelectedNote(note)
-  },
+  add: addNewNote,
   reset,
   setSelectedNote,
 })

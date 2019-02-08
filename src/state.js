@@ -90,6 +90,13 @@ function addNewNote() {
 
 const actions = wrapActions({
   init() {
+    m.observe(
+      state.noteList,
+      change => {
+        console.log(change)
+      },
+      true,
+    )
     hydrate()
     return startAutoPersist()
   },

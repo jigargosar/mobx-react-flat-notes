@@ -88,7 +88,7 @@ async function hydrateFromPouchDb() {
   console.log(`allDocsRes`, allDocsRes)
   const noteDocs = allDocsRes.rows.map(R.prop('doc')).map(noteFromPouchDoc)
   console.log(`noteDocs`, noteDocs)
-  // state.noteList.replace(noteDocs)
+  state.noteList.replace(noteDocs)
 }
 
 async function reset() {
@@ -126,7 +126,7 @@ async function addNewNote() {
 
 const actions = wrapActions({
   async init() {
-    hydrateFromLocalStorage()
+    // hydrateFromLocalStorage()
     await hydrateFromPouchDb()
     return startAutoCache()
   },

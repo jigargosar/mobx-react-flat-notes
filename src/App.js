@@ -130,7 +130,10 @@ const App = observer(() => {
       </div>
       <div className="flex-auto flex flex-column ">
         <div className="flex-auto flex justify-center mw-100">
-          <div className="pl1  dn db-ns flex-auto measure-narrow overflow-container ">
+          <div
+            className="pl1  dn db-ns flex-auto measure-narrow overflow-container "
+            style={{ width: '15em' }}
+          >
             <NoteListSideBar />
           </div>
           <div className="flex-auto measure-wide ba b--black-10 ">

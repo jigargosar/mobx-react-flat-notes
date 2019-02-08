@@ -20,7 +20,7 @@ const TopToolbar = observer(() => {
 
   return (
     <div className="flex items-center">
-      {renderFlatBtn('Add', actions.add)}
+      {renderFlatBtn('Add', actions.addNewNote)}
       {renderFlatBtn('Reset', actions.reset)}
     </div>
   )

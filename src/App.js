@@ -124,6 +124,12 @@ const AppBar = observer(() => {
       <div className="flex items-center">
         <button
           className="pv2 ttu f7 dim   link pointer bn bg-inherit color-inherit"
+          onClick={actions.openSyncSettingsDialog}
+        >
+          <div className="underline-hover">Sync Settings</div>
+        </button>
+        <button
+          className="pv2 ttu f7 dim   link pointer bn bg-inherit color-inherit"
           onClick={actions.addNewNote}
         >
           <div className="underline-hover">{'Add'}</div>

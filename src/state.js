@@ -5,6 +5,7 @@ import { getCached, setCache } from './dom-helpers'
 import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
+import { notesDb } from './pouch'
 
 function createState() {
   const state = m.observable.object(
@@ -42,7 +43,21 @@ function createState() {
 
 const state = createState()
 
-/*  ACTIONS HELPERS  */
+/*  NOTE HELPERS  */
+
+function createNewNote() {
+  return {
+    id: `N:${nanoid()}`,
+    rev: null,
+    title: faker.name.lastName(null),
+  }
+}
+
+function noteToPouch({ id, rev, title }) {
+  return { _id: id, _rev: rev, title: title }
+}
+
+/*  STATE ACTIONS HELPERS  */
 
 const getPersistedAppState = () => getCached('app-state')
 
@@ -56,7 +71,7 @@ function hydrateFromLocalStorage() {
   }
 }
 
-function hydrateFromPouchDb() {}
+// function hydrateFromPouchDb() {}
 
 function reset() {
   state.noteList.clear()
@@ -64,13 +79,6 @@ function reset() {
 }
 
 const startAutoCache = () => m.autorun(persistAppState)
-
-function createNewNote() {
-  return {
-    id: `N:${nanoid()}`,
-    title: faker.name.lastName(null),
-  }
-}
 
 function insertNoteAt(idx, note) {
   validate('NO', arguments)
@@ -86,19 +94,13 @@ function addNewNote() {
   const note = createNewNote()
   insertNoteAt(0, note)
   setSelectedNote(note)
+  notesDb.put(noteToPouch(note))
 }
 
 /*  ACTIONS  */
 
 const actions = wrapActions({
   init() {
-    m.observe(
-      state.noteList,
-      change => {
-        console.log(change)
-      },
-      true,
-    )
     hydrateFromLocalStorage()
     return startAutoCache()
   },

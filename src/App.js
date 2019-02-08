@@ -112,6 +112,7 @@ const NoteEditorPane = observer(() => {
   const editorDidMount = editor => {
     editorRef.current = editor
   }
+
   return (
     <div
       // ref={cRef}

@@ -51,7 +51,7 @@ const persistAppState = () => setCache('app-state', m.toJS(state))
 function hydrate() {
   const cached = getPersistedAppState()
   if (cached) {
-    state.noteList = cached.noteList
+    state.noteList.replace(cached.noteList)
     state.selectedNoteId = cached.selectedNoteId
   }
 }

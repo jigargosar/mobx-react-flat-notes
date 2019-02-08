@@ -120,21 +120,25 @@ const App = observer(() => {
   return (
     <div className="h-100 flex flex-column">
       <div className="bg-black-90 white shadow-1">
-        <div className="center mw8 flex ttu tracked">
-          <div className="flex-auto flex items-center">Flat Notes</div>
-          <div className="flex items-center">
-            <button
-              className="link pointer ttu bn bg-inherit color-inherit"
-              onClick={actions.addNewNote}
-            >
-              <div className="underline-hover">{'Add'}</div>
-            </button>
-            <button
-              className="link pointer ttu bn bg-inherit color-inherit"
-              onClick={actions.reset}
-            >
-              <div className="underline-hover">{'Reset'}</div>
-            </button>
+        <div className="center mw7">
+          <div className="flex justify-between">
+            <div className="ml2 pv2 flex items-center us-none ttu b">
+              FN
+            </div>
+            <div className="flex items-center">
+              <button
+                className="pv2 ttu f7 dim   link pointer bn bg-inherit color-inherit"
+                onClick={actions.addNewNote}
+              >
+                <div className="underline-hover">{'Add'}</div>
+              </button>
+              <button
+                className="pv2 ttu f7 dim   link pointer bn bg-inherit color-inherit"
+                onClick={actions.reset}
+              >
+                <div className="underline-hover">{'Reset'}</div>
+              </button>
+            </div>
           </div>
         </div>
       </div>

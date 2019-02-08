@@ -105,9 +105,7 @@ function useMonacoEditor() {
 }
 
 const NoteEditorPane = observer(() => {
-  const [editorDidMount] = useMonacoEditor(editor => {
-    console.log(`editor`, editor)
-  })
+  const [editorDidMount] = useMonacoEditor()
 
   return (
     <div

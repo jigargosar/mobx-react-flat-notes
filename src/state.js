@@ -134,6 +134,9 @@ const actions = wrapActions({
   reset,
   setSelectedNote,
   setSelectedNoteContent,
+  openSyncSettingsDialog: () => {
+    state.syncSettingsDialogOpen = true
+  },
 })
 
 actions.init().catch(console.error)

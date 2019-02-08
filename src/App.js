@@ -146,6 +146,15 @@ const AppBar = observer(() => {
 })
 AppBar.displayName = 'AppBar'
 
+const SyncSettingsDialog = observer(() => {
+  return (
+    <div className="absolute absolute--fill flex items-center justify-center bg-black-50">
+      <div className="pa4 bg-white">HW</div>
+    </div>
+  )
+})
+SyncSettingsDialog.displayName = 'SyncSettingsDialog'
+
 const App = observer(() => {
   return (
     <div className="h-100 flex flex-column">
@@ -167,6 +176,7 @@ const App = observer(() => {
           </div>
         </div>
       </div>
+      <SyncSettingsDialog />
     </div>
   )
 })

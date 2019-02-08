@@ -100,6 +100,7 @@ const NoteEditorPane = observer(() => {
   const editorDidMount = useCallback(editor => {
     editorRef.current = editor
   }, [])
+
   return (
     <div
       className="overflow-hidden h-100 mw-100 bg-light-pink "

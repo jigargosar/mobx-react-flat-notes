@@ -86,7 +86,7 @@ function useWindowSize() {
   return size
 }
 
-const NoteEditorPane = observer(() => {
+function useMonacoEditor() {
   const editorRef = useRef(null)
   const windowSize = useWindowSize()
 
@@ -100,6 +100,14 @@ const NoteEditorPane = observer(() => {
   const editorDidMount = useCallback(editor => {
     editorRef.current = editor
   }, [])
+
+  return [editorDidMount, editorRef]
+}
+
+const NoteEditorPane = observer(() => {
+  const [editorDidMount] = useMonacoEditor(editor => {
+    console.log(`editor`, editor)
+  })
 
   return (
     <div

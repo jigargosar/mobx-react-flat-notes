@@ -50,15 +50,16 @@ function createNewNote() {
     id: `N:${nanoid()}`,
     rev: null,
     title: faker.name.lastName(null),
+    content: faker.lorem.lines(),
   }
 }
 
-function noteToPouch({ id, rev, title }) {
-  return { _id: id, _rev: rev, title: title }
+function noteToPouch({ id, rev, title, content }) {
+  return { _id: id, _rev: rev, title, content }
 }
 
-function noteFromPouchDoc({ _id, _rev, title }) {
-  return { id: _id, rev: _rev, title }
+function noteFromPouchDoc({ _id, _rev, title, content }) {
+  return { id: _id, rev: _rev, title, content }
 }
 
 /*  NOTE ACTIONS   */

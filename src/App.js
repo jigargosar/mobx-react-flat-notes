@@ -1,4 +1,9 @@
-import React, { useLayoutEffect, useRef, useState } from 'react'
+import React, {
+  useCallback,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 import { useArrowKeys } from './hooks/useArrowKeys'
@@ -109,10 +114,9 @@ const NoteEditorPane = observer(() => {
     }
   }, [windowSize, editorRef.current])
 
-  const editorDidMount = editor => {
+  const editorDidMount = useCallback(editor => {
     editorRef.current = editor
-  }
-
+  }, [])
   return (
     <div
       // ref={cRef}

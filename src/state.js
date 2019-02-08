@@ -61,9 +61,7 @@ function reset() {
   state.selectedNoteId = null
 }
 
-function startAutoPersist() {
-  return m.autorun(persistAppState)
-}
+const startAutoPersist = () => m.autorun(persistAppState)
 
 function createNewNote() {
   return {
@@ -73,6 +71,7 @@ function createNewNote() {
 }
 
 function insertNoteAt(idx, note) {
+  validate('NO', arguments)
   state.noteList.splice(idx, 0, note)
 }
 

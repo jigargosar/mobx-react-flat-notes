@@ -93,7 +93,6 @@ const NoteEditorPane = observer(() => {
     const editor = meRef.current
     const containerEl = cRef.current
     if (editor && containerEl) {
-      debugger
       const newSize = R.pick(['width', 'height'])(
         containerEl.getBoundingClientRect(),
       )

@@ -1,7 +1,6 @@
 import { wrapActions } from './mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { setCache } from './dom-helpers'
 import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
@@ -14,6 +13,7 @@ function createState() {
     {
       noteList: m.observable.array([]),
       selectedNoteId: null,
+      syncSettingsDialogOpen: false,
     },
     null,
     {
@@ -72,18 +72,6 @@ const noteActions = wrapActions({ setNoteRev })
 
 /*  STATE ACTIONS HELPERS  */
 
-// const getPersistedAppState = () => getCached('app-state')
-
-const persistAppState = () => setCache('app-state', m.toJS(state))
-
-// function hydrateFromLocalStorage() {
-//   const cached = getPersistedAppState()
-//   if (cached) {
-//     state.noteList.replace(cached.noteList)
-//     state.selectedNoteId = cached.selectedNoteId
-//   }
-// }
-
 async function hydrateFromPouchDb() {
   const allDocsRes = await notesDb.allDocs({ include_docs: true })
   const notes = getDocsFromAllDocs(allDocsRes).map(noteFromPouchDoc)
@@ -94,10 +82,9 @@ async function hydrateFromPouchDb() {
 function reset() {
   state.noteList.clear()
   state.selectedNoteId = null
+  state.syncSettingsDialogOpen = false
   return deleteAllDocs(notesDb)
 }
-
-const startAutoCache = () => m.autorun(persistAppState)
 
 function insertNoteAt(idx, note) {
   validate('NO', arguments)
@@ -142,7 +129,6 @@ const actions = wrapActions({
   async init() {
     // hydrateFromLocalStorage()
     await hydrateFromPouchDb()
-    return startAutoCache()
   },
   addNewNote,
   reset,

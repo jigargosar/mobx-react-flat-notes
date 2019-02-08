@@ -124,13 +124,13 @@ const App = observer(() => {
           <div className="flex-auto flex items-center">Flat Notes</div>
           <div className="flex items-center">
             <button
-              className="pointer ttu bn bg-inherit color-inherit"
+              className="link pointer ttu bn bg-inherit color-inherit"
               onClick={actions.addNewNote}
             >
               <div className="underline-hover">{'Add'}</div>
             </button>
             <button
-              className="pointer ttu bn bg-inherit color-inherit"
+              className="link pointer ttu bn bg-inherit color-inherit"
               onClick={actions.reset}
             >
               <div className="underline-hover">{'Reset'}</div>

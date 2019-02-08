@@ -48,7 +48,7 @@ const getPersistedAppState = () => getCached('app-state')
 
 const persistAppState = () => setCache('app-state', m.toJS(state))
 
-function hydrate() {
+function hydrateFromLocalStorage() {
   const cached = getPersistedAppState()
   if (cached) {
     state.noteList.replace(cached.noteList)
@@ -56,12 +56,14 @@ function hydrate() {
   }
 }
 
+function hydrateFromPouchDb() {}
+
 function reset() {
   state.noteList.clear()
   state.selectedNoteId = null
 }
 
-const startAutoPersist = () => m.autorun(persistAppState)
+const startAutoCache = () => m.autorun(persistAppState)
 
 function createNewNote() {
   return {
@@ -97,8 +99,8 @@ const actions = wrapActions({
       },
       true,
     )
-    hydrate()
-    return startAutoPersist()
+    hydrateFromLocalStorage()
+    return startAutoCache()
   },
   addNewNote,
   reset,

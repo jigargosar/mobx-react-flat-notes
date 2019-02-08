@@ -6,6 +6,7 @@ import { useFocusRef } from './hooks/useFocus'
 import MonacoEditor from 'react-monaco-editor'
 import { useWindowSize } from './hooks/global-listeners'
 import { DialogLargeHeaderExample } from './DialogExample'
+import { FocusTrapZone } from 'office-ui-fabric-react/lib/FocusTrapZone'
 
 const TopToolbar = observer(() => {
   const actions = useAppActions()
@@ -158,36 +159,38 @@ const PouchSettingsDialog = observer(() => {
 
   return (
     state.pouchSettingsDialogOpen && (
-      <div
-        className="absolute absolute--fill flex items-center justify-center bg-black-50"
-        ref={backdropRef}
-        onClick={onBackdropClick}
-      >
+      <FocusTrapZone>
         <div
-          className="relative w-80 mw6 bg-white shadow-1"
-          // style={{ top: '-15%' }}
+          className="absolute absolute--fill flex items-center justify-center bg-black-50"
+          ref={backdropRef}
+          onClick={onBackdropClick}
         >
-          <div className="pv4 ph3 f3 fw3 bg-blue white">
-            Pouch Sync Settings
-          </div>
-          <div className="ph3 ">
-            <p>Pouch Sync Settings Pouch</p>
-            <p>Sync Settings Pouch</p>
-            <p>Sync Settings Pouch Sync Settings</p>
-          </div>
-          <div className="ph3 pv2 bt b--light-gray flex flex-row-reverse">
-            <button className="pv2 ph3 ma0 link pointer bn bg-blue white">
-              <div className="underline-hover">Save</div>
-            </button>
-            <button
-              className="pv2 ph3 ma0 link pointer bn black-70"
-              onClick={actions.dismissPouchSettingsDialog}
-            >
-              <div className="underline-hover">Cancel</div>
-            </button>
+          <div
+            className="relative w-80 mw6 bg-white shadow-1"
+            // style={{ top: '-15%' }}
+          >
+            <div className="pv4 ph3 f3 fw3 bg-blue white">
+              Pouch Sync Settings
+            </div>
+            <div className="ph3 ">
+              <p>Pouch Sync Settings Pouch</p>
+              <p>Sync Settings Pouch</p>
+              <p>Sync Settings Pouch Sync Settings</p>
+            </div>
+            <div className="ph3 pv2 bt b--light-gray flex flex-row-reverse">
+              <button className="pv2 ph3 ma0 link pointer bn bg-blue white">
+                <div className="underline-hover">Save</div>
+              </button>
+              <button
+                className="pv2 ph3 ma0 link pointer bn black-70"
+                onClick={actions.dismissPouchSettingsDialog}
+              >
+                <div className="underline-hover">Cancel</div>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </FocusTrapZone>
     )
   )
 })

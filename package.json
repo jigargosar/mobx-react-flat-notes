@@ -17,7 +17,8 @@
     "react-monaco-editor": "^0.23.0",
     "react-scripts": "2.1.3",
     "scroll-into-view-if-needed": "^2.2.20",
-    "tachyons": "^4.11.1"
+    "tachyons": "^4.11.1",
+    "lodash.debounce": "latest"
   },
   "scripts": {
     "start:orig": "react-scripts start",

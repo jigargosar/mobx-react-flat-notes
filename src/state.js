@@ -7,6 +7,7 @@ import validate from 'aproba'
 import * as m from 'mobx'
 import { deleteAllDocs, getDocsFromAllDocs, notesDb } from './pouch'
 import idx from 'idx.macro'
+import debounce from 'lodash.debounce'
 
 function createState() {
   const state = m.observable.object(
@@ -121,6 +122,26 @@ async function addNewNote() {
   noteActions.setNoteRev(rev, note)
 }
 
+async function setNoteContent(newContent, note) {
+  note = state.noteList.find(R.eqProps('id', note))
+  if (note) {
+    const { rev } = await notesDb.put(
+      noteToPouch({ ...note, content: newContent }),
+    )
+    noteActions.setNoteRev(rev, note)
+  }
+}
+
+const setNoteContentDebounced = debounce(setNoteContent, 300, {
+  leading: true,
+  maxWait: 1000,
+  trailing: true,
+})
+
+function setSelectedNoteContent(newContent) {
+  setNoteContentDebounced(newContent, state.selectedNote)
+}
+
 /*  ACTIONS  */
 
 const actions = wrapActions({
@@ -132,6 +153,7 @@ const actions = wrapActions({
   addNewNote,
   reset,
   setSelectedNote,
+  setSelectedNoteContent,
 })
 
 actions.init().catch(console.error)

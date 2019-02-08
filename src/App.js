@@ -91,7 +91,7 @@ function useMonacoEditor() {
 const NoteEditorPane = observer(() => {
   const [editorDidMount] = useMonacoEditor()
   const state = useAppState()
-  // const actions = useAppActions()
+  const actions = useAppActions()
 
   return (
     <div
@@ -101,6 +101,7 @@ const NoteEditorPane = observer(() => {
       <MonacoEditor
         editorDidMount={editorDidMount}
         value={state.selectedNoteContent || ''}
+        onChange={value => actions.setSelectedNoteContent(value)}
       />
     </div>
   )

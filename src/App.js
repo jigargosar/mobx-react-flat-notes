@@ -94,7 +94,6 @@ function useMonacoEditor() {
 
   return [editorDidMount, editorRef]
 }
-
 const NoteEditorPane = observer(() => {
   const [editorDidMount] = useMonacoEditor()
   const state = useAppState()
@@ -113,7 +112,6 @@ const NoteEditorPane = observer(() => {
     </div>
   )
 })
-
 NoteEditorPane.displayName = 'NoteEditorPane'
 
 const AppBar = observer(() => {

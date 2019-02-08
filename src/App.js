@@ -1,15 +1,10 @@
-import React, {
-  useCallback,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react'
+import React, { useCallback, useLayoutEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 import { useArrowKeys } from './hooks/useArrowKeys'
 import { useFocusRef } from './hooks/useFocus'
 import MonacoEditor from 'react-monaco-editor'
-import { useWindowListener } from './hooks/useDocumentListener'
+import { useWindowSize } from './hooks/global-listeners'
 
 function renderFlatBtn(label, onClick) {
   return (
@@ -74,17 +69,6 @@ const NoteListSideBar = observer(() => {
 })
 
 NoteListSideBar.displayName = 'NoteListSideBar'
-
-function useWindowSize() {
-  const [size, setSize] = useState(() => ({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  }))
-  useWindowListener('resize', () => {
-    setSize({ width: window.innerWidth, height: window.innerHeight })
-  })
-  return size
-}
 
 function useMonacoEditor() {
   const editorRef = useRef(null)

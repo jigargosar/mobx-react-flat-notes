@@ -6,6 +6,7 @@ import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
 import { deleteAllDocs, getDocsFromAllDocs, notesDb } from './pouch'
+import idx from 'idx.macro'
 
 function createState() {
   const state = m.observable.object(
@@ -31,6 +32,9 @@ function createState() {
         R.propEq('id', state.selectedNoteId),
       )
       return selectedById || state.firstNote
+    },
+    get selectedNoteContent() {
+      return idx(state, _ => _.selectedNote.content)
     },
     isNoteSelected(note) {
       return R.eqProps('id', note, state.selectedNote)

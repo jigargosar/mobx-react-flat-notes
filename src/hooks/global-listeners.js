@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export function useDocumentListener(name, fn, deps = []) {
   useEffect(() => {
@@ -19,4 +19,15 @@ export function useWindowListener(name, fn, deps = []) {
       window.removeEventListener(name, fn)
     }
   }, deps)
+}
+
+export function useWindowSize() {
+  const [size, setSize] = useState(() => ({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  }))
+  useWindowListener('resize', () => {
+    setSize({ width: window.innerWidth, height: window.innerHeight })
+  })
+  return size
 }

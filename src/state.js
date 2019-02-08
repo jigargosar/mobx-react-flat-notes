@@ -93,7 +93,7 @@ const actions = wrapActions({
     hydrate()
     return startAutoPersist()
   },
-  addNewNote: addNewNote,
+  addNewNote,
   reset,
   setSelectedNote,
 })

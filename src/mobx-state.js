@@ -1,7 +1,7 @@
 // @flow
 
 import * as mobx from 'mobx'
-import { autorun, extendObservable, observable, toJS } from 'mobx'
+import { autorun, extendObservable, toJS } from 'mobx'
 import { wrapActions } from './mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
@@ -26,17 +26,17 @@ flowRuntimeMobx(t, mobx)
 //
 // console.log(toJS(thing))
 
+type Note = {| id: string, title: string |}
+type State = {| noteList: Array<Note>, selectedNoteId: ?string |}
+
 function createState() {
-  const state = observable.object(
-    {
-      noteList: [],
-      selectedNoteId: null,
-    },
-    null,
-    {
-      name: 'App State',
-    },
-  )
+  const observableState: State = {
+    noteList: [],
+    selectedNoteId: null,
+  }
+  const state = extendObservable({}, observableState, null, {
+    name: 'AppState',
+  })
 
   return extendObservable(state, {
     get displayNotes() {
@@ -51,10 +51,10 @@ function createState() {
       )
       return selectedById || state.firstNote
     },
-    isNoteSelected(note) {
-      return R.eqProps('id', note, state.selectedNote)
+    isNoteSelected(note: Note) {
+      return note.id === state.selectedNoteId
     },
-    shouldFocusNote(note) {
+    shouldFocusNote(note: Note) {
       return state.isNoteSelected(note)
     },
   })
@@ -81,7 +81,7 @@ function startAutoPersist() {
   return autorun(() => setCache('app-state', toJS(state)))
 }
 
-function createNewNote() {
+function createNewNote(): Note {
   return {
     id: `N:${nanoid()}`,
     title: faker.name.lastName(null),

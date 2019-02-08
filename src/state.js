@@ -1,7 +1,7 @@
 import { wrapActions } from './mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { getCached, setCache } from './dom-helpers'
+import { setCache } from './dom-helpers'
 import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
@@ -71,17 +71,17 @@ const noteActions = wrapActions({ setNoteRev })
 
 /*  STATE ACTIONS HELPERS  */
 
-const getPersistedAppState = () => getCached('app-state')
+// const getPersistedAppState = () => getCached('app-state')
 
 const persistAppState = () => setCache('app-state', m.toJS(state))
 
-function hydrateFromLocalStorage() {
-  const cached = getPersistedAppState()
-  if (cached) {
-    state.noteList.replace(cached.noteList)
-    state.selectedNoteId = cached.selectedNoteId
-  }
-}
+// function hydrateFromLocalStorage() {
+//   const cached = getPersistedAppState()
+//   if (cached) {
+//     state.noteList.replace(cached.noteList)
+//     state.selectedNoteId = cached.selectedNoteId
+//   }
+// }
 
 async function hydrateFromPouchDb() {
   const allDocsRes = await notesDb.allDocs({ include_docs: true })

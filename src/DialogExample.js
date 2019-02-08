@@ -33,7 +33,9 @@ export class DialogLargeHeaderExample extends React.Component {
             type: DialogType.largeHeader,
             title: 'All emails together',
             subText:
-              'Your Inbox has changed. No longer does it include favorites, it is a singular destination for your emails.',
+              'Your Inbox has changed. ' +
+              'No longer does it include favorites, ' +
+              'it is a singular destination for your emails.',
           }}
           modalProps={{
             isBlocking: false,

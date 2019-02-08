@@ -150,16 +150,18 @@ const PouchSettingsDialog = observer(() => {
   const state = useAppState()
   const actions = useAppActions()
   const backdropRef = useRef(null)
+  const onBackdropClick = useCallback(e => {
+    if (e.target === backdropRef.current) {
+      actions.dismissPouchSettingsDialog()
+    }
+  }, [])
+
   return (
     state.pouchSettingsDialogOpen && (
       <div
         className="absolute absolute--fill flex items-center justify-center bg-black-50"
         ref={backdropRef}
-        onClick={e => {
-          if (e.target === backdropRef.current) {
-            actions.dismissPouchSettingsDialog()
-          }
-        }}
+        onClick={onBackdropClick}
       >
         <div
           className="relative w-80 mw6 bg-white shadow-1"

@@ -1,10 +1,36 @@
-import { autorun, extendObservable, observable, toJS } from 'mobx'
+// @flow
+
+import * as mobx from 'mobx'
+import {
+  autorun,
+  extendObservable,
+  observable,
+  ObservableMap,
+  toJS,
+} from 'mobx'
 import { wrapActions } from './mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { getCached, setCache } from './dom-helpers'
 import * as R from 'ramda'
 import validate from 'aproba'
+import t from 'flow-runtime'
+
+import flowRuntimeMobx from 'flow-runtime-mobx'
+
+flowRuntimeMobx(t, mobx)
+
+type Thing = {
+  numbers: number[],
+  map: Map<string, string>,
+}
+
+const thing: Thing = observable({
+  numbers: [1, 2, 3],
+  map: new ObservableMap({ foo: 'bar' }),
+})
+
+console.log(toJS(thing))
 
 function createState() {
   const state = observable.object(

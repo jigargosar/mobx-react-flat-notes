@@ -149,7 +149,13 @@ AppBar.displayName = 'AppBar'
 const SyncSettingsDialog = observer(() => {
   return (
     <div className="absolute absolute--fill flex items-center justify-center bg-black-50">
-      <div className="pa4 bg-white">Pouch Sync Settings</div>
+      <div className="bg-white w-80 mw6">
+        <div className="pa3 tc bg-blue white">Pouch Sync Settings</div>
+        <div className="pa2 ">
+          Pouch Sync Settings Pouch Sync Settings Pouch Sync Settings Pouch
+          Sync Settings
+        </div>
+      </div>
     </div>
   )
 })

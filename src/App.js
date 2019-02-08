@@ -44,7 +44,7 @@ const NoteItem = observer(({ note }) => {
   const selectedClass = isSelected ? 'bg-light-blue ' : ''
   const titleRef = useRef(null)
 
-  useFocusRef(titleRef, shouldFocus)
+  useFocusRef(titleRef, shouldFocus, [shouldFocus])
 
   return (
     <div onClick={selectNote}>

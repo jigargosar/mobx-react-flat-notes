@@ -120,7 +120,7 @@ const NoteEditorPane = observer(() => {
   return (
     <div
       // ref={cRef}
-      className="overflow-hidden h-100 bg-light-pink mw-100"
+      className="overflow-hidden h-100 mw-100 bg-light-pink "
       style={{ width: '34em' }}
     >
       <MonacoEditor

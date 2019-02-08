@@ -1,15 +1,15 @@
-import { autorun, extendObservable, observable, toJS } from 'mobx'
 import { wrapActions } from './mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { getCached, setCache } from './dom-helpers'
 import * as R from 'ramda'
 import validate from 'aproba'
+import * as m from 'mobx'
 
 function createState() {
-  const state = observable.object(
+  const state = m.observable.object(
     {
-      noteList: [],
+      noteList: m.observable.array([]),
       selectedNoteId: null,
     },
     null,
@@ -18,12 +18,12 @@ function createState() {
     },
   )
 
-  return extendObservable(state, {
+  return m.extendObservable(state, {
     get displayNotes() {
       return state.noteList
     },
     get firstNote() {
-      return R.pathOr(null)(['noteList', 0])(state)
+      return m.get(state.noteList, 0)
     },
     get selectedNote() {
       const selectedById = state.noteList.find(
@@ -58,7 +58,7 @@ function reset() {
 }
 
 function startAutoPersist() {
-  return autorun(() => setCache('app-state', toJS(state)))
+  return m.autorun(() => setCache('app-state', m.toJS(state)))
 }
 
 function createNewNote() {

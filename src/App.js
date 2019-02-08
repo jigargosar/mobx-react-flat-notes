@@ -1,4 +1,4 @@
-import React, { createRef, useRef, useState } from 'react'
+import React, { createRef, useLayoutEffect, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 import { useArrowKeys } from './hooks/useArrowKeys'
@@ -85,7 +85,7 @@ const NoteEditorPane = observer(() => {
   const cRef = createRef()
   const meRef = createRef()
 
-  // const windowSize = useWindowSize()
+  const windowSize = useWindowSize()
   // const [size, setSize] = useState(() => ({ width: 0, height: 0 }))
   //
   // useLayoutEffect(() => {
@@ -100,6 +100,13 @@ const NoteEditorPane = observer(() => {
   //   }
   // }, [windowSize, meRef.current, cRef.current])
 
+  useLayoutEffect(() => {
+    debugger
+    if (meRef.current) {
+      meRef.current.layout()
+    }
+  }, [windowSize, meRef.current])
+
   return (
     <div
       ref={cRef}
@@ -108,6 +115,7 @@ const NoteEditorPane = observer(() => {
     >
       <MonacoEditor
         editorDidMount={editor => {
+          debugger
           meRef.current = editor
         }}
         // width={size.width}

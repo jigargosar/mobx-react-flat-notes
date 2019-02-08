@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useRef, useState } from 'react'
+import React, { createRef, useLayoutEffect, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 import { useArrowKeys } from './hooks/useArrowKeys'
@@ -76,8 +76,7 @@ function useWindowSize() {
     width: window.innerWidth,
     height: window.innerHeight,
   }))
-  useWindowListener('resize', ev => {
-    console.log(`ev`, ev)
+  useWindowListener('resize', () => {
     setSize({ width: window.innerWidth, height: window.innerHeight })
   })
   return size
@@ -85,37 +84,37 @@ function useWindowSize() {
 
 const NoteEditorPane = observer(() => {
   const cRef = createRef()
+  const meRef = createRef()
 
   const windowSize = useWindowSize()
-  console.log(`windowSize`, windowSize)
+  const [size, setSize] = useState(() => ({ width: 0, height: 0 }))
 
-  const [size, setSize] = useState(() => ({
-    width: null,
-    height: null,
-  }))
-
-  const { width, height } = size
-
-  useEffect(() => {
-    const el = cRef.current
-    if (el) {
-      const clientRect = el.getBoundingClientRect()
-      console.log(`el.getBoundingClientRect()`, clientRect)
-      const pickSize = R.pick(['width', 'height'])
-      const newSize = pickSize(clientRect)
-      if (!R.equals(newSize, size)) {
-        setSize(newSize)
-      }
+  useLayoutEffect(() => {
+    const editor = meRef.current
+    const containerEl = cRef.current
+    if (editor && containerEl) {
+      debugger
+      const newSize = R.pick(['width', 'height'])(
+        containerEl.getBoundingClientRect(),
+      )
+      setSize(newSize)
+      editor.layout()
     }
-  }, [windowSize])
+  }, [windowSize, meRef.current, cRef.current])
 
   return (
-    <div ref={cRef} className="h-100 overflow-hidden">
-      {/*<textarea*/}
-      {/*  className="pa2 flex-auto bn outline-0 resize-none"*/}
-      {/*  defaultValue={'Lol Pop ppa'}*/}
-      {/*/>*/}
-      <MonacoEditor width={width} height={height} />
+    <div
+      ref={cRef}
+      className="overflow-hidden h-100 bg-light-pink"
+      style={{ width: '34em' }}
+    >
+      <MonacoEditor
+        editorDidMount={editor => {
+          meRef.current = editor
+        }}
+        width={size.width}
+        height={size.height}
+      />
     </div>
   )
 })

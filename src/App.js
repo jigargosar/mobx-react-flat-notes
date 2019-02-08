@@ -90,13 +90,18 @@ function useMonacoEditor() {
 
 const NoteEditorPane = observer(() => {
   const [editorDidMount] = useMonacoEditor()
+  const state = useAppState()
+  // const actions = useAppActions()
 
   return (
     <div
       className="overflow-hidden h-100 mw-100 bg-light-pink "
       style={{ width: '34em' }}
     >
-      <MonacoEditor editorDidMount={editorDidMount} />
+      <MonacoEditor
+        editorDidMount={editorDidMount}
+        value={state.selectedNoteContent || ''}
+      />
     </div>
   )
 })

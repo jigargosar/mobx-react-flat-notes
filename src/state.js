@@ -125,9 +125,9 @@ async function addNewNote() {
 /*  ACTIONS  */
 
 const actions = wrapActions({
-  init() {
+  async init() {
     hydrateFromLocalStorage()
-    hydrateFromPouchDb()
+    await hydrateFromPouchDb()
     return startAutoCache()
   },
   addNewNote,
@@ -135,7 +135,7 @@ const actions = wrapActions({
   setSelectedNote,
 })
 
-actions.init()
+actions.init().catch(console.error)
 
 /*  HOOKS  */
 

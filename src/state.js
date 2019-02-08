@@ -44,8 +44,12 @@ const state = createState()
 
 /*  ACTIONS HELPERS  */
 
+const getPersistedAppState = () => getCached('app-state')
+
+const persistAppState = () => setCache('app-state', m.toJS(state))
+
 function hydrate() {
-  const cached = getCached('app-state')
+  const cached = getPersistedAppState()
   if (cached) {
     state.noteList = cached.noteList
     state.selectedNoteId = cached.selectedNoteId
@@ -58,7 +62,7 @@ function reset() {
 }
 
 function startAutoPersist() {
-  return m.autorun(() => setCache('app-state', m.toJS(state)))
+  return m.autorun(persistAppState)
 }
 
 function createNewNote() {

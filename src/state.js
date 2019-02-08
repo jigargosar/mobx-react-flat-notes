@@ -85,9 +85,9 @@ function hydrateFromLocalStorage() {
 
 async function hydrateFromPouchDb() {
   const allDocsRes = await notesDb.allDocs({ include_docs: true })
-  const noteDocs = getDocsFromAllDocs(allDocsRes).map(noteFromPouchDoc)
-  console.log(`noteDocs`, noteDocs)
-  state.noteList.replace(noteDocs)
+  const notes = getDocsFromAllDocs(allDocsRes).map(noteFromPouchDoc)
+  console.debug(`[pouch] hydrating notes`, notes)
+  state.noteList.replace(notes)
 }
 
 function reset() {

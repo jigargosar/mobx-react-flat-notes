@@ -87,25 +87,8 @@ function useWindowSize() {
 }
 
 const NoteEditorPane = observer(() => {
-  // const cRef = createRef()
   const editorRef = useRef(null)
-
-  // const [editor, setEditor] = useState(()=>null)
-
   const windowSize = useWindowSize()
-  // const [size, setSize] = useState(() => ({ width: 0, height: 0 }))
-  //
-  // useLayoutEffect(() => {
-  //   const editor = editorRef.current
-  //   const containerEl = cRef.current
-  //   if (editor && containerEl) {
-  //     const newSize = R.pick(['width', 'height'])(
-  //       containerEl.getBoundingClientRect(),
-  //     )
-  //     setSize(newSize)
-  //     editor.layout()
-  //   }
-  // }, [windowSize, editorRef.current, cRef.current])
 
   useLayoutEffect(() => {
     const editor = editorRef.current
@@ -119,15 +102,10 @@ const NoteEditorPane = observer(() => {
   }, [])
   return (
     <div
-      // ref={cRef}
       className="overflow-hidden h-100 mw-100 bg-light-pink "
       style={{ width: '34em' }}
     >
-      <MonacoEditor
-        editorDidMount={editorDidMount}
-        // width={size.width}
-        // height={size.height}
-      />
+      <MonacoEditor editorDidMount={editorDidMount} />
     </div>
   )
 })

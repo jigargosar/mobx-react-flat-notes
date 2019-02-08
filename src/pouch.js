@@ -3,8 +3,10 @@ import * as R from 'ramda'
 
 export const notesDb = new PouchDb('flat-notes-notesDb')
 
-export const getDocsFromAllDocs = allDocsRes =>
-  allDocsRes.rows.map(R.prop('doc'))
+export const getDocsFromAllDocs = allDocsRes => {
+  console.debug(`allDocsRes`, allDocsRes)
+  return allDocsRes.rows.map(R.prop('doc'))
+}
 
 export async function deleteAllDocs(db) {
   const allDocsRes = await db.allDocs({ include_docs: true })

@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
-import { useAppActions, useAppState } from './mobx-state'
+import { useAppActions, useAppState } from './state'
 import { useArrowKeys } from './hooks/useArrowKeys'
 import { useFocusRef } from './hooks/useFocus'
 import MonacoEditor from 'react-monaco-editor'

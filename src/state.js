@@ -77,11 +77,11 @@ function hydrateUIState() {
   const uiState = getCached('app-ui-state')
   if (uiState) {
     state.selectedNoteId = uiState.selectedNoteId
-    state.syncSettingsDialogOpen = uiState.syncSettingsDialogOpen
+    state.pouchSettingsDialogOpen = uiState.pouchSettingsDialogOpen
   }
 }
 
-const pickUIState = R.pick(['selectedNoteId', 'syncSettingsDialogOpen'])
+const pickUIState = R.pick(['selectedNoteId', 'pouchSettingsDialogOpen'])
 
 function cacheUIState() {
   setCache('app-ui-state', pickUIState(state))
@@ -97,7 +97,7 @@ async function hydrateFromPouchDb() {
 function reset() {
   state.noteList.clear()
   state.selectedNoteId = null
-  state.syncSettingsDialogOpen = false
+  state.pouchSettingsDialogOpen = false
   return deleteAllDocs(notesDb)
 }
 
@@ -150,9 +150,9 @@ const actions = wrapActions({
   reset,
   setSelectedNote,
   setSelectedNoteContent,
-  openSyncSettingsDialog: () => {
-    state.syncSettingsDialogOpen = true
-  },
+  openPouchSettingsDialog: () => (state.pouchSettingsDialogOpen = true),
+  dismissPouchSettingsDialog: () =>
+    (state.pouchSettingsDialogOpen = false),
 })
 
 actions.init().catch(console.error)

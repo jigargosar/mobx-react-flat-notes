@@ -5,7 +5,7 @@ import { getCached, setCache } from './dom-helpers'
 import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
-import { getDocsFromAllDocs, notesDb } from './pouch'
+import { deleteAllDocs, getDocsFromAllDocs, notesDb } from './pouch'
 
 function createState() {
   const state = m.observable.object(
@@ -89,16 +89,6 @@ async function hydrateFromPouchDb() {
   const noteDocs = getDocsFromAllDocs(allDocsRes).map(noteFromPouchDoc)
   console.log(`noteDocs`, noteDocs)
   state.noteList.replace(noteDocs)
-}
-
-async function deleteAllDocs(db) {
-  const allDocsRes = await db.allDocs({ include_docs: true })
-  const deletePromises = getDocsFromAllDocs(allDocsRes).map(doc =>
-    notesDb.put({ ...doc, _deleted: true }),
-  )
-  const deleteRes = await Promise.all(deletePromises)
-  console.debug(`deleteRes`, deleteRes)
-  return deleteRes
 }
 
 function reset() {

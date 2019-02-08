@@ -7,24 +7,28 @@ import MonacoEditor from 'react-monaco-editor'
 import { useWindowSize } from './hooks/global-listeners'
 import { DialogLargeHeaderExample } from './DialogExample'
 
-function renderFlatBtn(label, onClick) {
-  return (
-    <button
-      className="pointer ttu bg-inherit bn color-inherit"
-      onClick={onClick}
-    >
-      <div className="underline-hover">{label}</div>
-    </button>
-  )
-}
 const TopToolbar = observer(() => {
   const actions = useAppActions()
 
   return (
     <div className="flex items-center">
       <DialogLargeHeaderExample />
-      {renderFlatBtn('Add', actions.addNewNote)}
-      {renderFlatBtn('Reset', actions.reset)}
+      {
+        <button
+          className="pointer ttu bg-inherit bn color-inherit"
+          onClick={actions.addNewNote}
+        >
+          <div className="underline-hover">{'Add'}</div>
+        </button>
+      }
+      {
+        <button
+          className="pointer ttu bg-inherit bn color-inherit"
+          onClick={actions.reset}
+        >
+          <div className="underline-hover">{'Reset'}</div>
+        </button>
+      }
     </div>
   )
 })
@@ -112,12 +116,26 @@ const NoteEditorPane = observer(() => {
 NoteEditorPane.displayName = 'NoteEditorPane'
 
 const App = observer(() => {
+  const actions = useAppActions()
   return (
     <div className="h-100 flex flex-column">
-      <div className="bg-black-80 white shadow-1">
-        <div className="center max-app-width flex ">
-          <div className="flex-auto ttu tracked b pa2">Flat Notes</div>
-          <TopToolbar />
+      <div className="bg-black-90 white shadow-1">
+        <div className="center mw7 flex ttu tracked">
+          <div className="flex-auto flex items-center">Flat Notes</div>
+          <div className="flex items-center">
+            <button
+              className="pointer ttu bg-inherit bn color-inherit"
+              onClick={actions.addNewNote}
+            >
+              <div className="underline-hover">{'Add'}</div>
+            </button>
+            <button
+              className="pointer ttu bg-inherit bn color-inherit"
+              onClick={actions.reset}
+            >
+              <div className="underline-hover">{'Reset'}</div>
+            </button>
+          </div>
         </div>
       </div>
       <div className="flex-auto flex flex-column ">

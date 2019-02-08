@@ -7,6 +7,7 @@ import * as m from 'mobx'
 import { deleteAllDocs, getDocsFromAllDocs, notesDb } from './pouch'
 import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
+import { getCached, setCache } from './dom-helpers'
 
 function createState() {
   const state = m.observable.object(
@@ -72,6 +73,20 @@ const noteActions = wrapActions({ setNoteRev })
 
 /*  STATE ACTIONS HELPERS  */
 
+function hydrateUIState() {
+  const uiState = getCached('app-ui-state')
+  if (uiState) {
+    state.selectedNoteId = uiState.selectedNoteId
+    state.syncSettingsDialogOpen = uiState.syncSettingsDialogOpen
+  }
+}
+
+const pickUIState = R.pick(['selectedNoteId', 'syncSettingsDialogOpen'])
+
+function cacheUIState() {
+  setCache('app-ui-state', pickUIState(state))
+}
+
 async function hydrateFromPouchDb() {
   const allDocsRes = await notesDb.allDocs({ include_docs: true })
   const notes = getDocsFromAllDocs(allDocsRes).map(noteFromPouchDoc)
@@ -127,8 +142,9 @@ function setSelectedNoteContent(newContent) {
 
 const actions = wrapActions({
   async init() {
-    // hydrateFromLocalStorage()
+    hydrateUIState()
     await hydrateFromPouchDb()
+    return m.autorun(cacheUIState, { name: 'cache-ui-state' })
   },
   addNewNote,
   reset,

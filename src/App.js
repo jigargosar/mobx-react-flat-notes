@@ -156,6 +156,14 @@ const SyncSettingsDialog = observer(() => {
           <p>Sync Settings Pouch</p>
           <p>Sync Settings Pouch Sync Settings</p>
         </div>
+        <div className="ph3 pv2 bt b--moon-gray">
+          <button className="pv2 ph3 ma0 link pointer bn bg-blue white ">
+            <div className="underline-hover">Save</div>
+          </button>
+          <button className="pv2 ph3 ma0 link pointer bn black-70">
+            <div className="underline-hover">Cancel</div>
+          </button>
+        </div>
       </div>
     </div>
   )

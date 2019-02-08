@@ -29,20 +29,15 @@ function createState() {
       return m.get(state.noteList, 0)
     },
     get selectedNote() {
-      const selectedById = state.noteList.find(
-        R.propEq('id', state.selectedNoteId),
-      )
+      const selectedById = state.getNoteById(state.selectedNoteId)
       return selectedById || state.firstNote
     },
     get selectedNoteContent() {
       return idx(state, _ => _.selectedNote.content)
     },
-    isNoteSelected(note) {
-      return R.eqProps('id', note, state.selectedNote)
-    },
-    shouldFocusNote(note) {
-      return state.isNoteSelected(note)
-    },
+    isNoteSelected: note => R.eqProps('id', note, state.selectedNote),
+    shouldFocusNote: note => state.isNoteSelected(note),
+    getNoteById: id => state.noteList.find(R.propEq('id', id)),
   })
 }
 
@@ -122,8 +117,8 @@ async function addNewNote() {
   noteActions.setNoteRev(rev, note)
 }
 
-async function setNoteContent(newContent, note) {
-  note = state.noteList.find(R.eqProps('id', note))
+async function setNoteContent(newContent, { id }) {
+  const note = state.getNoteById(id)
   if (note) {
     const { rev } = await notesDb.put(
       noteToPouch({ ...note, content: newContent }),

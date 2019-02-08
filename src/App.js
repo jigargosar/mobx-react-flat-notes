@@ -1,9 +1,11 @@
-import React, { useLayoutEffect, useRef } from 'react'
+import React, { createRef, useEffect, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 import { useArrowKeys } from './hooks/useArrowKeys'
 import { useFocusRef } from './hooks/useFocus'
 import MonacoEditor from 'react-monaco-editor'
+import * as R from 'ramda'
+import { useWindowListener } from './hooks/useDocumentListener'
 
 function renderFlatBtn(label, onClick) {
   return (
@@ -69,16 +71,51 @@ const NoteListSideBar = observer(() => {
 
 NoteListSideBar.displayName = 'NoteListSideBar'
 
+function useWindowSize() {
+  const [size, setSize] = useState(() => ({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  }))
+  useWindowListener('resize', ev => {
+    console.log(`ev`, ev)
+    setSize({ width: window.innerWidth, height: window.innerHeight })
+  })
+  return size
+}
+
 const NoteEditorPane = observer(() => {
-  const cRef = React.createRef()
-  useLayoutEffect(() => {})
+  const cRef = createRef()
+
+  const windowSize = useWindowSize()
+  console.log(`windowSize`, windowSize)
+
+  const [size, setSize] = useState(() => ({
+    width: null,
+    height: null,
+  }))
+
+  const { width, height } = size
+
+  useEffect(() => {
+    const el = cRef.current
+    if (el) {
+      const clientRect = el.getBoundingClientRect()
+      console.log(`el.getBoundingClientRect()`, clientRect)
+      const pickSize = R.pick(['width', 'height'])
+      const newSize = pickSize(clientRect)
+      if (!R.equals(newSize, size)) {
+        setSize(newSize)
+      }
+    }
+  }, [windowSize])
+
   return (
     <div ref={cRef} className="h-100 overflow-hidden">
       {/*<textarea*/}
       {/*  className="pa2 flex-auto bn outline-0 resize-none"*/}
       {/*  defaultValue={'Lol Pop ppa'}*/}
       {/*/>*/}
-      <MonacoEditor />
+      <MonacoEditor width={width} height={height} />
     </div>
   )
 })

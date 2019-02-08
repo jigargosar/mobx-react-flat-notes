@@ -9,3 +9,13 @@ export function useDocumentListener(name, fn, deps = []) {
     }
   }, deps)
 }
+
+export function useWindowListener(name, fn, deps = []) {
+  useEffect(() => {
+    window.addEventListener(name, fn)
+
+    return () => {
+      window.removeEventListener(name, fn)
+    }
+  }, deps)
+}

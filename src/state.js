@@ -120,8 +120,8 @@ async function addNewNote() {
 async function setNoteContent(newContent, { id }) {
   const note = state.getNoteById(id)
   if (note) {
-    const updatedNote = { ...note, content: newContent }
-    const { rev } = await notesDb.put(noteToPouch(updatedNote))
+    note.content = newContent
+    const { rev } = await notesDb.put(noteToPouch(note))
     noteActions.setNoteRev(rev, note)
   }
 }

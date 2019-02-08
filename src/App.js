@@ -120,7 +120,7 @@ const App = observer(() => {
   return (
     <div className="h-100 flex flex-column">
       <div className="bg-black-90 white shadow-1">
-        <div className="center mw7 flex ttu tracked">
+        <div className="center mw8 flex ttu tracked">
           <div className="flex-auto flex items-center">Flat Notes</div>
           <div className="flex items-center">
             <button

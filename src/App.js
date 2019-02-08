@@ -1,4 +1,4 @@
-import React, { createRef, useLayoutEffect, useRef, useState } from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 import { useArrowKeys } from './hooks/useArrowKeys'
@@ -82,14 +82,16 @@ function useWindowSize() {
 }
 
 const NoteEditorPane = observer(() => {
-  const cRef = createRef()
-  const meRef = createRef()
+  // const cRef = createRef()
+  const editorRef = useRef(null)
+
+  // const [editor, setEditor] = useState(()=>null)
 
   const windowSize = useWindowSize()
   // const [size, setSize] = useState(() => ({ width: 0, height: 0 }))
   //
   // useLayoutEffect(() => {
-  //   const editor = meRef.current
+  //   const editor = editorRef.current
   //   const containerEl = cRef.current
   //   if (editor && containerEl) {
   //     const newSize = R.pick(['width', 'height'])(
@@ -98,26 +100,26 @@ const NoteEditorPane = observer(() => {
   //     setSize(newSize)
   //     editor.layout()
   //   }
-  // }, [windowSize, meRef.current, cRef.current])
+  // }, [windowSize, editorRef.current, cRef.current])
 
   useLayoutEffect(() => {
-    debugger
-    if (meRef.current) {
-      meRef.current.layout()
+    const editor = editorRef.current
+    if (editor) {
+      editor.layout()
     }
-  }, [windowSize, meRef.current])
+  }, [windowSize, editorRef.current])
 
+  const editorDidMount = editor => {
+    editorRef.current = editor
+  }
   return (
     <div
-      ref={cRef}
+      // ref={cRef}
       className="overflow-hidden h-100 bg-light-pink mw-100"
       style={{ width: '34em' }}
     >
       <MonacoEditor
-        editorDidMount={editor => {
-          debugger
-          meRef.current = editor
-        }}
+        editorDidMount={editorDidMount}
         // width={size.width}
         // height={size.height}
       />

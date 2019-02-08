@@ -15,6 +15,7 @@ export function useWindowListener(name, fn, deps = []) {
     window.addEventListener(name, fn)
 
     return () => {
+      debugger
       window.removeEventListener(name, fn)
     }
   }, deps)

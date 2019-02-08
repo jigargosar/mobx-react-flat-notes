@@ -53,7 +53,7 @@ function hydrate() {
 }
 
 function reset() {
-  state.noteList = []
+  state.noteList.clear()
   state.selectedNoteId = null
 }
 

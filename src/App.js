@@ -6,9 +6,7 @@ import MonacoEditor from 'react-monaco-editor'
 import { useWindowSize } from './hooks/global-listeners'
 import { DialogLargeHeaderExample } from './DialogExample'
 import { PouchSettingsDialog } from './comp/PouchSettingsDialog'
-import useFocus from '@jigargosar/use-focus'
-
-console.log(`useFocus`, useFocus)
+import useFocusRef from '@jigargosar/use-focus'
 
 const TopToolbar = observer(() => {
   const actions = useAppActions()
@@ -46,7 +44,7 @@ const NoteItem = observer(({ note }) => {
   const selectedClass = isSelected ? 'bg-light-blue ' : ''
   const titleRef = useRef(null)
 
-  useFocus(titleRef, shouldFocus, [shouldFocus])
+  useFocusRef(titleRef, shouldFocus, [shouldFocus])
 
   return (
     <div onClick={selectNote}>

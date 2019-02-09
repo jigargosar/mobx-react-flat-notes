@@ -35,16 +35,28 @@ function pd(fn) {
   })
 }
 
+function observableValue(initial = null, options = {}) {
+  const obs = extendObservable(
+    observable.box(initial),
+    {
+      map: fn => obs.set(fn(obs.get())),
+    },
+    null,
+    options,
+  )
+  return obs
+}
+
 function useBoolObservable(initial = () => false) {
-  return useState(function() {
-    const bool = observable.box(initial(), {})
+  return useState(() => {
+    const bool = observableValue(initial())
 
     const state = extendObservable(bool, {
       get val() {
-        return bool.get()
+        return state.get()
       },
       set val(newVal) {
-        return bool.set(newVal)
+        return state.set(newVal)
       },
       not: () => (state.val = !state.val),
       on: () => state.set(true),

@@ -169,3 +169,7 @@ export function useAppState() {
 export function useAppActions() {
   return actions
 }
+
+export function useApp() {
+  return [state, actions]
+}

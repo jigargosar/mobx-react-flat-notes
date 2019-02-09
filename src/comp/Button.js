@@ -28,15 +28,13 @@ FlatButton.defaultProps = {
 
 FlatButton.displayName = 'FlatButton'
 
+const primaryButtonCls = {
+  root:
+    'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white ',
+}
+
 export const PrimaryButton = observer(({ cls, label, ...p }) => {
-  cls = Object.assign(
-    {},
-    {
-      root:
-        'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white ',
-    },
-    cls,
-  )
+  cls = Object.assign({}, primaryButtonCls, cls)
   return (
     <button type="button" className={cls.root} {...p}>
       {label}

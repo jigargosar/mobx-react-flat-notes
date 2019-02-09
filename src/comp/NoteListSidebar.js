@@ -24,7 +24,7 @@ const NoteItem = observer(({ note }) => {
         onFocus={selectNote}
       >
         {note.title}
-        {note.rev}
+        <div className="f7 black-50 truncate">{note.rev}</div>
       </div>
     </div>
   )

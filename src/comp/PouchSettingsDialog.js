@@ -9,6 +9,7 @@ import React, {
 import { FocusTrapZone } from 'office-ui-fabric-react'
 import isHotKey from 'is-hotkey'
 import * as R from 'ramda'
+import { extendObservable, observable } from 'mobx'
 
 function useHotKeyCallback(keyMap, deps = []) {
   return useCallback(e => {
@@ -34,25 +35,35 @@ function pd(fn) {
   })
 }
 
-function useBool(initial = () => false) {
-  const [state, setVal] = useState(initial)
-  const not = useCallback(() => setVal(R.not), [])
-  const on = useCallback(() => setVal(true), [])
-  const off = useCallback(() => setVal(false), [])
-
-  const actionsRef = useRef({
-    on,
-    off,
-    not,
-  })
-  return [state, actionsRef.current]
+function useBoolObservable(initial = () => false) {
+  return useState(() => {
+    const state = observable.object({ val: initial() })
+    return extendObservable(state, {
+      get() {
+        return state.val
+      },
+      set(newVal) {
+        state.val = newVal
+      },
+      not() {
+        state.val = !state.val
+      },
+      on() {
+        state.set(true)
+      },
+      off() {
+        state.set(false)
+      },
+    })
+  })[0]
 }
 
 const PouchSettingsDialog = observer(
   (_, ref) => {
     const backdropRef = useRef(null)
 
-    const [isOpen, openA] = useBool()
+    const opn = useBoolObservable()
+    const [isOpen, openA] = [opn.get(), opn]
 
     useImperativeHandle(ref, () => ({ open: openA.on }), [])
 

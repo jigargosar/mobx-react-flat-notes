@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 import * as PropTypes from 'prop-types'
+import * as R from 'ramda'
 
 function mergeCls(def, cls) {
   return Object.assign({}, def, cls)
@@ -11,7 +12,7 @@ const flatButtonCls = {
     'pv2 ph3  mh1 pointer underline-hover bg-transparent ba b--transparent',
 }
 
-function renderButton(defaultCls, props) {
+const renderButton = R.curry((defaultCls, props) => {
   const { cls: overrideCls, label, ...p } = props
   const cls = mergeCls(defaultCls, overrideCls)
   return (
@@ -19,8 +20,7 @@ function renderButton(defaultCls, props) {
       {label}
     </button>
   )
-}
-
+})
 export const FlatButton = (() => {
   const Component = props => renderButton(flatButtonCls, props)
   Component.propTypes = {

@@ -6,14 +6,14 @@ export const FlatButton = observer(({ cls, label, ...p }) => {
   cls = Object.assign(
     {},
     {
-      root: 'pv2 ph3 ma0 mh1 pointer bg-transparent ba b--transparent',
-      label: 'underline-hover',
+      root:
+        'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent ba b--transparent',
     },
     cls,
   )
   return (
     <button type="button" className={cls.root} {...p}>
-      <div className={cls.label}>{label}</div>
+      {label}
     </button>
   )
 })

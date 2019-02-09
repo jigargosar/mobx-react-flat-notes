@@ -10,7 +10,7 @@ import isHotKey from 'is-hotkey'
 import * as R from 'ramda'
 
 function useHotKeyCallback(keyMap, deps = []) {
-  useCallback(e => {
+  return useCallback(e => {
     keyMap.forEach(([hotKeys, handler]) => {
       if (isHotKey(hotKeys, e)) {
         handler(e)
@@ -48,14 +48,16 @@ const PouchSettingsDialog = observer(
       }
     }, [])
 
-    function onKeyDownHandler(e) {
-      if (isHotKey('esc', e)) {
-        e.preventDefault()
-        setOpen(R.not)
-      }
-    }
+    // function onKeyDownHandler(e) {
+    //   if (isHotKey('esc', e)) {
+    //     e.preventDefault()
+    //     setOpen(R.not)
+    //   }
+    // }
 
-    useHotKeyCallback([['esc', pd(() => setOpen(R.not))]])
+    const onKeyDownHandler = useHotKeyCallback([
+      ['esc', pd(() => setOpen(R.not))],
+    ])
 
     return (
       isOpen && (

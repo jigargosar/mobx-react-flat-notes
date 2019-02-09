@@ -39,13 +39,15 @@ const PouchSettingsDialog = observer(
                   Pouch Sync Settings
                 </div>
                 <div className="ph3 ">
-                  <label className="flex flex-column mv3">
+                  <label className="mv3 db">
                     <div className="ml1 black-70 f6">URL</div>
-                    <input
-                      autoFocus
-                      className="ba b--moon-gray  flex-auto pa2"
-                      defaultValue={'http://a@b:localhost:2323'}
-                    />
+                    <div className="flex flex-column  ba b--moon-gray ">
+                      <input
+                        autoFocus
+                        className="bn flex-auto pa2"
+                        defaultValue={'http://a@b:localhost:2323'}
+                      />
+                    </div>
                   </label>
                 </div>
                 <div className="ph3 pv2 bt b--light-gray flex flex-row-reverse">

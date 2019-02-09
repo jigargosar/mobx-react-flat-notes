@@ -48,13 +48,6 @@ const PouchSettingsDialog = observer(
       }
     }, [])
 
-    // function onKeyDownHandler(e) {
-    //   if (isHotKey('esc', e)) {
-    //     e.preventDefault()
-    //     setOpen(R.not)
-    //   }
-    // }
-
     const onKeyDownHandler = useHotKeyCallback([
       ['esc', pd(() => setOpen(R.not))],
     ])

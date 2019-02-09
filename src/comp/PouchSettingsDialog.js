@@ -16,7 +16,7 @@ const FlatButton = observer(({ cls, label, ...p }) => {
     cls,
   )
   return (
-    <button className={cls.root} {...p}>
+    <button type="button" className={cls.root} {...p}>
       <div className={cls.label}>{label}</div>
     </button>
   )
@@ -24,6 +24,10 @@ const FlatButton = observer(({ cls, label, ...p }) => {
 
 FlatButton.propTypes = {
   label: PropTypes.string.isRequired,
+}
+
+FlatButton.defaultProps = {
+  label: '<label>',
 }
 
 FlatButton.displayName = 'FlatButton'
@@ -74,17 +78,8 @@ const PouchSettingsDialog = observer(
                   </label>
                 </div>
                 <div className="ph3 pv2 bt b--light-gray flex flex-row-reverse">
-                  <button
-                    type="submit"
-                    className="pv2 ph3 ma0 mh1  pointer bg-blue white ba b--white"
-                  >
-                    <div className="underline-hover">Save</div>
-                  </button>
-                  <FlatButton
-                    type="button"
-                    onClick={open.off}
-                    label="Cancel"
-                  />
+                  <FlatButton type="submit" label="Save" />
+                  <FlatButton onClick={open.off} label="Cancel" />
                 </div>
               </form>
             </div>

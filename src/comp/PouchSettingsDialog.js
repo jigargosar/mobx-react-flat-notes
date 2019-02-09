@@ -52,18 +52,18 @@ const PouchSettingsDialog = observer(
   (_, ref) => {
     const backdropRef = useRef(null)
 
-    const [isOpen, openB] = useBool()
+    const [isOpen, openA] = useBool()
 
-    useImperativeHandle(ref, () => ({ open: openB.on }), [])
+    useImperativeHandle(ref, () => ({ open: openA.on }), [])
 
     const onBackdropClick = useCallback(e => {
       const el = backdropRef.current
       if (e.target === el) {
-        openB.off()
+        openA.off()
       }
     }, [])
 
-    const onKeyDownHandler = useOnEsc(pd(openB.not))
+    const onKeyDownHandler = useOnEsc(pd(openA.not))
 
     return (
       isOpen && (
@@ -92,7 +92,7 @@ const PouchSettingsDialog = observer(
                 </button>
                 <button
                   className="pv2 ph3 ma0 link pointer bn black-70"
-                  onClick={openB.off}
+                  onClick={openA.off}
                 >
                   <div className="underline-hover">Cancel</div>
                 </button>

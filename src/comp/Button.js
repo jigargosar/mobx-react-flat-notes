@@ -31,8 +31,12 @@ const primaryButtonCls = {
     'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white ',
 }
 
+function mergeCls(def, cls) {
+  return Object.assign({}, def, cls)
+}
+
 export const PrimaryButton = observer(({ cls, label, ...p }) => {
-  cls = Object.assign({}, primaryButtonCls, cls)
+  cls = mergeCls(primaryButtonCls, cls)
   return (
     <button type="button" className={cls.root} {...p}>
       {label}
@@ -48,4 +52,4 @@ FlatButton.defaultProps = {
   label: '<label>',
 }
 
-FlatButton.displayName = 'FlatButton'
+FlatButton.displayName = 'PrimaryButton'

@@ -15,7 +15,7 @@ function createState() {
     {
       noteList: m.observable.array([]),
       selectedNoteId: null,
-      syncSettingsDialogOpen: false,
+      pouchSettingsDialogOpen: false,
     },
     null,
     {

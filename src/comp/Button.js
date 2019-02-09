@@ -51,22 +51,3 @@ export const PrimaryButton = observer(
     displayName: 'PrimaryButton',
   }),
 )
-
-// export const PrimaryButton = observer(({ cls, label, ...p }) => {
-//   cls = mergeCls(primaryButtonCls, cls)
-//   return (
-//     <button type="button" className={cls.root} {...p}>
-//       {label}
-//     </button>
-//   )
-// })
-
-// PrimaryButton.propTypes = {
-//   label: PropTypes.string.isRequired,
-// }
-//
-// PrimaryButton.defaultProps = {
-//   label: '<label>',
-// }
-//
-// PrimaryButton.displayName = 'PrimaryButton'

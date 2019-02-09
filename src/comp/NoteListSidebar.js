@@ -1,12 +1,11 @@
 import { observer } from 'mobx-react-lite'
-import { useAppActions, useAppState } from '../state'
+import { useAppStore } from '../state'
 import React, { useRef } from 'react'
 import useFocusRef from '@jigargosar/use-focus'
 import { useArrowKeys } from '../hooks/useArrowKeys'
 
 const NoteItem = observer(({ note }) => {
-  const state = useAppState()
-  const actions = useAppActions()
+  const [state, actions] = useAppStore()
   const isSelected = state.isNoteSelected(note)
   const shouldFocus = state.shouldFocusNote(note)
   const selectNote = () => actions.setSelectedNote(note)
@@ -32,7 +31,7 @@ const NoteItem = observer(({ note }) => {
 })
 NoteItem.displayName = 'NoteItem'
 export const NoteListSideBar = observer(() => {
-  const state = useAppState()
+  const [state] = useAppStore()
   const listRef = useRef(null)
   useArrowKeys(listRef)
   return (

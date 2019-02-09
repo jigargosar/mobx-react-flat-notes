@@ -2,11 +2,13 @@ import React, { useCallback, useLayoutEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
 import { useArrowKeys } from './hooks/useArrowKeys'
-import { useFocusRef } from './hooks/useFocus'
 import MonacoEditor from 'react-monaco-editor'
 import { useWindowSize } from './hooks/global-listeners'
 import { DialogLargeHeaderExample } from './DialogExample'
 import { PouchSettingsDialog } from './comp/PouchSettingsDialog'
+import useFocus from '@jigargosar/use-focus'
+
+console.log(`useFocus`, useFocus)
 
 const TopToolbar = observer(() => {
   const actions = useAppActions()
@@ -44,7 +46,7 @@ const NoteItem = observer(({ note }) => {
   const selectedClass = isSelected ? 'bg-light-blue ' : ''
   const titleRef = useRef(null)
 
-  useFocusRef(titleRef, shouldFocus, [shouldFocus])
+  useFocus(titleRef, shouldFocus, [shouldFocus])
 
   return (
     <div onClick={selectNote}>

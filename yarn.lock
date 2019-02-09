@@ -912,6 +912,14 @@
     log-update "^2.3.0"
     strip-ansi "^3.0.1"
 
+"@jigargosar/use-focus@^7.0.0":
+  version "7.0.0"
+  resolved "http://localhost:32768/@jigargosar%2fuse-focus/-/use-focus-7.0.0.tgz#d319347196ecdb419f59846ab74a63d4c056d2b6"
+  integrity sha512-d2wtSbF2yFY0DCHcSg19tqLHVZgN+barYjBkTj/70QsM5CEpHD1N4EllZHqLdXTlIR4FvjZkkOXt6s+CJXYdHw==
+  dependencies:
+    react "^16.8.1"
+    scroll-into-view-if-needed "^2.2.20"
+
 "@microsoft/load-themed-styles@^1.7.13":
   version "1.8.56"
   resolved "https://registry.yarnpkg.com/@microsoft/load-themed-styles/-/load-themed-styles-1.8.56.tgz#52870947fed945727ac178582b64417af9fbbdbe"

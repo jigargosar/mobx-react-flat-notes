@@ -31,10 +31,11 @@ function pd(fn) {
 const PouchSettingsDialog = observer(
   (_, ref) => {
     const backdropRef = useRef(null)
+
     const [isOpen, setOpen] = useState(() => false)
     const dismiss = () => setOpen(false)
-
     const open = () => setOpen(true)
+
     useImperativeHandle(ref, () => ({ open }), [])
 
     const onBackdropClick = useCallback(e => {

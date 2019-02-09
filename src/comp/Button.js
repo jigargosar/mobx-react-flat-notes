@@ -12,7 +12,7 @@ const flatButtonCls = {
 }
 
 export const FlatButton = observer(({ cls, label, ...p }) => {
-  cls = mergeCls({}, flatButtonCls, cls)
+  cls = mergeCls(flatButtonCls, cls)
   return (
     <button type="button" className={cls.root} {...p}>
       {label}

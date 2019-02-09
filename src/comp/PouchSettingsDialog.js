@@ -10,7 +10,25 @@ const FlatButton = observer(({ cls, label, ...p }) => {
   cls = Object.assign(
     {},
     {
-      root: 'pv2 ph3 ma0 mh1  pointer bg-blue white ba b--white',
+      root: 'pv2 ph3 ma0 mh1 pointer bg-transparent ba b--transparent',
+      primary: 'bg-blue white ba b--white',
+      label: 'underline-hover',
+    },
+    cls,
+  )
+  return (
+    <button type="button" className={cls.root} {...p}>
+      <div className={cls.label}>{label}</div>
+    </button>
+  )
+})
+
+const PrimaryButton = observer(({ cls, label, ...p }) => {
+  cls = Object.assign(
+    {},
+    {
+      root:
+        'pv2 ph3 ma0 mh1 pointer bg-transparent bg-blue white ba b--white',
       label: 'underline-hover',
     },
     cls,
@@ -49,7 +67,7 @@ const PouchSettingsDialog = observer(
     const onKeyDownHandler = useOnEsc(pd(open.not))
 
     return (
-      open.get() && (
+      !open.get() && (
         <FocusTrapZone>
           <div
             className="absolute absolute--fill flex items-center justify-center bg-black-50"
@@ -78,7 +96,7 @@ const PouchSettingsDialog = observer(
                   </label>
                 </div>
                 <div className="ph3 pv2 bt b--light-gray flex flex-row-reverse">
-                  <FlatButton type="submit" label="Save" />
+                  <PrimaryButton type="submit" label="Save" />
                   <FlatButton onClick={open.off} label="Cancel" />
                 </div>
               </form>

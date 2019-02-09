@@ -1,3 +1,4 @@
+import validate from 'aproba'
 import { observer } from 'mobx-react-lite'
 import React, {
   useCallback,
@@ -19,6 +20,8 @@ function useHotKeyCallback(keyMap, deps = []) {
   }, deps)
 }
 function useOnEsc(handler) {
+  validate('F', arguments)
+
   return useHotKeyCallback([['esc', handler]])
 }
 
@@ -54,12 +57,13 @@ const PouchSettingsDialog = observer(
     useImperativeHandle(ref, () => ({ open: openB.on }), [])
 
     const onBackdropClick = useCallback(e => {
-      if (e.target === backdropRef.current) {
+      const backdropEl = backdropRef.current
+      if (e.target === backdropEl) {
         openB.off()
       }
     }, [])
 
-    const onKeyDownHandler = useOnEsc([['esc', pd(openB.not)]])
+    const onKeyDownHandler = useOnEsc(pd(openB.not))
 
     return (
       isOpen && (

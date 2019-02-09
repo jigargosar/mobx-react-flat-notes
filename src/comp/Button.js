@@ -2,13 +2,17 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 import * as PropTypes from 'prop-types'
 
+function mergeCls(def, cls) {
+  return Object.assign({}, def, cls)
+}
+
 const flatButtonCls = {
   root:
     'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent ba b--transparent',
 }
 
 export const FlatButton = observer(({ cls, label, ...p }) => {
-  cls = Object.assign({}, flatButtonCls, cls)
+  cls = mergeCls({}, flatButtonCls, cls)
   return (
     <button type="button" className={cls.root} {...p}>
       {label}
@@ -29,10 +33,6 @@ FlatButton.displayName = 'FlatButton'
 const primaryButtonCls = {
   root:
     'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white ',
-}
-
-function mergeCls(def, cls) {
-  return Object.assign({}, def, cls)
 }
 
 export const PrimaryButton = observer(({ cls, label, ...p }) => {

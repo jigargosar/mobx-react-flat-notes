@@ -57,8 +57,8 @@ const PouchSettingsDialog = observer(
     useImperativeHandle(ref, () => ({ open: openB.on }), [])
 
     const onBackdropClick = useCallback(e => {
-      const backdropEl = backdropRef.current
-      if (e.target === backdropEl) {
+      const el = backdropRef.current
+      if (e.target === el) {
         openB.off()
       }
     }, [])

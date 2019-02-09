@@ -11,7 +11,11 @@ const flatButtonCls = {
     'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent ba b--transparent',
 }
 
-export const FlatButton = observer(({ cls, label, ...p }) => {
+export const FlatButton = observer(function FlatButton({
+  cls,
+  label,
+  ...p
+}) {
   cls = mergeCls(flatButtonCls, cls)
   return (
     <button type="button" className={cls.root} {...p}>
@@ -22,10 +26,6 @@ export const FlatButton = observer(({ cls, label, ...p }) => {
 
 FlatButton.propTypes = {
   label: PropTypes.string.isRequired,
-}
-
-FlatButton.defaultProps = {
-  label: '<label>',
 }
 
 FlatButton.displayName = 'FlatButton'
@@ -46,10 +46,6 @@ export const PrimaryButton = observer(({ cls, label, ...p }) => {
 
 PrimaryButton.propTypes = {
   label: PropTypes.string.isRequired,
-}
-
-PrimaryButton.defaultProps = {
-  label: '<label>',
 }
 
 PrimaryButton.displayName = 'PrimaryButton'

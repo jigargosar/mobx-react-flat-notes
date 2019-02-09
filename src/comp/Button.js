@@ -11,9 +11,9 @@ const flatButtonCls = {
     'pv2 ph3  mh1 pointer underline-hover bg-transparent ba b--transparent',
 }
 
-function renderButton(props, def) {
-  let { cls, label, ...p } = props
-  cls = mergeCls(def, cls)
+function renderButton(defaultCls, props) {
+  const { cls: overrideCls, label, ...p } = props
+  const cls = mergeCls(defaultCls, overrideCls)
   return (
     <button type="button" className={cls.root} {...p}>
       {label}
@@ -22,7 +22,7 @@ function renderButton(props, def) {
 }
 
 export const FlatButton = (() => {
-  const Component = props => renderButton(props, flatButtonCls)
+  const Component = props => renderButton(flatButtonCls, props)
   Component.propTypes = {
     label: PropTypes.string.isRequired,
   }

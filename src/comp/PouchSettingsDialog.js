@@ -84,9 +84,8 @@ const PouchSettingsDialog = observer(
                     type="button"
                     className="pv2 ph3 ma0 mh1 pointer  black-70 ba b--white"
                     onClick={open.off}
-                  >
-                    <div className="underline-hover">Cancel</div>
-                  </FlatButton>
+                    label="Cancel"
+                  />
                 </div>
               </form>
             </div>

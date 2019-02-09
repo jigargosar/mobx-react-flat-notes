@@ -82,7 +82,6 @@ const PouchSettingsDialog = observer(
                   </button>
                   <FlatButton
                     type="button"
-                    className="pv2 ph3 ma0 mh1 pointer  black-70 ba b--white"
                     onClick={open.off}
                     label="Cancel"
                   />

@@ -55,7 +55,7 @@ const PouchSettingsDialog = observer(
                 </div>
                 <div className="pa3 bn b--light-gray flex flex-row-reverse">
                   <PrimaryButton type="submit" label="Sync" />
-                  <FlatButton onClick={open.off} label="Cancel" />
+                  <FlatButton onClick={open.off} />
                 </div>
               </form>
             </div>

@@ -14,28 +14,28 @@ const flatButtonCls = {
 function createButtonComponent(defaultCls, displayName) {
   const Button = ({ cls: overrideCls, label, ...p }) => {
     const cls = mergeCls(defaultCls, overrideCls)
-
+    console.log(`label`, label)
     return (
       <button type="button" className={cls.root} {...p}>
         {label}
       </button>
     )
   }
-  Object.assign(Button, {
-    propTypes: {
-      label: PropTypes.string.isRequired,
-    },
-    defaultProps: {
-      label: '<label>',
-    },
-    displayName,
-  })
-  return observer(Button)
+  Button.propTypes = {
+    label: PropTypes.string.isRequired,
+  }
+
+  Button.defaultProps = {
+    label: '<label>',
+  }
+
+  Button.displayName = displayName
+
+  return Button
 }
 
-export const FlatButton = createButtonComponent(
-  flatButtonCls,
-  'FlatButton',
+export const FlatButton = observer(
+  createButtonComponent(flatButtonCls, 'FlatButton'),
 )
 
 const primaryButtonCls = {
@@ -43,7 +43,6 @@ const primaryButtonCls = {
     'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white ',
 }
 
-export const PrimaryButton = createButtonComponent(
-  primaryButtonCls,
-  'PrimaryButton',
+export const PrimaryButton = observer(
+  createButtonComponent(primaryButtonCls, 'PrimaryButton'),
 )

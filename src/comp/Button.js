@@ -17,6 +17,7 @@ export const FlatButton = observer(({ cls, label, ...p }) => {
     </button>
   )
 })
+
 export const PrimaryButton = observer(({ cls, label, ...p }) => {
   cls = Object.assign(
     {},

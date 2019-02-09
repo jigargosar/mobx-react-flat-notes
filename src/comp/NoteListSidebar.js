@@ -18,7 +18,7 @@ const NoteItem = observer(({ note }) => {
     <div onClick={selectNote}>
       <div
         ref={titleRef}
-        className={`pv1 ph2 ${selectedClass}`}
+        className={`pv1 ph2 word-wrap ${selectedClass}`}
         tabIndex={isSelected ? 0 : -1}
         data-is-focusable={true}
         onFocus={selectNote}

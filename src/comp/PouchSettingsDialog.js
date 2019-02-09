@@ -9,7 +9,7 @@ import React, {
 import { FocusTrapZone } from 'office-ui-fabric-react'
 import isHotKey from 'is-hotkey'
 import * as R from 'ramda'
-import { extendObservable, observable } from 'mobx'
+import { boolObservable } from '../mobx-helpers'
 
 function useHotKeyCallback(keyMap, deps = []) {
   return useCallback(e => {
@@ -33,34 +33,6 @@ function pd(fn) {
       fn(e)
     }
   })
-}
-
-function valueObservable(initial = null, options = {}) {
-  const obs = extendObservable(
-    observable.box(initial),
-    {
-      get val() {
-        return obs.get()
-      },
-      set val(newVal) {
-        return obs.set(newVal)
-      },
-      map: fn => obs.set(fn(obs.get())),
-      extend: obj => extendObservable(obs, obj),
-    },
-    null,
-    options,
-  )
-  return obs
-}
-
-function boolObservable(ini) {
-  const obs = valueObservable(ini).extend({
-    not: () => (obs.val = !obs.val),
-    on: () => obs.set(true),
-    off: () => obs.set(false),
-  })
-  return obs
 }
 
 function useBoolObservable(initial = () => false) {

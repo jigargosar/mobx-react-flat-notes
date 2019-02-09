@@ -1,4 +1,11 @@
-import { action, get, remove, set } from 'mobx'
+import {
+  action,
+  extendObservable,
+  get,
+  observable,
+  remove,
+  set,
+} from 'mobx'
 import validate from 'aproba'
 import * as R from 'ramda'
 import { clampIdx } from './ramda-helpers'
@@ -43,4 +50,32 @@ export function moveItemByClampedOffset(item, offset, a) {
 
 export function removeByIndexOf(item, a) {
   remove(a, a.indexOf(item))
+}
+
+function valueObservable(initial = null, options = {}) {
+  const obs = extendObservable(
+    observable.box(initial),
+    {
+      get val() {
+        return obs.get()
+      },
+      set val(newVal) {
+        return obs.set(newVal)
+      },
+      map: fn => obs.set(fn(obs.get())),
+      extend: obj => extendObservable(obs, obj),
+    },
+    null,
+    options,
+  )
+  return obs
+}
+
+export function boolObservable(ini) {
+  const obs = valueObservable(ini).extend({
+    not: () => (obs.val = !obs.val),
+    on: () => obs.set(true),
+    off: () => obs.set(false),
+  })
+  return obs
 }

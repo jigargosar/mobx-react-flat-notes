@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { useAppStore } from '../state'
 import React, { useRef } from 'react'
-import useFocusRef from '@jigargosar/use-focus'
 import { useArrowKeys } from '../hooks/useArrowKeys'
+import { useFocusRef } from '../hooks/useFocusRef'
 
 const NoteItem = observer(({ note }) => {
   const [state, actions] = useAppStore()

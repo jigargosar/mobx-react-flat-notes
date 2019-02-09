@@ -39,21 +39,11 @@ function useBoolObservable(initial = () => false) {
   return useState(() => {
     const state = observable.object({
       val: initial(),
-      get() {
-        return state.val
-      },
-      set(newVal) {
-        state.val = newVal
-      },
-      not() {
-        state.val = !state.val
-      },
-      on() {
-        state.set(true)
-      },
-      off() {
-        state.set(false)
-      },
+      get: () => state.val,
+      set: newVal => (state.val = newVal),
+      not: () => (state.val = !state.val),
+      on: () => state.set(true),
+      off: () => state.set(false),
     })
     return state
   })[0]

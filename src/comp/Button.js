@@ -8,41 +8,48 @@ function mergeCls(def, cls) {
 
 const flatButtonCls = {
   root:
-    'pv2 ph3  mh1 pointer underline-hover bg-transparent ba b--transparent',
+    'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent ba b--transparent',
 }
 
-function createButtonComponent(defaultCls, displayName) {
-  const Button = ({ cls: overrideCls, label, ...p }) => {
-    const cls = mergeCls(defaultCls, overrideCls)
-    console.log(`label`, label)
-    return (
-      <button type="button" className={cls.root} {...p}>
-        {label}
-      </button>
-    )
-  }
-  Button.propTypes = {
-    label: PropTypes.string.isRequired,
-  }
+export const FlatButton = observer(({ cls, label, ...p }) => {
+  cls = mergeCls(flatButtonCls, cls)
+  return (
+    <button type="button" className={cls.root} {...p}>
+      {label}
+    </button>
+  )
+})
 
-  Button.defaultProps = {
-    label: '<label>',
-  }
-
-  Button.displayName = displayName
-
-  return Button
+FlatButton.propTypes = {
+  label: PropTypes.string.isRequired,
 }
 
-export const FlatButton = observer(
-  createButtonComponent(flatButtonCls, 'FlatButton'),
-)
+FlatButton.defaultProps = {
+  label: '<label>',
+}
+
+FlatButton.displayName = 'FlatButton'
 
 const primaryButtonCls = {
   root:
     'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white ',
 }
 
-export const PrimaryButton = observer(
-  createButtonComponent(primaryButtonCls, 'PrimaryButton'),
-)
+export const PrimaryButton = observer(({ cls, label, ...p }) => {
+  cls = mergeCls(primaryButtonCls, cls)
+  return (
+    <button type="button" className={cls.root} {...p}>
+      {label}
+    </button>
+  )
+})
+
+PrimaryButton.propTypes = {
+  label: PropTypes.string.isRequired,
+}
+
+PrimaryButton.defaultProps = {
+  label: '<label>',
+}
+
+PrimaryButton.displayName = 'PrimaryButton'

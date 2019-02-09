@@ -6,7 +6,6 @@ export const FlatButton = observer(({ cls, label, ...p }) => {
     {},
     {
       root: 'pv2 ph3 ma0 mh1 pointer bg-transparent ba b--transparent',
-      primary: 'bg-blue white ba b--white',
       label: 'underline-hover',
     },
     cls,

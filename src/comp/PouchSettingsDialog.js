@@ -9,6 +9,25 @@ import { FocusTrapZone } from 'office-ui-fabric-react'
 import isHotKey from 'is-hotkey'
 import * as R from 'ramda'
 
+function useHotKeyCallback(keyMap, deps = []) {
+  useCallback(e => {
+    keyMap.forEach(([hotKeys, handler]) => {
+      if (isHotKey(hotKeys, e)) {
+        handler(e)
+      }
+    })
+  }, deps)
+}
+
+function pd(fn) {
+  return R.tap(e => {
+    if (!e.defaultPrevented) {
+      e.preventDefault()
+      fn(e)
+    }
+  })
+}
+
 const PouchSettingsDialog = observer(
   (_, ref) => {
     const backdropRef = useRef(null)
@@ -35,6 +54,8 @@ const PouchSettingsDialog = observer(
         setOpen(R.not)
       }
     }
+
+    useHotKeyCallback([['esc', pd(() => setOpen(R.not))]])
 
     return (
       isOpen && (

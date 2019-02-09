@@ -18,6 +18,9 @@ function useHotKeyCallback(keyMap, deps = []) {
     })
   }, deps)
 }
+function useOnEsc(handler) {
+  return useHotKeyCallback([['esc', handler]])
+}
 
 function pd(fn) {
   return R.tap(e => {
@@ -34,13 +37,12 @@ function useBool(initial = () => false) {
   const on = useCallback(() => setVal(true), [])
   const off = useCallback(() => setVal(false), [])
 
-  const actions = useRef(() => ({
+  const actionsRef = useRef({
     on,
     off,
     not,
-  }))
-
-  return [state, actions]
+  })
+  return [state, actionsRef.current]
 }
 
 const PouchSettingsDialog = observer(
@@ -48,6 +50,7 @@ const PouchSettingsDialog = observer(
     const backdropRef = useRef(null)
 
     const [isOpen, openB] = useBool()
+
     useImperativeHandle(ref, () => ({ open: openB.on }), [])
 
     const onBackdropClick = useCallback(e => {
@@ -56,7 +59,7 @@ const PouchSettingsDialog = observer(
       }
     }, [])
 
-    const onKeyDownHandler = useHotKeyCallback([['esc', pd(openB.not)]])
+    const onKeyDownHandler = useOnEsc([['esc', pd(openB.not)]])
 
     return (
       isOpen && (

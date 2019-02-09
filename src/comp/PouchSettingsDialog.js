@@ -35,7 +35,7 @@ function pd(fn) {
   })
 }
 
-function observableValue(initial = null, options = {}) {
+function valueStore(initial = null, options = {}) {
   const obs = extendObservable(
     observable.box(initial),
     {
@@ -54,15 +54,17 @@ function observableValue(initial = null, options = {}) {
   return obs
 }
 
+function boolStore(ini) {
+  const obs = valueStore(ini).extend({
+    not: () => (obs.val = !obs.val),
+    on: () => obs.set(true),
+    off: () => obs.set(false),
+  })
+  return obs
+}
+
 function useBoolObservable(initial = () => false) {
-  return useState(() => {
-    const obs = observableValue(initial()).extend({
-      not: () => (obs.val = !obs.val),
-      on: () => obs.set(true),
-      off: () => obs.set(false),
-    })
-    return obs
-  })[0]
+  return useState(() => boolStore(initial()))[0]
 }
 
 const PouchSettingsDialog = observer(

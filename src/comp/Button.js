@@ -23,19 +23,17 @@ function createButtonComponent(defaultCls) {
   }
 }
 
-export const FlatButton = (() => {
-  return observer(
-    Object.assign(createButtonComponent(flatButtonCls), {
-      propTypes: {
-        label: PropTypes.string.isRequired,
-      },
-      defaultProps: {
-        label: '<label>',
-      },
-      displayName: 'FlatButton',
-    }),
-  )
-})()
+export const FlatButton = observer(
+  Object.assign(createButtonComponent(flatButtonCls), {
+    propTypes: {
+      label: PropTypes.string.isRequired,
+    },
+    defaultProps: {
+      label: '<label>',
+    },
+    displayName: 'FlatButton',
+  }),
+)
 
 const primaryButtonCls = {
   root:

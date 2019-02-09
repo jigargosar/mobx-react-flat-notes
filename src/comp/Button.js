@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
+import * as PropTypes from 'prop-types'
 
 export const FlatButton = observer(({ cls, label, ...p }) => {
   cls = Object.assign(
@@ -17,6 +18,16 @@ export const FlatButton = observer(({ cls, label, ...p }) => {
   )
 })
 
+FlatButton.propTypes = {
+  label: PropTypes.string.isRequired,
+}
+
+FlatButton.defaultProps = {
+  label: '<label>',
+}
+
+FlatButton.displayName = 'FlatButton'
+
 export const PrimaryButton = observer(({ cls, label, ...p }) => {
   cls = Object.assign(
     {},
@@ -33,3 +44,13 @@ export const PrimaryButton = observer(({ cls, label, ...p }) => {
     </button>
   )
 })
+
+FlatButton.propTypes = {
+  label: PropTypes.string.isRequired,
+}
+
+FlatButton.defaultProps = {
+  label: '<label>',
+}
+
+FlatButton.displayName = 'FlatButton'

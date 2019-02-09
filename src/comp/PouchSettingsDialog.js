@@ -4,18 +4,7 @@ import { FocusTrapZone } from 'office-ui-fabric-react'
 import { useBoolObservable } from '../mobx/mobx-hooks'
 import { pd, useOnEsc } from '../hooks/keyboard'
 import * as R from 'ramda'
-import * as PropTypes from 'prop-types'
 import { FlatButton, PrimaryButton } from './Button'
-
-FlatButton.propTypes = {
-  label: PropTypes.string.isRequired,
-}
-
-FlatButton.defaultProps = {
-  label: '<label>',
-}
-
-FlatButton.displayName = 'FlatButton'
 
 const PouchSettingsDialog = observer(
   (_, ref) => {

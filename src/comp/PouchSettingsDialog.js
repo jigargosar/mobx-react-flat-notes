@@ -40,6 +40,7 @@ function observableValue(initial = null, options = {}) {
     observable.box(initial),
     {
       map: fn => obs.set(fn(obs.get())),
+      extend: obj => extendObservable(obs, obj),
     },
     null,
     options,
@@ -49,9 +50,7 @@ function observableValue(initial = null, options = {}) {
 
 function useBoolObservable(initial = () => false) {
   return useState(() => {
-    const bool = observableValue(initial())
-
-    const state = extendObservable(bool, {
+    const state = observableValue(initial()).extend({
       get val() {
         return state.get()
       },

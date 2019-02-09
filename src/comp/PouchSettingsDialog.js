@@ -48,12 +48,11 @@ const PouchSettingsDialog = observer(
     const backdropRef = useRef(null)
 
     const [isOpen, openB] = useBool()
-    const dismiss = openB.off
-    const open = useImperativeHandle(ref, () => ({ open }), [])
+    useImperativeHandle(ref, () => ({ open: openB.on }), [])
 
     const onBackdropClick = useCallback(e => {
       if (e.target === backdropRef.current) {
-        dismiss()
+        openB.off()
       }
     }, [])
 
@@ -86,7 +85,7 @@ const PouchSettingsDialog = observer(
                 </button>
                 <button
                   className="pv2 ph3 ma0 link pointer bn black-70"
-                  onClick={dismiss}
+                  onClick={openB.off}
                 >
                   <div className="underline-hover">Cancel</div>
                 </button>

@@ -28,15 +28,28 @@ function pd(fn) {
   })
 }
 
+function useBool(initial = () => false) {
+  const [state, setVal] = useState(initial)
+  const not = useCallback(() => setVal(R.not), [])
+  const on = useCallback(() => setVal(true), [])
+  const off = useCallback(() => setVal(false), [])
+
+  const actions = useRef(() => ({
+    on,
+    off,
+    not,
+  }))
+
+  return [state, actions]
+}
+
 const PouchSettingsDialog = observer(
   (_, ref) => {
     const backdropRef = useRef(null)
 
-    const [isOpen, setOpen] = useState(() => false)
-    const dismiss = () => setOpen(false)
-    const open = () => setOpen(true)
-
-    useImperativeHandle(ref, () => ({ open }), [])
+    const [isOpen, openB] = useBool()
+    const dismiss = openB.off
+    const open = useImperativeHandle(ref, () => ({ open }), [])
 
     const onBackdropClick = useCallback(e => {
       if (e.target === backdropRef.current) {
@@ -44,9 +57,7 @@ const PouchSettingsDialog = observer(
       }
     }, [])
 
-    const onKeyDownHandler = useHotKeyCallback([
-      ['esc', pd(() => setOpen(R.not))],
-    ])
+    const onKeyDownHandler = useHotKeyCallback([['esc', pd(openB.not)]])
 
     return (
       isOpen && (

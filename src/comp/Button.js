@@ -30,11 +30,12 @@ function createButtonComponent(defaultCls, displayName) {
     },
     displayName,
   })
-  return Button
+  return observer(Button)
 }
 
-export const FlatButton = observer(
-  createButtonComponent(flatButtonCls, 'FlatButton'),
+export const FlatButton = createButtonComponent(
+  flatButtonCls,
+  'FlatButton',
 )
 
 const primaryButtonCls = {
@@ -42,6 +43,7 @@ const primaryButtonCls = {
     'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white ',
 }
 
-export const PrimaryButton = observer(
-  createButtonComponent(primaryButtonCls, 'PrimaryButton'),
+export const PrimaryButton = createButtonComponent(
+  primaryButtonCls,
+  'PrimaryButton',
 )

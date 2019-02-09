@@ -85,18 +85,20 @@ const PouchSettingsDialog = observer(
                 </div>
                 <div className="ph3 ">
                   <label className="mv3 db">
-                    <div className="ml1 black-70 f6">URL</div>
+                    <div className="ml1 black-70 f6 lh-copy">
+                      Remote URL
+                    </div>
                     <div className="flex flex-column  ba b--moon-gray ">
                       <input
                         autoFocus
                         className="bn flex-auto pa2"
-                        defaultValue={'http://a@b:localhost:2323'}
+                        placeholder="e.g: http://a@b:localhost:2323"
                       />
                     </div>
                   </label>
                 </div>
-                <div className="pa3 bt b--light-gray flex flex-row-reverse">
-                  <PrimaryButton type="submit" label="Save" />
+                <div className="pa3 bn b--light-gray flex flex-row-reverse">
+                  <PrimaryButton type="submit" label="Sync" />
                   <FlatButton onClick={open.off} label="Cancel" />
                 </div>
               </form>

@@ -1,15 +1,10 @@
 import validate from 'aproba'
 import { observer } from 'mobx-react-lite'
-import React, {
-  useCallback,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react'
+import React, { useCallback, useImperativeHandle, useRef } from 'react'
 import { FocusTrapZone } from 'office-ui-fabric-react'
 import isHotKey from 'is-hotkey'
 import * as R from 'ramda'
-import { boolObservable } from '../mobx/mobx-helpers'
+import { useBoolObservable } from '../mobx/mobx-hooks'
 
 function useHotKeyCallback(keyMap, deps = []) {
   return useCallback(e => {
@@ -33,10 +28,6 @@ function pd(fn) {
       fn(e)
     }
   })
-}
-
-function useBoolObservable(initial = () => false) {
-  return useState(() => boolObservable(initial()))[0]
 }
 
 const PouchSettingsDialog = observer(

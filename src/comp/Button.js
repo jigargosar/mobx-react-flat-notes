@@ -2,15 +2,13 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 import * as PropTypes from 'prop-types'
 
+const flatButtonCls = {
+  root:
+    'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent ba b--transparent',
+}
+
 export const FlatButton = observer(({ cls, label, ...p }) => {
-  cls = Object.assign(
-    {},
-    {
-      root:
-        'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent ba b--transparent',
-    },
-    cls,
-  )
+  cls = Object.assign({}, flatButtonCls, cls)
   return (
     <button type="button" className={cls.root} {...p}>
       {label}

@@ -39,6 +39,12 @@ function observableValue(initial = null, options = {}) {
   const obs = extendObservable(
     observable.box(initial),
     {
+      get val() {
+        return obs.get()
+      },
+      set val(newVal) {
+        return obs.set(newVal)
+      },
       map: fn => obs.set(fn(obs.get())),
       extend: obj => extendObservable(obs, obj),
     },

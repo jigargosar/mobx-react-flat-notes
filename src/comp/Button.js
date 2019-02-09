@@ -8,18 +8,21 @@ function mergeCls(def, cls) {
 
 const flatButtonCls = {
   root:
-    'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent ba b--transparent',
+    'pv2 ph3  mh1 pointer underline-hover bg-transparent ba b--transparent',
+}
+
+function renderButton(props, def) {
+  let { cls, label, ...p } = props
+  cls = mergeCls(def, cls)
+  return (
+    <button type="button" className={cls.root} {...p}>
+      {label}
+    </button>
+  )
 }
 
 export const FlatButton = (() => {
-  function Component({ cls, label, ...p }) {
-    cls = mergeCls(flatButtonCls, cls)
-    return (
-      <button type="button" className={cls.root} {...p}>
-        {label}
-      </button>
-    )
-  }
+  const Component = props => renderButton(props, flatButtonCls)
   Component.propTypes = {
     label: PropTypes.string.isRequired,
   }

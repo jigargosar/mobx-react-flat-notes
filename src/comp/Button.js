@@ -33,14 +33,13 @@ export const PrimaryButton = observer(({ cls, label, ...p }) => {
     {},
     {
       root:
-        'pv2 ph3 ma0 mh1 pointer bg-transparent bg-blue white ba b--white',
-      label: 'underline-hover',
+        'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white ',
     },
     cls,
   )
   return (
     <button type="button" className={cls.root} {...p}>
-      <div className={cls.label}>{label}</div>
+      {label}
     </button>
   )
 })

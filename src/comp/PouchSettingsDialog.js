@@ -62,20 +62,20 @@ const PouchSettingsDialog = observer(
   (_, ref) => {
     const backdropRef = useRef(null)
 
-    const opn = useBoolObservable()
-    useImperativeHandle(ref, () => ({ open: opn.on }), [])
+    const open = useBoolObservable()
+    useImperativeHandle(ref, () => ({ open: open.on }), [])
 
     const onBackdropClick = useCallback(e => {
       const el = backdropRef.current
       if (e.target === el) {
-        opn.off()
+        open.off()
       }
     }, [])
 
-    const onKeyDownHandler = useOnEsc(pd(opn.not))
+    const onKeyDownHandler = useOnEsc(pd(open.not))
 
     return (
-      opn.get() && (
+      open.get() && (
         <FocusTrapZone>
           <div
             className="absolute absolute--fill flex items-center justify-center bg-black-50"
@@ -101,7 +101,7 @@ const PouchSettingsDialog = observer(
                 </button>
                 <button
                   className="pv2 ph3 ma0 link pointer bn black-70"
-                  onClick={opn.off}
+                  onClick={open.off}
                 >
                   <div className="underline-hover">Cancel</div>
                 </button>

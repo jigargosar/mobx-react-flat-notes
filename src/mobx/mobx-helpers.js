@@ -8,7 +8,7 @@ import {
 } from 'mobx'
 import validate from 'aproba'
 import * as R from 'ramda'
-import { clampIdx } from './ramda-helpers'
+import { clampIdx } from '../ramda-helpers'
 
 export function toggle(target, prop) {
   validate('OS', arguments)

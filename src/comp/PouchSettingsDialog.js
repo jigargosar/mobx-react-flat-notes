@@ -9,7 +9,7 @@ import React, {
 import { FocusTrapZone } from 'office-ui-fabric-react'
 import isHotKey from 'is-hotkey'
 import * as R from 'ramda'
-import { boolObservable } from '../mobx-helpers'
+import { boolObservable } from '../mobx/mobx-helpers'
 
 function useHotKeyCallback(keyMap, deps = []) {
   return useCallback(e => {

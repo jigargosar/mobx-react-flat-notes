@@ -1,4 +1,4 @@
-import { wrapActions } from './mobx-helpers'
+import { wrapActions } from './mobx/mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import * as R from 'ramda'

@@ -57,12 +57,6 @@ function observableValue(initial = null, options = {}) {
 function useBoolObservable(initial = () => false) {
   return useState(() => {
     const obs = observableValue(initial()).extend({
-      get val() {
-        return obs.get()
-      },
-      set val(newVal) {
-        return obs.set(newVal)
-      },
       not: () => (obs.val = !obs.val),
       on: () => obs.set(true),
       off: () => obs.set(false),

@@ -68,7 +68,7 @@ function noteFromPouchDoc({ _id, _rev, title, content }) {
 
 function setNoteRev(rev, { id }) {
   const note = state.getNoteById(id)
-  console.log(isObservable(note))
+  console.assert(isObservable(note))
   note.rev = rev
 }
 

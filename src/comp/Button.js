@@ -44,12 +44,12 @@ export const PrimaryButton = observer(({ cls, label, ...p }) => {
   )
 })
 
-FlatButton.propTypes = {
+PrimaryButton.propTypes = {
   label: PropTypes.string.isRequired,
 }
 
-FlatButton.defaultProps = {
+PrimaryButton.defaultProps = {
   label: '<label>',
 }
 
-FlatButton.displayName = 'PrimaryButton'
+PrimaryButton.displayName = 'PrimaryButton'

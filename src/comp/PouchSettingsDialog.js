@@ -56,6 +56,7 @@ const PouchSettingsDialog = observer(
                     <div className="underline-hover">Save</div>
                   </button>
                   <button
+                    type="button"
                     className="pv2 ph3 ma0 link pointer bn black-70"
                     onClick={open.off}
                   >

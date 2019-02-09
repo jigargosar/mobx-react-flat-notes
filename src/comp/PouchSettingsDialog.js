@@ -4,6 +4,29 @@ import { FocusTrapZone } from 'office-ui-fabric-react'
 import { useBoolObservable } from '../mobx/mobx-hooks'
 import { pd, useOnEsc } from '../hooks/keyboard'
 import * as R from 'ramda'
+import * as PropTypes from 'prop-types'
+
+const FlatButton = observer(({ cls, label, ...p }) => {
+  cls = Object.assign(
+    {},
+    {
+      root: 'pv2 ph3 ma0 mh1  pointer bg-blue white ba b--white',
+      label: 'underline-hover',
+    },
+    cls,
+  )
+  return (
+    <button className={cls.root} {...p}>
+      <div className={cls.label}>{label}</div>
+    </button>
+  )
+})
+
+FlatButton.propTypes = {
+  label: PropTypes.string.isRequired,
+}
+
+FlatButton.displayName = 'FlatButton'
 
 const PouchSettingsDialog = observer(
   (_, ref) => {
@@ -57,13 +80,13 @@ const PouchSettingsDialog = observer(
                   >
                     <div className="underline-hover">Save</div>
                   </button>
-                  <button
+                  <FlatButton
                     type="button"
                     className="pv2 ph3 ma0 mh1 pointer  black-70 ba b--white"
                     onClick={open.off}
                   >
                     <div className="underline-hover">Cancel</div>
-                  </button>
+                  </FlatButton>
                 </div>
               </form>
             </div>

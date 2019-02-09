@@ -912,14 +912,6 @@
     log-update "^2.3.0"
     strip-ansi "^3.0.1"
 
-"@jigargosar/use-focus@^7.0.0":
-  version "7.0.0"
-  resolved "http://localhost:32768/@jigargosar%2fuse-focus/-/use-focus-7.0.0.tgz#d319347196ecdb419f59846ab74a63d4c056d2b6"
-  integrity sha512-d2wtSbF2yFY0DCHcSg19tqLHVZgN+barYjBkTj/70QsM5CEpHD1N4EllZHqLdXTlIR4FvjZkkOXt6s+CJXYdHw==
-  dependencies:
-    react "^16.8.1"
-    scroll-into-view-if-needed "^2.2.20"
-
 "@microsoft/load-themed-styles@^1.7.13":
   version "1.8.56"
   resolved "https://registry.yarnpkg.com/@microsoft/load-themed-styles/-/load-themed-styles-1.8.56.tgz#52870947fed945727ac178582b64417af9fbbdbe"
@@ -7065,10 +7057,10 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-office-ui-fabric-react@^6.135.1:
-  version "6.135.1"
-  resolved "https://registry.yarnpkg.com/office-ui-fabric-react/-/office-ui-fabric-react-6.135.1.tgz#38602003682fc10cc88ddc831e73819b4050c104"
-  integrity sha512-6Y/hdahahyRPAs8Vo6T26COkHC2zzh48JQRC9am5Zk22lCEZvun2qF3OeFJce8ro3MHygZI9h7+pNgFduiuO5g==
+office-ui-fabric-react@^6.136.0:
+  version "6.136.0"
+  resolved "https://registry.yarnpkg.com/office-ui-fabric-react/-/office-ui-fabric-react-6.136.0.tgz#ecb43d9e8df0643698871261159766a69dd6e3c4"
+  integrity sha512-U8936MBFo3I/UYJOqjO5ZvtdqO4PsLohMzf898LAVXvRSnUsiIUvA0zo8328G1LYpuOhUF6l1dXQBMEcUxqNPA==
   dependencies:
     "@microsoft/load-themed-styles" "^1.7.13"
     "@uifabric/icons" ">=6.3.0 <7.0.0"

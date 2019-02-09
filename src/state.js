@@ -15,6 +15,22 @@ function createState() {
     {
       noteList: m.observable.array([]),
       selectedNoteId: null,
+      get displayNotes() {
+        return state.noteList
+      },
+      get firstNote() {
+        return m.get(state.noteList, 0)
+      },
+      get selectedNote() {
+        const selectedById = state.getNoteById(state.selectedNoteId)
+        return selectedById || state.firstNote
+      },
+      get selectedNoteContent() {
+        return idx(state, _ => _.selectedNote.content)
+      },
+      isNoteSelected: note => R.eqProps('id', note, state.selectedNote),
+      shouldFocusNote: note => state.isNoteSelected(note),
+      getNoteById: id => state.noteList.find(R.propEq('id', id)),
     },
     null,
     {
@@ -22,24 +38,7 @@ function createState() {
     },
   )
 
-  return m.extendObservable(state, {
-    get displayNotes() {
-      return state.noteList
-    },
-    get firstNote() {
-      return m.get(state.noteList, 0)
-    },
-    get selectedNote() {
-      const selectedById = state.getNoteById(state.selectedNoteId)
-      return selectedById || state.firstNote
-    },
-    get selectedNoteContent() {
-      return idx(state, _ => _.selectedNote.content)
-    },
-    isNoteSelected: note => R.eqProps('id', note, state.selectedNote),
-    shouldFocusNote: note => state.isNoteSelected(note),
-    getNoteById: id => state.noteList.find(R.propEq('id', id)),
-  })
+  return state
 }
 
 const state = createState()

@@ -43,7 +43,7 @@ const PouchSettingsDialog = observer(
                     <div className="ml1 black-70 f6">URL</div>
                     <input
                       autoFocus
-                      className="flex-auto pa2 "
+                      className="ba b--moon-gray  flex-auto pa2"
                       defaultValue={'http://a@b:localhost:2323'}
                     />
                   </label>
@@ -51,13 +51,13 @@ const PouchSettingsDialog = observer(
                 <div className="ph3 pv2 bt b--light-gray flex flex-row-reverse">
                   <button
                     type="submit"
-                    className="pv2 ph3 ma0 link pointer bn bg-blue white"
+                    className="pv2 ph3 ma0 mh1  pointer bg-blue white ba b--white"
                   >
                     <div className="underline-hover">Save</div>
                   </button>
                   <button
                     type="button"
-                    className="pv2 ph3 ma0 link pointer bn black-70"
+                    className="pv2 ph3 ma0 mh1 pointer  black-70 ba b--white"
                     onClick={open.off}
                   >
                     <div className="underline-hover">Cancel</div>

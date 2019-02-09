@@ -16,6 +16,11 @@ body {
   background-color: #efefef;
 }
 
+:focus {
+  outline: dodgerblue solid 1px;
+  outline-offset: 0;
+}
+
 #root {
   height: 100vh;
 }

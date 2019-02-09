@@ -1,55 +1,11 @@
 import React, { useCallback, useLayoutEffect, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppActions, useAppState } from './state'
-import { useArrowKeys } from './hooks/useArrowKeys'
 import MonacoEditor from 'react-monaco-editor'
 import { useWindowSize } from './hooks/global-listeners'
 import { PouchSettingsDialog } from './comp/PouchSettingsDialog'
-import useFocusRef from '@jigargosar/use-focus'
 import AppHeader from './comp/AppHeader'
-
-const NoteItem = observer(({ note }) => {
-  const state = useAppState()
-  const actions = useAppActions()
-  const isSelected = state.isNoteSelected(note)
-  const shouldFocus = state.shouldFocusNote(note)
-  const selectNote = () => actions.setSelectedNote(note)
-  const selectedClass = isSelected ? 'bg-light-blue ' : ''
-  const titleRef = useRef(null)
-
-  useFocusRef(titleRef, shouldFocus, [shouldFocus])
-
-  return (
-    <div onClick={selectNote}>
-      <div
-        ref={titleRef}
-        className={`pv1 ph2 ${selectedClass}`}
-        tabIndex={isSelected ? 0 : -1}
-        data-is-focusable={true}
-        onFocus={selectNote}
-      >
-        {note.title}
-        {note.rev}
-      </div>
-    </div>
-  )
-})
-NoteItem.displayName = 'NoteItem'
-
-const NoteListSideBar = observer(() => {
-  const state = useAppState()
-  const listRef = useRef(null)
-  useArrowKeys(listRef)
-  return (
-    <div ref={listRef} className="h-100 pv2">
-      {state.displayNotes.map(note => (
-        <NoteItem key={note.id} note={note} />
-      ))}
-    </div>
-  )
-})
-
-NoteListSideBar.displayName = 'NoteListSideBar'
+import { NoteListSideBar } from './comp/NoteListSidebar'
 
 function useMonacoEditor() {
   const editorRef = useRef(null)

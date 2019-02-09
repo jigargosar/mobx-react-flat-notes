@@ -21,7 +21,7 @@ const PouchSettingsDialog = observer(
     const onKeyDownHandler = useOnEsc(pd(open.not))
 
     return (
-      open.get() && (
+      !open.get() && (
         <FocusTrapZone>
           <div
             className="absolute absolute--fill flex items-center justify-center bg-black-50"
@@ -37,9 +37,12 @@ const PouchSettingsDialog = observer(
                 Pouch Sync Settings
               </div>
               <div className="ph3 ">
-                <p>Pouch Sync Settings Pouch</p>
-                <p>Sync Settings Pouch</p>
-                <p>Sync Settings Pouch Sync Settings</p>
+                <div className="flex pv2">
+                  <input
+                    className="flex-auto "
+                    defaultValue={'http://a@b:localhost:2323'}
+                  />
+                </div>
               </div>
               <div className="ph3 pv2 bt b--light-gray flex flex-row-reverse">
                 <button className="pv2 ph3 ma0 link pointer bn bg-blue white">

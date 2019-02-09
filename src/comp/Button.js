@@ -40,14 +40,26 @@ const primaryButtonCls = {
     'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white ',
 }
 
-export const PrimaryButton = observer(({ cls, label, ...p }) => {
-  cls = mergeCls(primaryButtonCls, cls)
-  return (
-    <button type="button" className={cls.root} {...p}>
-      {label}
-    </button>
-  )
-})
+export const PrimaryButton = observer(
+  Object.assign(createButtonComponent(primaryButtonCls), {
+    propTypes: {
+      label: PropTypes.string.isRequired,
+    },
+    defaultProps: {
+      label: '<label>',
+    },
+    displayName: 'PrimaryButton',
+  }),
+)
+
+// export const PrimaryButton = observer(({ cls, label, ...p }) => {
+//   cls = mergeCls(primaryButtonCls, cls)
+//   return (
+//     <button type="button" className={cls.root} {...p}>
+//       {label}
+//     </button>
+//   )
+// })
 
 // PrimaryButton.propTypes = {
 //   label: PropTypes.string.isRequired,

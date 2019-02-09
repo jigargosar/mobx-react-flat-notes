@@ -163,6 +163,6 @@ export function useAppActions() {
   return actions
 }
 
-export function useApp() {
+export function useAppStore() {
   return [state, actions]
 }

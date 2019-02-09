@@ -1,7 +1,7 @@
 import React, { useCallback, useLayoutEffect, useRef } from 'react'
 import { useWindowSize } from '../hooks/global-listeners'
 import { observer } from 'mobx-react-lite'
-import { useAppActions, useAppState } from '../state'
+import { useAppStore } from '../state'
 import MonacoEditor from 'react-monaco-editor'
 
 function useMonacoEditor() {
@@ -24,8 +24,7 @@ function useMonacoEditor() {
 
 export const NoteEditorPane = observer(() => {
   const [editorDidMount] = useMonacoEditor()
-  const state = useAppState()
-  const actions = useAppActions()
+  const [state, actions] = useAppStore()
 
   return (
     <div

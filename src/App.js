@@ -1,48 +1,9 @@
-import React, { useCallback, useLayoutEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { observer } from 'mobx-react-lite'
-import { useAppActions, useAppState } from './state'
-import MonacoEditor from 'react-monaco-editor'
-import { useWindowSize } from './hooks/global-listeners'
 import { PouchSettingsDialog } from './comp/PouchSettingsDialog'
 import AppHeader from './comp/AppHeader'
 import { NoteListSideBar } from './comp/NoteListSidebar'
-
-function useMonacoEditor() {
-  const editorRef = useRef(null)
-  const windowSize = useWindowSize()
-
-  useLayoutEffect(() => {
-    const editor = editorRef.current
-    if (editor) {
-      editor.layout()
-    }
-  }, [windowSize, editorRef.current])
-
-  const editorDidMount = useCallback(editor => {
-    editorRef.current = editor
-  }, [])
-
-  return [editorDidMount, editorRef]
-}
-const NoteEditorPane = observer(() => {
-  const [editorDidMount] = useMonacoEditor()
-  const state = useAppState()
-  const actions = useAppActions()
-
-  return (
-    <div
-      className="overflow-hidden h-100 mw-100 bg-light-pink "
-      style={{ width: '34em' }}
-    >
-      <MonacoEditor
-        editorDidMount={editorDidMount}
-        value={state.selectedNoteContent || ''}
-        onChange={value => actions.setSelectedNoteContent(value)}
-      />
-    </div>
-  )
-})
-NoteEditorPane.displayName = 'NoteEditorPane'
+import { NoteEditorPane } from './comp/NoteEditorPane'
 
 const App = observer(() => {
   const pouchSettingDialogRef = useRef(null)

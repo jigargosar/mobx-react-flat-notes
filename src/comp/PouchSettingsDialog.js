@@ -95,7 +95,7 @@ const PouchSettingsDialog = observer(
                     </div>
                   </label>
                 </div>
-                <div className="ph3 pv2 bt b--light-gray flex flex-row-reverse">
+                <div className="pa3 bt b--light-gray flex flex-row-reverse">
                   <PrimaryButton type="submit" label="Save" />
                   <FlatButton onClick={open.off} label="Cancel" />
                 </div>

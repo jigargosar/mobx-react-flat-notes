@@ -15,7 +15,6 @@ function createState() {
     {
       noteList: m.observable.array([]),
       selectedNoteId: null,
-      pouchSettingsDialogOpen: false,
     },
     null,
     {
@@ -80,11 +79,10 @@ function hydrateUIState() {
   const uiState = getCached('app-ui-state')
   if (uiState) {
     state.selectedNoteId = uiState.selectedNoteId
-    state.pouchSettingsDialogOpen = uiState.pouchSettingsDialogOpen
   }
 }
 
-const pickUIState = R.pick(['selectedNoteId', 'pouchSettingsDialogOpen'])
+const pickUIState = R.pick(['selectedNoteId'])
 
 function cacheUIState() {
   setCache('app-ui-state', pickUIState(state))
@@ -100,7 +98,6 @@ async function hydrateFromPouchDb() {
 function reset() {
   state.noteList.clear()
   state.selectedNoteId = null
-  state.pouchSettingsDialogOpen = false
   return deleteAllDocs(notesDb)
 }
 
@@ -153,9 +150,6 @@ const actions = wrapActions({
   reset,
   setSelectedNote,
   setSelectedNoteContent,
-  openPouchSettingsDialog: () => (state.pouchSettingsDialogOpen = true),
-  dismissPouchSettingsDialog: () =>
-    (state.pouchSettingsDialogOpen = false),
 })
 
 actions.init().catch(console.error)

@@ -37,12 +37,13 @@ const PouchSettingsDialog = observer(
                 Pouch Sync Settings
               </div>
               <div className="ph3 ">
-                <div className="flex pv2">
+                <label className="flex flex-column mv3">
+                  <div className="ml1 black-70 f6">URL</div>
                   <input
-                    className="flex-auto "
+                    className="flex-auto pa2 "
                     defaultValue={'http://a@b:localhost:2323'}
                   />
-                </div>
+                </label>
               </div>
               <div className="ph3 pv2 bt b--light-gray flex flex-row-reverse">
                 <button className="pv2 ph3 ma0 link pointer bn bg-blue white">

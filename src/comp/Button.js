@@ -37,3 +37,15 @@ PrimaryButton.propTypes = {
 }
 
 PrimaryButton.displayName = 'PrimaryButton'
+
+export const HeaderButton = observer(({ ...p }) => {
+  return (
+    <button
+      type="button"
+      className="pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit"
+      {...p}
+    />
+  )
+})
+
+HeaderButton.displayName = 'HeaderButton'

@@ -1,17 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useAppActions } from '../state'
 import React from 'react'
-
-const HeaderButton = observer(({ ...p }) => {
-  return (
-    <button
-      className="pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit"
-      {...p}
-    />
-  )
-})
-
-HeaderButton.displayName = 'HeaderButton'
+import { HeaderButton } from './Button'
 
 const AppHeader = observer(({ openPouchSettingsDialog }) => {
   const actions = useAppActions()

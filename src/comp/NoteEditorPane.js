@@ -34,8 +34,6 @@ export const NoteEditorPane = observer(() => {
     const model = codeEditor.getModel()
     model.updateOptions({ tabSize: 2, insertSpaces: true })
     monaco.editor.setModelLanguage(model, 'markdown')
-    // codeEditor.setModelLanguage(codeEditor.getModel(), 'markdown')
-    turnOffTabFocusMode(codeEditor)
 
     codeEditor.updateOptions({
       lineNumbers: 'on',
@@ -46,6 +44,8 @@ export const NoteEditorPane = observer(() => {
       autoIndent: true,
       renderIndentGuides: false,
     })
+
+    turnOffTabFocusMode(codeEditor)
   }, [])
 
   return (

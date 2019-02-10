@@ -5,7 +5,7 @@ import { useAppStore } from '../state'
 import MonacoEditor from 'react-monaco-editor'
 import { turnOffTabFocusMode } from '../monaco-helpers'
 
-function useResizeMonacoEditor(codeEditorRef) {
+function useAutoSizeMonacoEditorEffect(codeEditorRef) {
   const windowSize = useWindowSize()
   useLayoutEffect(() => {
     const codeEditor = codeEditorRef.current
@@ -20,7 +20,7 @@ export const NoteEditorPane = observer(() => {
 
   const [state, actions] = useAppStore()
 
-  useResizeMonacoEditor(codeEditorRef)
+  useAutoSizeMonacoEditorEffect(codeEditorRef)
 
   const editorWillMount = useCallback(monaco => {
     // console.log(`monaco.editor`, monaco.editor)

@@ -12,16 +12,6 @@ export const NoteEditorPane = observer(() => {
 
   useAutoSizeMonacoEditorEffect(codeEditorRef)
 
-  const editorWillMount = useCallback(monaco => {
-    // console.log(`monaco.editor`, monaco.editor)
-    monaco.editor.onDidCreateEditor(codeEditor => {
-      // console.log(`monaco.editor.getModels()`, monaco.editor.getModels())
-    })
-    monaco.editor.onDidCreateModel(model => {
-      // console.log(`monaco.editor.getModels()`, monaco.editor.getModels())
-    })
-  }, [])
-
   const editorDidMount = useCallback(async (codeEditor, monaco) => {
     codeEditorRef.current = codeEditor
 
@@ -49,7 +39,6 @@ export const NoteEditorPane = observer(() => {
     >
       <MonacoEditor
         editorDidMount={editorDidMount}
-        editorWillMount={editorWillMount}
         value={state.selectedNoteContent}
         onChange={value => actions.setSelectedNoteContent(value)}
       />

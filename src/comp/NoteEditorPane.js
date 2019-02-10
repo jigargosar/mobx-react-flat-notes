@@ -5,9 +5,11 @@ import { useAppStore } from '../state'
 import MonacoEditor from 'react-monaco-editor'
 import { turnOffTabFocusMode } from '../monaco-helpers'
 
-function useMonacoEditor() {
+export const NoteEditorPane = observer(() => {
   const codeEditorRef = useRef(null)
   const windowSize = useWindowSize()
+
+  const [state, actions] = useAppStore()
 
   useLayoutEffect(() => {
     const codeEditor = codeEditorRef.current
@@ -18,34 +20,25 @@ function useMonacoEditor() {
 
   const editorWillMount = useCallback(monaco => {
     // console.log(`monaco.editor`, monaco.editor)
-    // monaco.editor.onDidCreateEditor(codeEditor => {
-    //   turnOffTabFocusMode(codeEditor)
-    // })
+    monaco.editor.onDidCreateEditor(codeEditor => {
+      // turnOffTabFocusMode(codeEditor)
+      // console.log(`monaco.editor.getModels()`, monaco.editor.getModels())
+    })
+    monaco.editor.onDidCreateModel(model => {
+      // turnOffTabFocusMode(codeEditor)
+      // console.log(`monaco.editor.getModels()`, monaco.editor.getModels())
+    })
   }, [])
 
-  const editorDidMount = useCallback(async codeEditor => {
+  const editorDidMount = useCallback(async (codeEditor, monaco) => {
     codeEditorRef.current = codeEditor
 
-    codeEditor.getModel().updateOptions({ tabSize: 2, insertSpaces: true })
-    codeEditor.updateOptions({
-      lineNumbers: 'on',
-      language: 'markdown',
-      minimap: { enabled: false },
-      wordWrap: 'bounded',
-      wrappingIndent: 'same',
-      // useTabStops: true,
-      autoIndent: true,
-      renderIndentGuides: false,
-    })
+    const model = codeEditor.getModel()
+    model.updateOptions({ tabSize: 2, insertSpaces: true })
+    monaco.editor.setModelLanguage(model, 'markdown')
+    // codeEditor.setModelLanguage(codeEditor.getModel(), 'markdown')
     turnOffTabFocusMode(codeEditor)
   }, [])
-
-  return [editorWillMount, editorDidMount, codeEditorRef]
-}
-
-export const NoteEditorPane = observer(() => {
-  const [editorWillMount, editorDidMount] = useMonacoEditor()
-  const [state, actions] = useAppStore()
 
   return (
     <div
@@ -55,8 +48,19 @@ export const NoteEditorPane = observer(() => {
       <MonacoEditor
         editorDidMount={editorDidMount}
         editorWillMount={editorWillMount}
-        value={state.selectedNoteContent || ''}
+        value={state.selectedNoteContent}
         onChange={value => actions.setSelectedNoteContent(value)}
+        options={{
+          lineNumbers: 'on',
+          // language: 'markdown',
+          // language: null,
+          minimap: { enabled: false },
+          wordWrap: 'bounded',
+          wrappingIndent: 'same',
+          // useTabStops: true,
+          autoIndent: true,
+          renderIndentGuides: false,
+        }}
       />
     </div>
   )

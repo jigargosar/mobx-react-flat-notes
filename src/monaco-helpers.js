@@ -1,7 +1,7 @@
 export function turnOffTabFocusMode(codeEditor) {
   const internalEditorOptions = codeEditor.getConfiguration()
   const tabFocusMode = internalEditorOptions.tabFocusMode
-  console.log(`tabFocusMode`, tabFocusMode)
+  console.debug(`tabFocusMode`, tabFocusMode)
   return tabFocusMode
     ? Promise.resolve()
     : codeEditor.getAction('editor.action.toggleTabFocusMode').run()

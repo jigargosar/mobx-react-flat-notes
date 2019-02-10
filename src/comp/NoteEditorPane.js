@@ -41,7 +41,7 @@ export const NoteEditorPane = observer(() => {
         options={{
           lineNumbers: 'off',
           language: 'markdown',
-          minimap: false,
+          minimap: { enabled: false },
         }}
       />
     </div>

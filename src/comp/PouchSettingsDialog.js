@@ -1,50 +1,47 @@
-import { observer, useDisposable, useObserver } from 'mobx-react-lite'
+import { observer, useObservable, useObserver } from 'mobx-react-lite'
 import React, { useCallback, useImperativeHandle, useRef } from 'react'
 import { FocusTrapZone } from 'office-ui-fabric-react'
-import { useBoolObservable, useStringObservable } from '../mobx/mobx-hooks'
+import { useStringObservable } from '../mobx/mobx-hooks'
 import { pd, useOnEsc } from '../hooks/keyboard'
 import { FlatButton, PrimaryButton } from './Button'
 import { useAppStore } from '../state'
-import * as m from 'mobx'
 
 const PouchSettingsDialog = observer(
   (_, ref) => {
     const [state, actions] = useAppStore()
 
+    const formState = useObservable({
+      isOpen: false,
+      pouchUrlInput: state.pouchRemoteUrl,
+    })
+
     const pouchUrl = useStringObservable(() => state.pouchRemoteUrl)
     const onSubmitHandler = () => actions.setPouchUrl(pouchUrl.get())
-    const onCancelHandler = () => {
-      open.off()
+    const dismissForm = () => {
+      formState.isOpen = false
       pouchUrl.set(state.pouchRemoteUrl)
     }
 
     const backdropRef = useRef(null)
 
-    const open = useBoolObservable()
-    useImperativeHandle(ref, () => ({ open: open.on }), [])
+    useImperativeHandle(
+      ref,
+      () => ({ open: () => (formState.isOpen = true) }),
+      [],
+    )
 
     const onBackdropClick = useCallback(e => {
       const el = backdropRef.current
       if (e.target === el) {
-        open.off()
+        dismissForm()
       }
     }, [])
 
-    useDisposable(
-      () =>
-        m.autorun(() => {
-          if (!open.get()) {
-            pouchUrl.set(state.pouchRemoteUrl)
-          }
-        }),
-      [open.val],
-    )
-
-    const onKeyDownHandler = useOnEsc(pd(open.not))
+    const onKeyDownHandler = useOnEsc(pd(dismissForm))
 
     return useObserver(
       () =>
-        open.get() && (
+        formState.isOpen && (
           <FocusTrapZone>
             <div
               className="absolute absolute--fill flex items-center justify-center bg-black-50"
@@ -77,7 +74,7 @@ const PouchSettingsDialog = observer(
                   </div>
                   <div className="pa3 bn b--light-gray flex flex-row-reverse">
                     <PrimaryButton type="submit" label="Sync" />
-                    <FlatButton onClick={onCancelHandler} label="Cancel" />
+                    <FlatButton onClick={dismissForm} label="Cancel" />
                   </div>
                 </form>
               </div>

@@ -4,35 +4,56 @@ import { observer } from 'mobx-react-lite'
 import { useAppStore } from '../state'
 import MonacoEditor from 'react-monaco-editor'
 
+function turnOffTabFocusMode(codeEditor) {
+  const internalEditorOptions = codeEditor.getConfiguration()
+  const tabFocusMode = internalEditorOptions.tabFocusMode
+  // console.log(`codeEditor.getConfiguration()`, internalEditorOptions)
+
+  // console.log(
+  //   `editor.getSupportedActions()`,
+  //   editor.getSupportedActions().length,
+  // )
+  // const action = codeEditor.getAction('editor.action.toggleTabFocusMode')
+  // // console.log(`action`, action)
+  // const actionResult = await action.run()
+  // console.log(
+  //   `[actionResult] editor.action.toggleTabFocusMode`,
+  //   actionResult,
+  // )
+
+  if (tabFocusMode) {
+    codeEditor
+      .getAction('editor.action.toggleTabFocusMode')
+      .run()
+      .catch(console.error)
+  }
+}
+
 function useMonacoEditor() {
-  const editorRef = useRef(null)
+  const codeEditorRef = useRef(null)
   const windowSize = useWindowSize()
 
   useLayoutEffect(() => {
-    const editor = editorRef.current
-    if (editor) {
-      editor.layout()
+    const codeEditor = codeEditorRef.current
+    if (codeEditor) {
+      codeEditor.layout()
     }
-  }, [windowSize, editorRef.current])
+  }, [windowSize, codeEditorRef.current])
 
-  const editorWillMount = useCallback(monaco => {}, [])
-
-  const editorDidMount = useCallback(async editor => {
-    editorRef.current = editor
-    // console.log(
-    //   `editor.getSupportedActions()`,
-    //   editor.getSupportedActions().length,
-    // )
-    const action = editor.getAction('editor.action.toggleTabFocusMode')
-    // console.log(`action`, action)
-    const actionResult = await action.run()
-    console.log(
-      `[actionResult] editor.action.toggleTabFocusMode`,
-      actionResult,
-    )
+  const editorWillMount = useCallback(monaco => {
+    // console.log(`monaco.editor`, monaco.editor)
+    // monaco.editor.onDidCreateEditor(codeEditor => {
+    //   turnOffTabFocusMode(codeEditor)
+    // })
   }, [])
 
-  return [editorWillMount, editorDidMount, editorRef]
+  const editorDidMount = useCallback(async codeEditor => {
+    codeEditorRef.current = codeEditor
+
+    turnOffTabFocusMode(codeEditor)
+  }, [])
+
+  return [editorWillMount, editorDidMount, codeEditorRef]
 }
 
 export const NoteEditorPane = observer(() => {

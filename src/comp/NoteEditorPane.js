@@ -15,15 +15,19 @@ function useMonacoEditor() {
     }
   }, [windowSize, editorRef.current])
 
+  const editorWillMount = useCallback(editor => {
+    editorRef.current = editor
+  }, [])
+
   const editorDidMount = useCallback(editor => {
     editorRef.current = editor
   }, [])
 
-  return [editorDidMount, editorRef]
+  return [editorWillMount, editorDidMount, editorRef]
 }
 
 export const NoteEditorPane = observer(() => {
-  const [editorDidMount] = useMonacoEditor()
+  const [editorWillMount, editorDidMount] = useMonacoEditor()
   const [state, actions] = useAppStore()
 
   return (
@@ -33,6 +37,7 @@ export const NoteEditorPane = observer(() => {
     >
       <MonacoEditor
         editorDidMount={editorDidMount}
+        editorWillMount={editorWillMount}
         value={state.selectedNoteContent || ''}
         onChange={value => actions.setSelectedNoteContent(value)}
       />

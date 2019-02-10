@@ -1,10 +1,11 @@
-import { observer } from 'mobx-react-lite'
+import { observer, useDisposable } from 'mobx-react-lite'
 import React, { useCallback, useImperativeHandle, useRef } from 'react'
 import { FocusTrapZone } from 'office-ui-fabric-react'
 import { useBoolObservable, useStringObservable } from '../mobx/mobx-hooks'
 import { pd, useOnEsc } from '../hooks/keyboard'
 import { FlatButton, PrimaryButton } from './Button'
 import { useAppStore } from '../state'
+import * as m from 'mobx'
 
 const PouchSettingsDialog = observer(
   (_, ref) => {
@@ -24,6 +25,18 @@ const PouchSettingsDialog = observer(
         open.off()
       }
     }, [])
+
+    useDisposable(
+      () =>
+        m.autorun(() => {
+          // pouchUrl.set(state.pouchRemoteUrl)
+          // debugger
+          if (!open.get()) {
+            pouchUrl.set(state.pouchRemoteUrl)
+          }
+        }),
+      [open.val],
+    )
 
     const onKeyDownHandler = useOnEsc(pd(open.not))
 

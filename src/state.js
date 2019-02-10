@@ -4,7 +4,6 @@ import faker from 'faker'
 import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
-import { isObservable } from 'mobx'
 import { deleteAllDocs, getDocsFromAllDocs, notesDb } from './pouch'
 import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
@@ -67,7 +66,7 @@ function noteFromPouchDoc({ _id, _rev, title, content }) {
 
 function setNoteRev(rev, { id }) {
   const note = state.getNoteById(id)
-  console.assert(isObservable(note))
+  console.assert(m.isObservable(note))
   note.rev = rev
 }
 

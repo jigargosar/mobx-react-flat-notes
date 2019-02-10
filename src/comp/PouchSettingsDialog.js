@@ -1,7 +1,6 @@
 import { observer, useObservable, useObserver } from 'mobx-react-lite'
 import React, { useCallback, useImperativeHandle, useRef } from 'react'
 import { FocusTrapZone } from 'office-ui-fabric-react'
-import { useStringObservable } from '../mobx/mobx-hooks'
 import { pd, useOnEsc } from '../hooks/keyboard'
 import { FlatButton, PrimaryButton } from './Button'
 import { useAppStore } from '../state'
@@ -15,11 +14,12 @@ const PouchSettingsDialog = observer(
       pouchUrlInput: state.pouchRemoteUrl,
     })
 
-    const pouchUrl = useStringObservable(() => state.pouchRemoteUrl)
-    const onSubmitHandler = () => actions.setPouchUrl(pouchUrl.get())
+    const onSubmitHandler = () => {
+      actions.setPouchUrl(formState.pouchUrlInput)
+    }
     const dismissForm = () => {
       formState.isOpen = false
-      pouchUrl.set(state.pouchRemoteUrl)
+      formState.pouchUrlInput = state.pouchRemoteUrl
     }
 
     const backdropRef = useRef(null)
@@ -67,7 +67,10 @@ const PouchSettingsDialog = observer(
                           autoFocus
                           className="bn flex-auto pa2"
                           placeholder="e.g: http://a@b:localhost:2323"
-                          {...pouchUrl.bindInput}
+                          value={formState.pouchUrlInput}
+                          onChange={e =>
+                            (formState.pouchUrlInput = e.target.value)
+                          }
                         />
                       </div>
                     </label>

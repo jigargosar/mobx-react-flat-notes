@@ -39,24 +39,29 @@ PrimaryButton.propTypes = {
 
 PrimaryButton.displayName = 'PrimaryButton'
 
-export const HeaderButton = observer(props => {
-  return React.createElement(
-    'button',
-    R.mergeDeepRight(
-      {
-        type: 'button',
-        className:
-          'pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit',
-        children: '<no-label>',
-      },
-      props,
-    ),
-  )
-})
+// export const HeaderButton = observer(props => {
+//   return React.createElement(
+//     'button',
+//     R.mergeDeepRight(
+//       {
+//         type: 'button',
+//         className:
+//           'pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit',
+//         children: '<no-label>',
+//       },
+//       props,
+//     ),
+//   )
+// })
+//
+// HeaderButton.displayName = 'HeaderButton'
 
-HeaderButton.displayName = 'HeaderButton'
+export const HeaderButton = createButtonComponent(
+  'pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit',
+  'HeaderButton',
+)
 
-const createButtonComponent = className => {
+function createButtonComponent(className, displayName) {
   const defaultProps = R.pipe(
     R.mergeDeepRight({
       type: 'button',
@@ -64,5 +69,8 @@ const createButtonComponent = className => {
       children: '<no-label>',
     }),
   )
-  return props => React.createElement('button', defaultProps(props))
+  const Component = props =>
+    React.createElement('button', defaultProps(props))
+  Component.displayName = displayName
+  return Component
 }

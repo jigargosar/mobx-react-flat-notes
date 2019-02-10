@@ -1,4 +1,5 @@
 import validate from 'aproba'
+import React from 'react'
 
 export function focusRef(ref) {
   validate('O', arguments)
@@ -7,3 +8,5 @@ export function focusRef(ref) {
     ref.current.focus()
   }
 }
+
+export const h = React.createElement

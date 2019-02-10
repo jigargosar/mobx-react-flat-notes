@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import React from 'react'
 import * as R from 'ramda'
+import { h } from '../react-helpers'
 
 export const PrimaryButton = createButtonComponent(
   'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white',
@@ -25,9 +25,7 @@ function createButtonComponent(className, displayName) {
     }),
   )
 
-  const Component = observer(props =>
-    React.createElement('button', defaultProps(props)),
-  )
+  const Component = observer(props => h('button', defaultProps(props)))
 
   Component.displayName = displayName
   return Component

@@ -30,9 +30,8 @@ export const NoteEditorPane = observer(() => {
 
   useAutoSizeMonacoEditorEffect(codeEditorRef)
 
-  const editorDidMount = useCallback(async (codeEditor, monaco) => {
+  const editorDidMount = useCallback((codeEditor, monaco) => {
     codeEditorRef.current = codeEditor
-
     setupMonacoEditor(codeEditor, monaco)
   }, [])
 

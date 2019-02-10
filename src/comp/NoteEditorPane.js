@@ -6,6 +6,7 @@ import { turnOffTabFocusMode } from '../monaco-helpers'
 import { useAutoSizeMonacoEditorEffect } from '../hooks/monaco-hooks'
 
 function setupMonacoEditor(codeEditor, monaco) {
+  monaco.editor.setTheme('vs-dark')
   const model = codeEditor.getModel()
   model.updateOptions({ tabSize: 2, insertSpaces: true })
   monaco.editor.setModelLanguage(model, 'markdown')

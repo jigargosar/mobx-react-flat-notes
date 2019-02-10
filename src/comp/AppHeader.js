@@ -2,6 +2,17 @@ import { observer } from 'mobx-react-lite'
 import { useAppActions } from '../state'
 import React from 'react'
 
+const HeaderButton = observer(({ ...p }) => {
+  return (
+    <button
+      className="pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit"
+      {...p}
+    />
+  )
+})
+
+HeaderButton.displayName = 'HeaderButton'
+
 const AppHeader = observer(({ openPouchSettingsDialog }) => {
   const actions = useAppActions()
 
@@ -9,24 +20,24 @@ const AppHeader = observer(({ openPouchSettingsDialog }) => {
     <div className="flex justify-between">
       <div className="ml2 pv2 flex items-center us-none ttu b">FN</div>
       <div className="flex items-center">
-        <button
+        <HeaderButton
           className="pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit"
           onClick={openPouchSettingsDialog}
         >
           Sync Settings
-        </button>
-        <button
+        </HeaderButton>
+        <HeaderButton
           className="pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit"
           onClick={actions.addNewNote}
         >
           Add
-        </button>
-        <button
+        </HeaderButton>
+        <HeaderButton
           className="pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit"
           onClick={actions.reset}
         >
           Reset
-        </button>
+        </HeaderButton>
       </div>
     </div>
   )

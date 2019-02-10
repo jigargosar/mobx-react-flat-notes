@@ -1,19 +1,9 @@
-import React, { useCallback, useLayoutEffect, useRef } from 'react'
-import { useWindowSize } from '../hooks/global-listeners'
+import React, { useCallback, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
 import { useAppStore } from '../state'
 import MonacoEditor from 'react-monaco-editor'
 import { turnOffTabFocusMode } from '../monaco-helpers'
-
-function useAutoSizeMonacoEditorEffect(codeEditorRef) {
-  const windowSize = useWindowSize()
-  useLayoutEffect(() => {
-    const codeEditor = codeEditorRef.current
-    if (codeEditor) {
-      codeEditor.layout()
-    }
-  }, [windowSize, codeEditorRef.current])
-}
+import { useAutoSizeMonacoEditorEffect } from '../hooks/monaco-hooks'
 
 export const NoteEditorPane = observer(() => {
   const codeEditorRef = useRef(null)

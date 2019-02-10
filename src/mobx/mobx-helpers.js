@@ -88,6 +88,9 @@ export function stringObservable(ini) {
     get isBlank() {
       return obs.trimmed === ''
     },
+    get bindInput() {
+      return { value: obs.get(), onChange: ev => obs.set(ev.target.value) }
+    },
   })
   return obs
 }

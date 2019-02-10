@@ -1,13 +1,14 @@
 import { observer } from 'mobx-react-lite'
 import React, { useCallback, useImperativeHandle, useRef } from 'react'
 import { FocusTrapZone } from 'office-ui-fabric-react'
-import { useBoolObservable } from '../mobx/mobx-hooks'
+import { useBoolObservable, useStringObservable } from '../mobx/mobx-hooks'
 import { pd, useOnEsc } from '../hooks/keyboard'
 import * as R from 'ramda'
 import { FlatButton, PrimaryButton } from './Button'
 
 const PouchSettingsDialog = observer(
   (_, ref) => {
+    const pouchUrl = useStringObservable(() => 'no url')
     const backdropRef = useRef(null)
 
     const open = useBoolObservable()
@@ -49,6 +50,7 @@ const PouchSettingsDialog = observer(
                         autoFocus
                         className="bn flex-auto pa2"
                         placeholder="e.g: http://a@b:localhost:2323"
+                        {...pouchUrl.bindInput}
                       />
                     </div>
                   </label>

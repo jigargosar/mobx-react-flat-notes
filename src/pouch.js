@@ -1,5 +1,24 @@
 import PouchDb from 'pouchdb-browser'
 import * as R from 'ramda'
+import { renameKeys } from './ramda-helpers'
+
+const getAllDocsPlugin = {
+  getAllDocsP: async function() {
+    const { rows } = await this.allDocs({ include_docs: true })
+    return rows.map(R.prop('doc'))
+  },
+  getAllDocsNormalizedP: async function() {
+    const { rows } = await this.allDocs({ include_docs: true })
+    return rows.map(
+      R.pipe(
+        R.prop('doc'),
+        renameKeys({ _id: 'id', _rev: 'rev' }),
+      ),
+    )
+  },
+}
+
+PouchDb.plugin(getAllDocsPlugin)
 
 export const notesDb = new PouchDb('flat-notes-notesDb')
 

@@ -15,9 +15,7 @@ function useMonacoEditor() {
     }
   }, [windowSize, editorRef.current])
 
-  const editorWillMount = useCallback(editor => {
-    editorRef.current = editor
-  }, [])
+  const editorWillMount = useCallback(monaco => {}, [])
 
   const editorDidMount = useCallback(editor => {
     editorRef.current = editor

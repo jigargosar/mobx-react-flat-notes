@@ -9,7 +9,7 @@ const App = observer(() => {
   const pouchSettingDialogRef = useRef(null)
   return (
     <div className="h-100 flex flex-column">
-      <div className="bg-black-90 white shadow-1">
+      <div className="bg-vs-dark vs-dark shadow-1">
         <div className="center mw7">
           <AppHeader
             openPouchSettingsDialog={() => {

@@ -50,6 +50,14 @@ code {
   background-color: #282c34;
 }
 
+.bg-vs-dark {
+  background-color: #1e1e1e;
+}
+
+.vs-dark {
+  color: #d4d4d4;
+}
+
 .color-link-light {
   color: #61dafb;
 }

@@ -15,7 +15,7 @@ const PouchSettingsDialog = observer(
     })
 
     const submitForm = () => {
-      actions.setPouchUrl(formState.pouchUrlInput)
+      actions.setPouchUrlAndStartSync(formState.pouchUrlInput)
       formState.isOpen = false
     }
     const dismissForm = () => {

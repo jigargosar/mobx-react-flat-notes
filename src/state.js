@@ -169,7 +169,7 @@ const actions = wrapActions({
   reset,
   setSelectedNote,
   setSelectedNoteContent,
-  setPouchUrl(newUrl) {
+  setPouchUrlAndStartSync(newUrl) {
     validate('S', arguments)
     state.pouchRemoteUrl = newUrl
   },

@@ -40,7 +40,7 @@ export const NoteEditorPane = observer(() => {
       <MonacoEditor
         editorDidMount={editorDidMount}
         value={state.selectedNoteContent}
-        onChange={value => actions.setSelectedNoteContent(value)}
+        onChange={actions.setSelectedNoteContent}
       />
     </div>
   )

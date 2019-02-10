@@ -14,7 +14,7 @@ const PouchSettingsDialog = observer(
       pouchUrlInput: state.pouchRemoteUrl,
     })
 
-    const onSubmitHandler = () => {
+    const submitForm = () => {
       actions.setPouchUrl(formState.pouchUrlInput)
       formState.isOpen = false
     }
@@ -54,7 +54,7 @@ const PouchSettingsDialog = observer(
                 className="relative w-80 mw6 bg-white shadow-1"
                 // style={{ top: '-15%' }}
               >
-                <form onSubmit={pd(onSubmitHandler)}>
+                <form onSubmit={pd(submitForm)}>
                   <div className="pv4 ph3 f3 fw3 bg-blue white">
                     Pouch Sync Settings
                   </div>

@@ -39,12 +39,10 @@ export const NoteEditorPane = observer(() => {
 
     codeEditor.updateOptions({
       lineNumbers: 'on',
-      language: 'markdown',
-      // language: null,
       minimap: { enabled: false },
       wordWrap: 'bounded',
       wrappingIndent: 'same',
-      // useTabStops: true,
+      useTabStops: true,
       autoIndent: true,
       renderIndentGuides: false,
     })

@@ -21,7 +21,7 @@ const allDocsHelperPlugin = {
     const deleteRes = await db.bulkDocs(
       docs.map(R.mergeLeft({ _deleted: true })),
     )
-    console.log(`deleteRes`, deleteRes)
+    console.debug(`deleteRes`, deleteRes)
   },
 }
 

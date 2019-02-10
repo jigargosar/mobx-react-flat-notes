@@ -45,8 +45,11 @@ function createButtonComponent(className, displayName) {
       children: '<no-label>',
     }),
   )
-  const Component = props =>
-    React.createElement('button', defaultProps(props))
+
+  const Component = observer(props =>
+    React.createElement('button', defaultProps(props)),
+  )
+
   Component.displayName = displayName
   return Component
 }

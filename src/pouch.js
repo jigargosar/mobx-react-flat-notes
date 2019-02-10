@@ -3,12 +3,12 @@ import * as R from 'ramda'
 import { renameKeys } from './ramda-helpers'
 
 const allDocsHelperPlugin = {
-  getAllDocsP: async function() {
-    const { rows } = await this.allDocs({ include_docs: true })
+  getAllDocsP: async function(db = this) {
+    const { rows } = await db.allDocs({ include_docs: true })
     return rows.map(R.prop('doc'))
   },
-  getAllDocsNormalizedP: async function() {
-    const { rows } = await this.allDocs({ include_docs: true })
+  getAllDocsNormalizedP: async function(db = this) {
+    const { rows } = await db.allDocs({ include_docs: true })
     return rows.map(
       R.pipe(
         R.prop('doc'),

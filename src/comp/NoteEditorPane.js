@@ -19,6 +19,16 @@ function useMonacoEditor() {
 
   const editorDidMount = useCallback(editor => {
     editorRef.current = editor
+    console.log(
+      `editor.getSupportedActions()`,
+      editor.getSupportedActions().length,
+    )
+    const action = editor.getAction('editor.action.toggleTabFocusMode')
+    console.log(`action`, action)
+    action
+      .run()
+      .then(console.log)
+      .catch(console.error)
   }, [])
 
   return [editorWillMount, editorDidMount, editorRef]

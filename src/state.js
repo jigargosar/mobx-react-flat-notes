@@ -137,7 +137,7 @@ async function setNoteContent(newContent, { id }) {
   }
 }
 
-const setNoteContentDebounced = debounce(setNoteContent, 5000, {
+const setNoteContentDebounced = debounce(setNoteContent, 500, {
   leading: false,
   // maxWait: 10000,
   trailing: true,

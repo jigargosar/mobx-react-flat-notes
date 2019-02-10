@@ -6,27 +6,15 @@ function mergeCls(def, cls) {
   return Object.assign({}, def, cls)
 }
 
-const flatButtonCls = {
-  root:
-    'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent ba b--transparent',
-}
-
-export const FlatButton = observer(function FlatButton({
-  cls,
-  label,
-  ...p
-}) {
-  cls = mergeCls(flatButtonCls, cls)
+export const FlatButton = observer(function FlatButton({ ...p }) {
   return (
-    <button type="button" className={cls.root} {...p}>
-      {label}
-    </button>
+    <button
+      type="button"
+      className="pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent ba b--transparent"
+      {...p}
+    />
   )
 })
-
-FlatButton.propTypes = {
-  label: PropTypes.string.isRequired,
-}
 
 FlatButton.displayName = 'FlatButton'
 

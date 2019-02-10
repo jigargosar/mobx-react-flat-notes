@@ -38,6 +38,7 @@ export const NoteEditorPane = observer(() => {
         editorWillMount={editorWillMount}
         value={state.selectedNoteContent || ''}
         onChange={value => actions.setSelectedNoteContent(value)}
+        options={{ lineNumbers: 'off', language: 'markdown' }}
       />
     </div>
   )

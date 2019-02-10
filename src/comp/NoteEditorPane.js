@@ -18,16 +18,16 @@ function useMonacoEditor() {
 
   const editorWillMount = useCallback(monaco => {
     // console.log(`monaco.editor`, monaco.editor)
-    monaco.editor.onDidCreateEditor(codeEditor => {
-      turnOffTabFocusMode(codeEditor)
-    })
+    // monaco.editor.onDidCreateEditor(codeEditor => {
+    //   turnOffTabFocusMode(codeEditor)
+    // })
   }, [])
 
   const editorDidMount = useCallback(async codeEditor => {
     codeEditorRef.current = codeEditor
 
-    // codeEditor.getModel().updateOptions({ tabSize: 2, insertSpaces: true })
-    return turnOffTabFocusMode(codeEditor)
+    codeEditor.getModel().updateOptions({ tabSize: 2, insertSpaces: true })
+    turnOffTabFocusMode(codeEditor)
   }, [])
 
   return [editorWillMount, editorDidMount, codeEditorRef]

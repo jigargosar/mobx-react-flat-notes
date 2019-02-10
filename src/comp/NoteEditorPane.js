@@ -3,31 +3,7 @@ import { useWindowSize } from '../hooks/global-listeners'
 import { observer } from 'mobx-react-lite'
 import { useAppStore } from '../state'
 import MonacoEditor from 'react-monaco-editor'
-
-function turnOffTabFocusMode(codeEditor) {
-  const internalEditorOptions = codeEditor.getConfiguration()
-  const tabFocusMode = internalEditorOptions.tabFocusMode
-  // console.log(`codeEditor.getConfiguration()`, internalEditorOptions)
-
-  // console.log(
-  //   `editor.getSupportedActions()`,
-  //   editor.getSupportedActions().length,
-  // )
-  // const action = codeEditor.getAction('editor.action.toggleTabFocusMode')
-  // // console.log(`action`, action)
-  // const actionResult = await action.run()
-  // console.log(
-  //   `[actionResult] editor.action.toggleTabFocusMode`,
-  //   actionResult,
-  // )
-
-  if (tabFocusMode) {
-    codeEditor
-      .getAction('editor.action.toggleTabFocusMode')
-      .run()
-      .catch(console.error)
-  }
-}
+import { turnOffTabFocusMode } from '../monaco-helpers'
 
 function useMonacoEditor() {
   const codeEditorRef = useRef(null)

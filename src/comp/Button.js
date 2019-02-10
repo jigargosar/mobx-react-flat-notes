@@ -17,7 +17,7 @@ export const HeaderButton = createButtonComponent(
 )
 
 function createButtonComponent(className, displayName) {
-  const defaultProps = R.pipe(
+  const withDefaultProps = R.pipe(
     R.mergeDeepRight({
       type: 'button',
       className,
@@ -25,7 +25,7 @@ function createButtonComponent(className, displayName) {
     }),
   )
 
-  const Component = observer(props => h('button', defaultProps(props)))
+  const Component = observer(props => h('button', withDefaultProps(props)))
 
   Component.displayName = displayName
   return Component

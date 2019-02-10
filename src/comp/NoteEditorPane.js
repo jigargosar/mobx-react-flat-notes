@@ -21,11 +21,9 @@ export const NoteEditorPane = observer(() => {
   const editorWillMount = useCallback(monaco => {
     // console.log(`monaco.editor`, monaco.editor)
     monaco.editor.onDidCreateEditor(codeEditor => {
-      // turnOffTabFocusMode(codeEditor)
       // console.log(`monaco.editor.getModels()`, monaco.editor.getModels())
     })
     monaco.editor.onDidCreateModel(model => {
-      // turnOffTabFocusMode(codeEditor)
       // console.log(`monaco.editor.getModels()`, monaco.editor.getModels())
     })
   }, [])

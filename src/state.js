@@ -156,6 +156,58 @@ function combineDisposers(disposables) {
   }
 }
 
+let syncDisposable = R.identity()
+
+async function setPouchUrlAndStartSync(newUrl) {
+  validate('S', arguments)
+  state.pouchRemoteUrl = newUrl
+
+  syncDisposable()
+
+  if (!newUrl.startsWith('http://')) {
+    throw new Error('Invalid Pouch URL' + newUrl)
+  }
+  const sync = notesDb
+    .sync(newUrl, {
+      live: true,
+      retry: true,
+    })
+    .on('change', function(info) {
+      // handle change
+      console.log('change', info)
+    })
+    .on('paused', function(err) {
+      // replication paused (e.g. replication up to date, user went offline)
+      console.log('paused', err)
+    })
+    .on('active', function() {
+      // replicate resumed (e.g. new changes replicating, user went back online)
+      console.log('active')
+    })
+    .on('denied', function(err) {
+      // a document failed to replicate (e.g. due to permissions)
+      console.log('denied', err)
+    })
+    .on('complete', function(info) {
+      // handle complete
+      console.log('complete', info)
+    })
+    .on('error', function(err) {
+      // handle error
+      console.log('error', err)
+    })
+
+  syncDisposable = () => {
+    sync.cancel()
+    syncDisposable = R.identity
+  }
+
+  const notesDbInfo = await notesDb.info()
+  console.log(`notesDbInfo`, notesDbInfo)
+
+  // sync.cancel(); // whenever you want to cancel
+}
+
 const actions = wrapActions({
   async init() {
     hydrateUIState()
@@ -169,10 +221,7 @@ const actions = wrapActions({
   reset,
   setSelectedNote,
   setSelectedNoteContent,
-  setPouchUrlAndStartSync(newUrl) {
-    validate('S', arguments)
-    state.pouchRemoteUrl = newUrl
-  },
+  setPouchUrlAndStartSync,
 })
 
 actions.init().catch(console.error)

@@ -20,24 +20,11 @@ const AppHeader = observer(({ openPouchSettingsDialog }) => {
     <div className="flex justify-between">
       <div className="ml2 pv2 flex items-center us-none ttu b">FN</div>
       <div className="flex items-center">
-        <HeaderButton
-          className="pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit"
-          onClick={openPouchSettingsDialog}
-        >
+        <HeaderButton onClick={openPouchSettingsDialog}>
           Sync Settings
         </HeaderButton>
-        <HeaderButton
-          className="pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit"
-          onClick={actions.addNewNote}
-        >
-          Add
-        </HeaderButton>
-        <HeaderButton
-          className="pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit"
-          onClick={actions.reset}
-        >
-          Reset
-        </HeaderButton>
+        <HeaderButton onClick={actions.addNewNote}>Add</HeaderButton>
+        <HeaderButton onClick={actions.reset}>Reset</HeaderButton>
       </div>
     </div>
   )

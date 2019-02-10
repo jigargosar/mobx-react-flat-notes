@@ -15,8 +15,8 @@ function setupMonacoEditor(codeEditor, monaco) {
     minimap: { enabled: false },
     wordWrap: 'bounded',
     wrappingIndent: 'same',
-    useTabStops: true,
-    autoIndent: true,
+    // useTabStops: true,
+    // autoIndent: true,
     renderIndentGuides: false,
   })
 

@@ -17,13 +17,11 @@ const allDocsHelperPlugin = {
     )
   },
   async deleteAllDocsP(db = this) {
-    const allDocsRes = await db.allDocs({ include_docs: true })
-    const deletePromises = allDocsResultToDocs(allDocsRes).map(doc =>
-      notesDb.put({ ...doc, _deleted: true }),
+    const docs = await db.getAllDocsP()
+    const deleteRes = await db.bulkDocs(
+      docs.map(R.mergeLeft({ _deleted: true })),
     )
-    const deleteRes = await Promise.all(deletePromises)
-    console.debug(`deleteRes`, deleteRes)
-    return deleteRes
+    console.log(`deleteRes`, deleteRes)
   },
 }
 

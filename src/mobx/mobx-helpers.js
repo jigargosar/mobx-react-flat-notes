@@ -79,3 +79,15 @@ export function boolObservable(ini) {
   })
   return obs
 }
+
+export function stringObservable(ini) {
+  const obs = valueObservable(ini).extend({
+    get trimmed() {
+      return obs.get().trim()
+    },
+    get isBlank() {
+      return obs.trimmed === ''
+    },
+  })
+  return obs
+}

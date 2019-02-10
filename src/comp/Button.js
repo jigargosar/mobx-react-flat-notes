@@ -55,3 +55,14 @@ export const HeaderButton = observer(props => {
 })
 
 HeaderButton.displayName = 'HeaderButton'
+
+const createButtonComponent = className => {
+  const defaultProps = R.pipe(
+    R.mergeDeepRight({
+      type: 'button',
+      className,
+      children: '<no-label>',
+    }),
+  )
+  return props => React.createElement('button', defaultProps(props))
+}

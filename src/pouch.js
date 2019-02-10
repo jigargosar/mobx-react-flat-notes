@@ -20,7 +20,7 @@ const getAllDocsPlugin = {
 
 PouchDb.plugin(getAllDocsPlugin)
 
-export const notesDb = new PouchDb('flat-notes-notesDb')
+export const notesDb = new PouchDb('flat-notes-db')
 
 if (process.env.NODE_ENV !== 'production') {
   window.notesDb = notesDb

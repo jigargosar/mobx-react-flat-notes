@@ -15,6 +15,7 @@ function createState() {
     {
       noteList: m.observable.array([]),
       selectedNoteId: null,
+      pouchRemoteUrl: '',
       get displayNotes() {
         return state.noteList
       },
@@ -79,12 +80,22 @@ function hydrateUIState() {
   if (uiState) {
     state.selectedNoteId = uiState.selectedNoteId
   }
+  const settings = getCached('app-user-settings')
+  if (settings) {
+    state.pouchRemoteUrl = settings.pouchRemoteUrl
+  }
 }
 
 const pickUIState = R.pick(['selectedNoteId'])
 
 function cacheUIState() {
   setCache('app-ui-state', pickUIState(state))
+}
+
+const pickUserSettings = R.pick(['pouchRemoteUrl'])
+
+function cacheUserSettings() {
+  setCache('app-user-settings', pickUserSettings(state))
 }
 
 async function hydrateFromPouchDb() {
@@ -139,16 +150,30 @@ function setSelectedNoteContent(newContent) {
 
 /*  ACTIONS  */
 
+function combineDisposers(disposables) {
+  validate('A', arguments)
+  return () => {
+    disposables.forEach(d => d())
+  }
+}
+
 const actions = wrapActions({
   async init() {
     hydrateUIState()
     await hydrateFromPouchDb()
-    return m.autorun(cacheUIState, { name: 'cache-ui-state' })
+    return combineDisposers([
+      m.autorun(cacheUIState, { name: 'cache-ui-state' }),
+      m.autorun(cacheUserSettings, { name: 'cache-user-settings' }),
+    ])
   },
   addNewNote,
   reset,
   setSelectedNote,
   setSelectedNoteContent,
+  setPouchUrl(newUrl) {
+    validate('S', arguments)
+    state.pouchRemoteUrl = newUrl
+  },
 })
 
 actions.init().catch(console.error)

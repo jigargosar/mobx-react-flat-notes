@@ -3,12 +3,16 @@ import React, { useCallback, useImperativeHandle, useRef } from 'react'
 import { FocusTrapZone } from 'office-ui-fabric-react'
 import { useBoolObservable, useStringObservable } from '../mobx/mobx-hooks'
 import { pd, useOnEsc } from '../hooks/keyboard'
-import * as R from 'ramda'
 import { FlatButton, PrimaryButton } from './Button'
+import { useAppStore } from '../state'
 
 const PouchSettingsDialog = observer(
   (_, ref) => {
-    const pouchUrl = useStringObservable(() => 'no url')
+    const [state, actions] = useAppStore()
+
+    const pouchUrl = useStringObservable(() => state.pouchRemoteUrl)
+    const onSubmitHandler = () => actions.setPouchUrl(pouchUrl.get())
+
     const backdropRef = useRef(null)
 
     const open = useBoolObservable()
@@ -36,7 +40,7 @@ const PouchSettingsDialog = observer(
               className="relative w-80 mw6 bg-white shadow-1"
               // style={{ top: '-15%' }}
             >
-              <form onSubmit={pd(R.identity)}>
+              <form onSubmit={pd(onSubmitHandler)}>
                 <div className="pv4 ph3 f3 fw3 bg-blue white">
                   Pouch Sync Settings
                 </div>

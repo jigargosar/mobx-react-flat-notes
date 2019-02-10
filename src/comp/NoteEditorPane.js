@@ -17,7 +17,7 @@ function useMonacoEditor() {
 
   const editorWillMount = useCallback(monaco => {}, [])
 
-  const editorDidMount = useCallback(editor => {
+  const editorDidMount = useCallback(async editor => {
     editorRef.current = editor
     // console.log(
     //   `editor.getSupportedActions()`,
@@ -25,10 +25,11 @@ function useMonacoEditor() {
     // )
     const action = editor.getAction('editor.action.toggleTabFocusMode')
     // console.log(`action`, action)
-    action
-      .run()
-      .then(console.log)
-      .catch(console.error)
+    const actionResult = await action.run()
+    console.log(
+      `[actionResult] editor.action.toggleTabFocusMode`,
+      actionResult,
+    )
   }, [])
 
   return [editorWillMount, editorDidMount, editorRef]

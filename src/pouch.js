@@ -7,14 +7,14 @@ if (process.env.NODE_ENV !== 'production') {
   window.notesDb = notesDb
 }
 
-export const getDocsFromAllDocs = allDocsRes => {
+export const allDocsResultToDocs = allDocsRes => {
   console.debug(`allDocsRes`, allDocsRes)
   return allDocsRes.rows.map(R.prop('doc'))
 }
 
 export async function deleteAllDocs(db) {
   const allDocsRes = await db.allDocs({ include_docs: true })
-  const deletePromises = getDocsFromAllDocs(allDocsRes).map(doc =>
+  const deletePromises = allDocsResultToDocs(allDocsRes).map(doc =>
     notesDb.put({ ...doc, _deleted: true }),
   )
   const deleteRes = await Promise.all(deletePromises)

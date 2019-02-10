@@ -4,7 +4,7 @@ import faker from 'faker'
 import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
-import { deleteAllDocs, getDocsFromAllDocs, notesDb } from './pouch'
+import { allDocsResultToDocs, deleteAllDocs, notesDb } from './pouch'
 import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
@@ -99,7 +99,7 @@ function cacheUserSettings() {
 
 async function hydrateFromPouchDb() {
   const allDocsRes = await notesDb.allDocs({ include_docs: true })
-  const notes = getDocsFromAllDocs(allDocsRes).map(noteFromPouchDoc)
+  const notes = allDocsResultToDocs(allDocsRes).map(noteFromPouchDoc)
   console.debug(`[pouch] hydrating notes`, notes)
   state.noteList.replace(notes)
 }

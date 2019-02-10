@@ -5,6 +5,14 @@ import MonacoEditor from 'react-monaco-editor'
 import { turnOffTabFocusMode } from '../monaco-helpers'
 import { useAutoSizeMonacoEditorEffect } from '../hooks/monaco-hooks'
 
+import { editor } from 'monaco-editor'
+
+console.log(`monaco editor`, editor)
+
+if (process.env.NODE_ENV !== 'production') {
+  window.me = editor
+}
+
 function setupMonacoEditor(codeEditor, monaco) {
   monaco.editor.setTheme('vs-dark')
   const model = codeEditor.getModel()

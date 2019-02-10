@@ -29,7 +29,7 @@ const App = observer(() => {
           >
             <NoteListSideBar />
           </div>
-          <div className="flex-auto measure-wide ba b--black-10 ">
+          <div className="flex-auto measure-wide bn b--black-10 ">
             <NoteEditorPane />
           </div>
         </div>

@@ -28,7 +28,7 @@ const PouchSettingsDialog = observer(
     const onKeyDownHandler = useOnEsc(pd(open.not))
 
     return (
-      !open.get() && (
+      open.get() && (
         <FocusTrapZone>
           <div
             className="absolute absolute--fill flex items-center justify-center bg-black-50"

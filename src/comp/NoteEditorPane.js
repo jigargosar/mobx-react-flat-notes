@@ -27,6 +27,16 @@ function useMonacoEditor() {
     codeEditorRef.current = codeEditor
 
     codeEditor.getModel().updateOptions({ tabSize: 2, insertSpaces: true })
+    codeEditor.updateOptions({
+      lineNumbers: 'on',
+      language: 'markdown',
+      minimap: { enabled: false },
+      wordWrap: 'bounded',
+      wrappingIndent: 'same',
+      // useTabStops: true,
+      autoIndent: true,
+      renderIndentGuides: false,
+    })
     turnOffTabFocusMode(codeEditor)
   }, [])
 
@@ -47,16 +57,6 @@ export const NoteEditorPane = observer(() => {
         editorWillMount={editorWillMount}
         value={state.selectedNoteContent || ''}
         onChange={value => actions.setSelectedNoteContent(value)}
-        options={{
-          lineNumbers: 'on',
-          language: 'markdown',
-          minimap: { enabled: false },
-          wordWrap: 'bounded',
-          wrappingIndent: 'same',
-          // useTabStops: true,
-          autoIndent: true,
-          renderIndentGuides: false,
-        }}
       />
     </div>
   )

@@ -29,8 +29,6 @@ const PouchSettingsDialog = observer(
     useDisposable(
       () =>
         m.autorun(() => {
-          // pouchUrl.set(state.pouchRemoteUrl)
-          // debugger
           if (!open.get()) {
             pouchUrl.set(state.pouchRemoteUrl)
           }

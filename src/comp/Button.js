@@ -1,32 +1,15 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import * as PropTypes from 'prop-types'
 import * as R from 'ramda'
 
 function mergeCls(def, cls) {
   return Object.assign({}, def, cls)
 }
 
-const primaryButtonCls = {
-  root:
-    'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white ',
-}
-
-export const PrimaryButton = observer(({ cls, label, ...p }) => {
-  cls = mergeCls(primaryButtonCls, cls)
-  return (
-    <button type="button" className={cls.root} {...p}>
-      {label}
-    </button>
-  )
-})
-
-PrimaryButton.propTypes = {
-  label: PropTypes.string.isRequired,
-}
-
-PrimaryButton.displayName = 'PrimaryButton'
-
+export const PrimaryButton = createButtonComponent(
+  'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent bg-blue white ba b--white',
+  'PrimaryButton',
+)
 export const FlatButton = createButtonComponent(
   'pv2 ph3 ma0 mh1 pointer underline-hover bg-transparent ba b--transparent',
   'FlatButton',

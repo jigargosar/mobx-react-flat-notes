@@ -13,6 +13,10 @@ const PouchSettingsDialog = observer(
 
     const pouchUrl = useStringObservable(() => state.pouchRemoteUrl)
     const onSubmitHandler = () => actions.setPouchUrl(pouchUrl.get())
+    const onCancelHandler = () => {
+      open.off()
+      pouchUrl.set(state.pouchRemoteUrl)
+    }
 
     const backdropRef = useRef(null)
 
@@ -73,7 +77,7 @@ const PouchSettingsDialog = observer(
                   </div>
                   <div className="pa3 bn b--light-gray flex flex-row-reverse">
                     <PrimaryButton type="submit" label="Sync" />
-                    <FlatButton onClick={open.off} label="Cancel" />
+                    <FlatButton onClick={onCancelHandler} label="Cancel" />
                   </div>
                 </form>
               </div>

@@ -5,6 +5,24 @@ import MonacoEditor from 'react-monaco-editor'
 import { turnOffTabFocusMode } from '../monaco-helpers'
 import { useAutoSizeMonacoEditorEffect } from '../hooks/monaco-hooks'
 
+function setupMonacoEditor(codeEditor, monaco) {
+  const model = codeEditor.getModel()
+  model.updateOptions({ tabSize: 2, insertSpaces: true })
+  monaco.editor.setModelLanguage(model, 'markdown')
+
+  codeEditor.updateOptions({
+    lineNumbers: 'on',
+    minimap: { enabled: false },
+    wordWrap: 'bounded',
+    wrappingIndent: 'same',
+    useTabStops: true,
+    autoIndent: true,
+    renderIndentGuides: false,
+  })
+
+  turnOffTabFocusMode(codeEditor)
+}
+
 export const NoteEditorPane = observer(() => {
   const codeEditorRef = useRef(null)
 
@@ -15,21 +33,7 @@ export const NoteEditorPane = observer(() => {
   const editorDidMount = useCallback(async (codeEditor, monaco) => {
     codeEditorRef.current = codeEditor
 
-    const model = codeEditor.getModel()
-    model.updateOptions({ tabSize: 2, insertSpaces: true })
-    monaco.editor.setModelLanguage(model, 'markdown')
-
-    codeEditor.updateOptions({
-      lineNumbers: 'on',
-      minimap: { enabled: false },
-      wordWrap: 'bounded',
-      wrappingIndent: 'same',
-      useTabStops: true,
-      autoIndent: true,
-      renderIndentGuides: false,
-    })
-
-    turnOffTabFocusMode(codeEditor)
+    setupMonacoEditor(codeEditor, monaco)
   }, [])
 
   return (

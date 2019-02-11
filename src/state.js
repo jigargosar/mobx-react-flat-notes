@@ -49,6 +49,9 @@ function createState() {
 }
 
 const state = createState()
+if (process.env.NODE_ENV !== 'production') {
+  window.state = state
+}
 
 /*  NOTE HELPERS  */
 
@@ -197,10 +200,6 @@ async function setPouchUrlAndStartSync(newUrl) {
     retry: true,
   })
   state.syncRef = sync
-
-  if (process.env.NODE_ENV !== 'production') {
-    window.remote = remoteDb
-  }
 
   multiEventStream(
     ['change', 'paused', 'active', 'denied', 'complete', 'error'],

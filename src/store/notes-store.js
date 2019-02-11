@@ -2,6 +2,7 @@ import { observable } from 'mobx'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { allDocsResultToDocs, notesDb } from '../pouch'
+import * as R from 'ramda'
 
 class SubStore {
   rootStore
@@ -31,9 +32,15 @@ class Note extends SubStore {
     })
   }
 
-  static fromPouch(rootStore, { _id, _rev, title, content }) {
-    return new Note(rootStore, { id: _id, rev: _rev, title, content })
-  }
+  static fromPouch = R.curry(
+    (rootStore, { _id, _rev, title, content }) =>
+      new Note(rootStore, {
+        id: _id,
+        rev: _rev,
+        title,
+        content,
+      }),
+  )
 }
 
 class NotesStore extends SubStore {

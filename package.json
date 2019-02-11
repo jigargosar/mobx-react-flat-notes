@@ -31,9 +31,11 @@
   "scripts": {
     "start:orig": "react-scripts start",
     "start:rewire": "react-app-rewired start",
-    "start": "npm run start:rewire",
+    "start": "yarn start:rewire",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test:orig": "react-scripts test",
+    "test:rewire": "react-app-rewired test",
+    "test": "yarn test:rewire",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

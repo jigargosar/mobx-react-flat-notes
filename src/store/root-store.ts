@@ -49,9 +49,7 @@ export const NoteStore = t
       addNew: () => self.map.put(newNote()),
       hydrate: async () =>
         self.putAll(
-          await getEnv(self)
-            .notesDb._fetchAll()
-            .map(noteFromPouchDoc),
+          (await getEnv(self).notesDb._fetchAll()).map(noteFromPouchDoc),
         ),
     }
   })

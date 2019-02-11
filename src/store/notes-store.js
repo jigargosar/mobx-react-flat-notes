@@ -32,7 +32,12 @@ class Note extends SubStore {
 }
 
 class NotesStore extends SubStore {
-  @observable _list = []
+  @observable list = []
+
+  addNew() {
+    const note = Note.create(this.rootStore)
+    this.list.unshift(note)
+  }
 }
 
 class RootStore {

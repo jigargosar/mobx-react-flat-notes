@@ -1,4 +1,4 @@
-import { fromKefirStream, wrapActions } from './mobx/mobx-helpers'
+import { wrapActions } from './mobx/mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import * as R from 'ramda'
@@ -6,6 +6,7 @@ import validate from 'aproba'
 import * as m from 'mobx'
 import {
   allDocsResultToDocs,
+  createSyncStateFromStream,
   deleteAllDocs,
   isValidRemotePouchUrl,
   notesDb,
@@ -13,7 +14,6 @@ import {
 import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
-import { multiEventStream } from './kefir-helpers'
 
 function createState() {
   const state = m.observable.object(
@@ -194,50 +194,13 @@ function cancelSync() {
   }
 }
 
-function createSyncStateFromStream(sync) {
-  const pickSyncProps = R.pick([
-    'canceled',
-    'push',
-    'pull',
-    'pushPaused',
-    'pullPaused',
-  ])
-
-  return fromKefirStream(
-    multiEventStream(sync, [
-      'change',
-      'paused',
-      'active',
-      'denied',
-      'complete',
-      'error',
-    ]).map(([eventName, value]) => {
-      const error = ['denied', 'error'].includes(eventName) ? value : null
-      return {
-        error,
-        eventName,
-        ...pickSyncProps(sync),
-      }
-    }),
-    null,
-  )
-}
-
 async function reStartSync() {
   cancelSync()
   const remoteUrl = state.pouchRemoteUrl
 
   if (!isValidRemotePouchUrl(remoteUrl)) return
 
-  // if (!remoteUrl.startsWith('http://')) {
-  //   throw new Error('Invalid Remote Pouch URL' + remoteUrl)
-  // }
-
   try {
-    // const remoteDb = new PouchDb(remoteUrl, { adapter: 'http' })
-    // const remoteInfo = await remoteDb.info()
-    // console.log(`remoteInfo`, remoteInfo)
-    await fetch(remoteUrl)
     state.syncRef = notesDb.sync(remoteUrl, {
       live: true,
       retry: true,

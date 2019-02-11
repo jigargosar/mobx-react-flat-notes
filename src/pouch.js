@@ -2,6 +2,8 @@ import PouchDb from 'pouchdb-browser'
 import * as R from 'ramda'
 import { renameKeys } from './ramda-helpers'
 import isUrl from 'is-url-superb'
+import { fromKefirStream } from './mobx/mobx-helpers'
+import { multiEventStream } from './kefir-helpers'
 
 const allDocsHelperPlugin = {
   getAllDocsP: async function(db = this) {
@@ -51,4 +53,33 @@ export async function deleteAllDocs(db) {
 
 export function isValidRemotePouchUrl(remoteUrl) {
   return isUrl(remoteUrl) && R.test(/^https?:\/\//i)(remoteUrl)
+}
+
+export function createSyncStateFromStream(sync) {
+  const pickSyncProps = R.pick([
+    'canceled',
+    'push',
+    'pull',
+    'pushPaused',
+    'pullPaused',
+  ])
+
+  return fromKefirStream(
+    multiEventStream(sync, [
+      'change',
+      'paused',
+      'active',
+      'denied',
+      'complete',
+      'error',
+    ]).map(([eventName, value]) => {
+      const error = ['denied', 'error'].includes(eventName) ? value : null
+      return {
+        error,
+        eventName,
+        ...pickSyncProps(sync),
+      }
+    }),
+    null,
+  )
 }

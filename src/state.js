@@ -12,47 +12,9 @@ import { getCached, setCache } from './dom-helpers'
 import isUrl from 'is-url-superb'
 import PouchDb from 'pouchdb-browser'
 import { multiEventStream } from './highland-helpers'
-import { fromResource } from 'mobx-utils'
+import _ from 'highland'
 
 window.isUrl = isUrl
-
-function createObservableSyncResource(remote, local) {
-  let sync, remoteDb
-  return fromResource(
-    async sink => {
-      try {
-        remoteDb = new PouchDb(state.pouchRemoteUrl)
-        const remoteInfo = await remoteDb.info()
-        console.log(`remoteInfo`, remoteInfo)
-
-        sync = local.sync(remote, {
-          live: true,
-          retry: true,
-        })
-
-        multiEventStream(
-          ['change', 'paused', 'active', 'denied', 'complete', 'error'],
-          sync,
-        ).each(() => sink(sync))
-
-        // sink the current state
-        // sink(['init', null, sync])
-        sink(sync)
-      } catch (e) {
-        console.error(`e`, e)
-        sink(null)
-      }
-    },
-    () => {
-      if (sync) {
-        sync.cancel()
-      }
-      if (remoteDb) {
-        remoteDb.close()
-      }
-    },
-  )
-}
 
 function createState() {
   const state = m.observable.object(
@@ -60,10 +22,7 @@ function createState() {
       noteList: m.observable.array([]),
       selectedNoteId: null,
       pouchRemoteUrl: '',
-      syncResource: null,
-      get syncRef() {
-        return state.syncResource && state.syncResource.current()
-      },
+      syncRef: null,
       get displayNotes() {
         return state.noteList
       },
@@ -216,33 +175,46 @@ function cancelSync() {
 
 async function reStartSync() {
   cancelSync()
+  const remoteUrl = state.pouchRemoteUrl
 
-  // const sync = notesDb.sync(state.pouchRemoteUrl, {
-  //   live: true,
-  //   retry: true,
-  // })
-  // state.syncRef = sync
-  //
-  // multiEventStream(
-  //   ['change', 'paused', 'active', 'denied', 'complete', 'error'],
-  //   sync,
-  // ).each(console.log)
-  state.syncResource = createObservableSyncResource(
-    state.pouchRemoteUrl,
-    notesDb,
+  if (!remoteUrl.startsWith('http://')) {
+    throw new Error('Invalid Remote Pouch URL' + remoteUrl)
+  }
+
+  const remoteDb = new PouchDb(remoteUrl)
+  const remoteInfo = await remoteDb.info()
+  console.log(`remoteInfo`, remoteInfo)
+
+  state.syncRef = notesDb.sync(remoteUrl, {
+    live: true,
+    retry: true,
+  })
+
+  const syncEventStream = multiEventStream(
+    ['change', 'paused', 'active', 'denied', 'complete', 'error'],
+    state.syncRef,
   )
+
+  syncEventStream
+    .tap(_.log)
+    .each(([name, message, sync]) => {
+      console.log(name, message, sync)
+      if (name === 'complete') {
+        syncEventStream.end()
+      }
+    })
+    .done(() => {
+      console.log('done')
+      cancelSync()
+    })
 }
 
 async function setPouchUrlAndStartSync(newUrl) {
   validate('S', arguments)
   cancelSync()
   state.pouchRemoteUrl = newUrl
-  await reStartSync()
 
-  // if (!newUrl.startsWith('http://')) {
-  //   throw new Error('Invalid Remote Pouch URL' + newUrl)
-  //
-  // }
+  await reStartSync()
 }
 
 const actions = wrapActions({
@@ -265,10 +237,6 @@ const actions = wrapActions({
 actions.init().catch(console.error)
 
 /*  HOOKS  */
-
-export function useAppActions() {
-  return actions
-}
 
 export function useAppStore() {
   return [state, actions]

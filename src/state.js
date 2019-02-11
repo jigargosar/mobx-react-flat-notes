@@ -12,8 +12,32 @@ import { getCached, setCache } from './dom-helpers'
 import isUrl from 'is-url-superb'
 import PouchDb from 'pouchdb-browser'
 import { multiEventStream } from './highland-helpers'
+import { fromResource } from 'mobx-utils'
 
 window.isUrl = isUrl
+
+function createObservableSyncState(remote, local) {
+  let sync
+  return fromResource(
+    sink => {
+      sync = notesDb.sync(state.pouchRemoteUrl, {
+        live: true,
+        retry: true,
+      })
+      multiEventStream(
+        ['change', 'paused', 'active', 'denied', 'complete', 'error'],
+        sync,
+      ).each(() => sink(sync))
+
+      // sink the current state
+      // sink(['init', null, sync])
+      sink(sync)
+    },
+    () => {
+      sync.cancel()
+    },
+  )
+}
 
 function createState() {
   const state = m.observable.object(
@@ -21,7 +45,10 @@ function createState() {
       noteList: m.observable.array([]),
       selectedNoteId: null,
       pouchRemoteUrl: '',
-      syncRef: null,
+      syncResource: null,
+      get syncRef() {
+        return state.syncResource && state.syncResource.current()
+      },
       get displayNotes() {
         return state.noteList
       },
@@ -167,8 +194,8 @@ function combineDisposers(disposables) {
 }
 
 function cancelSync() {
-  if (state.syncRef) {
-    state.syncRef.cancel()
+  if (state.syncResource) {
+    state.syncResource.current().cancel()
   }
 }
 
@@ -178,16 +205,17 @@ async function reStartSync() {
   const remoteInfo = await remoteDb.info()
   console.log(`remoteInfo`, remoteInfo)
 
-  const sync = notesDb.sync(state.pouchRemoteUrl, {
-    live: true,
-    retry: true,
-  })
-  state.syncRef = sync
-
-  multiEventStream(
-    ['change', 'paused', 'active', 'denied', 'complete', 'error'],
-    sync,
-  ).each(console.log)
+  // const sync = notesDb.sync(state.pouchRemoteUrl, {
+  //   live: true,
+  //   retry: true,
+  // })
+  // state.syncResource = sync
+  //
+  // multiEventStream(
+  //   ['change', 'paused', 'active', 'denied', 'complete', 'error'],
+  //   sync,
+  // ).each(console.log)
+  state.syncResource = createObservableSyncState(state.pouchRemoteUrl)
 }
 
 async function setPouchUrlAndStartSync(newUrl) {
@@ -222,10 +250,6 @@ const actions = wrapActions({
 actions.init().catch(console.error)
 
 /*  HOOKS  */
-
-export function useAppState() {
-  return state
-}
 
 export function useAppActions() {
   return actions

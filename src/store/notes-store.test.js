@@ -14,5 +14,5 @@ test('pouch', async () => {
   const sync = db.sync(remoteDb)
   await sync
 
-  console.log(`await fetchAllDocs(db)`, R.take(2)(await db.getAllDocsP()))
+  console.log(`await fetchAllDocs(db)`, R.take(2)(await db._fetchAll()))
 })

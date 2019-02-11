@@ -71,7 +71,7 @@ export class NotesDb {
   }
 
   fetchAllDocs() {
-    return this.db.getAllDocsP()
+    return this.db._fetchAll()
   }
 }
 

@@ -10,7 +10,6 @@ import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
 
 import isUrl from 'is-url-superb'
-import PouchDb from 'pouchdb-browser'
 import { multiEventStream } from './kefir-helpers'
 
 window.isUrl = isUrl
@@ -213,26 +212,36 @@ function createSyncState(sync) {
   )
 }
 
+function isValidRemotePouchUrl(remoteUrl) {
+  return isUrl(remoteUrl) && R.test(/^https?:\/\//i, remoteUrl)
+}
+
 async function reStartSync() {
   cancelSync()
   const remoteUrl = state.pouchRemoteUrl
+
+  if (!(isUrl(remoteUrl) && isValidRemotePouchUrl(remoteUrl))) return
 
   // if (!remoteUrl.startsWith('http://')) {
   //   throw new Error('Invalid Remote Pouch URL' + remoteUrl)
   // }
 
   try {
-    const remoteDb = new PouchDb(remoteUrl, { adapter: 'http' })
-    const remoteInfo = await remoteDb.info()
-    console.log(`remoteInfo`, remoteInfo)
+    // const remoteDb = new PouchDb(remoteUrl, { adapter: 'http' })
+    // const remoteInfo = await remoteDb.info()
+    // console.log(`remoteInfo`, remoteInfo)
+    await fetch(remoteUrl)
     state.syncRef = notesDb.sync(remoteUrl, {
       live: true,
       retry: true,
     })
     state._syncStateFromStream = createSyncState(state.syncRef)
   } catch (e) {
-    console.log('error', e)
-    state._syncStateFromStream = { error: e }
+    console.error(`e`, e)
+    state._syncStateFromStream = {
+      current: { error: e },
+      dispose: R.identity,
+    }
   }
 }
 

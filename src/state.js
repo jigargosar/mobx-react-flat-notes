@@ -223,7 +223,7 @@ function createSyncStateObservable(sync) {
 
     unsubscriber = () => sub.unsubscribe()
   }
-  return fromResource(subscriber, unsubscriber)
+  return fromResource(subscriber, unsubscriber, null)
 }
 
 async function reStartSync() {

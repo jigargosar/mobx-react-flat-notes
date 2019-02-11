@@ -31,14 +31,14 @@ const AppHeader = observer(({ openPouchSettingsDialog }) => {
     <div className="flex justify-between">
       <div className="ml2 pv2 flex items-center us-none ttu b">FN</div>
       <div className="flex items-center">
-        <i
-          className="material-icons md-light_  md-18 md-24"
-          title={syncIconProps.errorMsg}
-        >
-          {syncIconProps.iconName}
-        </i>
         <HeaderButton onClick={openPouchSettingsDialog}>
-          <div className="ml2">Sync Settings</div>
+          {/*<div className="ml2">Sync Settings</div>*/}
+          <i
+            className="material-icons md-light_  md-18 md-24"
+            title={syncIconProps.errorMsg}
+          >
+            {syncIconProps.iconName}
+          </i>
         </HeaderButton>
         <HeaderButton onClick={actions.addNewNote}>Add</HeaderButton>
         <HeaderButton onClick={actions.reset}>Reset</HeaderButton>

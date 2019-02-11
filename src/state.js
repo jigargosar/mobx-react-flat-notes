@@ -178,6 +178,14 @@ function cancelSync() {
 }
 
 function createSyncStateObservable(sync) {
+  const pickSyncProps = R.pick([
+    'canceled',
+    'push',
+    'pull',
+    'pushPaused',
+    'pullPaused',
+  ])
+
   let disposer = R.identity
   return fromResource(sink => {
     const sub = multiEventStream(sync, [
@@ -188,8 +196,18 @@ function createSyncStateObservable(sync) {
       'complete',
       'error',
     ]).observe(
-      v => console.log('value', v),
+      ([eventName, value]) => {
+        const error = ['denied', 'error'].includes(eventName)
+          ? value
+          : null
+        sink({
+          error,
+          eventName,
+          ...pickSyncProps(sync),
+        })
+      },
       error => {
+        debugger
         console.error(error)
       },
       () => {

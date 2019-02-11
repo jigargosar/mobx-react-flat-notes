@@ -180,7 +180,7 @@ function cancelSync() {
 function createSyncStateObservable(sync) {
   let disposer = R.identity
   return fromResource(sink => {
-    const sub = multiEventStream(state.syncRef, [
+    const sub = multiEventStream(sync, [
       'change',
       'paused',
       'active',

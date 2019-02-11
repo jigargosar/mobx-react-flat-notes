@@ -211,10 +211,6 @@ async function setPouchUrlAndStartSync(newUrl) {
   if (process.env.NODE_ENV !== 'production') {
     window.sync = sync
   }
-  // const notesDbInfo = await notesDb.info()
-  // console.log(`notesDbInfo`, notesDbInfo)
-
-  // sync.cancel(); // whenever you want to cancel
 }
 
 const actions = wrapActions({

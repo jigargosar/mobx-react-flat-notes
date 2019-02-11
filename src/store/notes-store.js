@@ -57,7 +57,7 @@ class NotesStore extends SubStore {
 
   async hydrate() {
     const notes = (await this.ndb.fetchAllDocs()).map(
-      Note.fromPouch(rootStore),
+      Note.fromPouch(this.rootStore),
     )
     this.list.replace(notes)
   }
@@ -66,8 +66,8 @@ class NotesStore extends SubStore {
 export class NotesDb {
   db
 
-  constructor() {
-    this.db = new PouchDb('flat-notes-db')
+  constructor(db) {
+    this.db = db || new PouchDb('flat-notes-db')
   }
 
   fetchAllDocs() {
@@ -75,7 +75,7 @@ export class NotesDb {
   }
 }
 
-class RootStore {
+export class RootStore {
   @observable notesStore
   @observable notesDb
 
@@ -88,5 +88,3 @@ class RootStore {
     return new RootStore()
   }
 }
-
-export const rootStore = RootStore.create()

@@ -13,5 +13,5 @@ test('pouch', async () => {
   const db = new PouchDb('Foo')
   const info = await db.info()
   console.log(`info`, info)
-  console.log(`new NotesDb()`, new NotesDb())
+  console.log(`new NotesDb()`, new NotesDb(db))
 })

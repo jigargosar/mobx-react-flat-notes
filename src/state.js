@@ -167,8 +167,12 @@ function combineDisposers(disposables) {
 }
 
 function cancelSync() {
-  if (state.syncRef) {
-    state.syncRef.cancel()
+  const { syncSubRef, syncRef } = state
+  if (syncRef) {
+    syncRef.cancel()
+  }
+  if (syncSubRef) {
+    syncSubRef.unsubscribe()
   }
 }
 
@@ -189,7 +193,7 @@ async function reStartSync() {
     retry: true,
   })
 
-  const syncEventStream = multiEventStream(state.syncRef, [
+  state.syncSubRef = multiEventStream(state.syncRef, [
     'change',
     'paused',
     'active',
@@ -197,8 +201,6 @@ async function reStartSync() {
     'complete',
     'error',
   ])
-
-  const sub = syncEventStream
     .log('full')
     .map(([eventName, value, emitter]) =>
       R.pick(['canceled', 'push', 'pull', 'pushPaused', 'pullPaused'])(

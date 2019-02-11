@@ -194,7 +194,7 @@ function cancelSync() {
   }
 }
 
-function createSyncState(sync) {
+function syncStateFromStream(sync) {
   const pickSyncProps = R.pick([
     'canceled',
     'push',
@@ -242,7 +242,7 @@ async function reStartSync() {
       live: true,
       retry: true,
     })
-    state._syncStateFromStream = createSyncState(state.syncRef)
+    state._syncStateFromStream = syncStateFromStream(state.syncRef)
   } catch (e) {
     console.error(`e`, e)
     state._syncStateFromStream = {

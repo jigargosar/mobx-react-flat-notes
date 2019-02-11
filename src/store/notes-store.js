@@ -56,7 +56,9 @@ class NotesStore extends SubStore {
   }
 
   async hydrate() {
-    const notes = this.ndb.fetchAllDocs().map(Note.fromPouch(rootStore))
+    const notes = (await this.ndb.fetchAllDocs()).map(
+      Note.fromPouch(rootStore),
+    )
     this.list.replace(notes)
   }
 }

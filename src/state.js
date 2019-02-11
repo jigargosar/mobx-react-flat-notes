@@ -12,6 +12,7 @@ import { getCached, setCache } from './dom-helpers'
 import isUrl from 'is-url-superb'
 import PouchDb from 'pouchdb-browser'
 import { multiEventStream } from './kefir-helpers'
+import { fromResource } from 'mobx-utils'
 
 window.isUrl = isUrl
 
@@ -174,6 +175,31 @@ function cancelSync() {
   if (syncSubRef) {
     syncSubRef.unsubscribe()
   }
+}
+
+function createSyncStateObservable(sync) {
+  let disposer = R.identity
+  return fromResource(sink => {
+    const sub = multiEventStream(state.syncRef, [
+      'change',
+      'paused',
+      'active',
+      'denied',
+      'complete',
+      'error',
+    ]).observe(
+      v => console.log('value', v),
+      error => {
+        console.error(error)
+      },
+      () => {
+        debugger
+        console.error('end')
+      },
+    )
+
+    disposer = () => sub.unsubscribe()
+  }, disposer)
 }
 
 async function reStartSync() {

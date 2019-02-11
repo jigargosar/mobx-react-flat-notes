@@ -1,8 +1,4 @@
-const {
-  override,
-  addDecoratorsLegacy,
-  babelInclude,
-} = require('customize-cra')
+const { override, useBabelRc, babelInclude } = require('customize-cra')
 const path = require('path')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 
@@ -11,7 +7,8 @@ module.exports = override(
     path.resolve('src'), // make sure you link your own source
     path.resolve('node_modules/react-monaco-editor'),
   ]),
-  addDecoratorsLegacy(),
+  // addDecoratorsLegacy(),
+  useBabelRc(),
   config => {
     config.plugins.push(new MonacoWebpackPlugin())
     return config

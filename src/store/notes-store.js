@@ -63,7 +63,7 @@ class NotesStore extends SubStore {
   }
 }
 
-class NotesDb {
+export class NotesDb {
   db
 
   constructor() {

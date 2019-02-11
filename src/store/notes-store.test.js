@@ -1,4 +1,5 @@
 import PouchDb from 'pouchdb-browser'
+import { NotesDb } from './notes-store'
 
 PouchDb.plugin(require('pouchdb-adapter-memory'))
 
@@ -12,4 +13,5 @@ test('pouch', async () => {
   const db = new PouchDb('Foo')
   const info = await db.info()
   console.log(`info`, info)
+  console.log(`new NotesDb()`, new NotesDb())
 })

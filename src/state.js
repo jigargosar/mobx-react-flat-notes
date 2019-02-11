@@ -206,9 +206,6 @@ async function setPouchUrlAndStartSync(newUrl) {
     ['change', 'paused', 'active', 'denied', 'complete', 'error'],
     sync,
   ).each(console.log)
-  if (process.env.NODE_ENV !== 'production') {
-    window.sync = sync
-  }
 }
 
 const actions = wrapActions({

@@ -22,9 +22,9 @@ function createState() {
       selectedNoteId: null,
       pouchRemoteUrl: '',
       syncRef: null,
-      syncStateObservable: null,
+      _syncState: null,
       get syncState() {
-        return idx(state, _ => _.syncStateObservable.current)
+        return idx(state, _ => _._syncState.current)
       },
       get displayNotes() {
         return state.noteList
@@ -175,12 +175,12 @@ function combineDisposers(disposables) {
 }
 
 function cancelSync() {
-  const { syncRef, syncStateObservable } = state
+  const { syncRef, _syncState } = state
   if (syncRef) {
     syncRef.cancel()
   }
-  if (syncStateObservable) {
-    syncStateObservable.dispose()
+  if (_syncState) {
+    _syncState.dispose()
   }
 }
 
@@ -229,7 +229,7 @@ async function reStartSync() {
     live: true,
     retry: true,
   })
-  state.syncStateObservable = createSyncState(state.syncRef)
+  state._syncState = createSyncState(state.syncRef)
 }
 
 async function setPouchUrlAndStartSync(newUrl) {

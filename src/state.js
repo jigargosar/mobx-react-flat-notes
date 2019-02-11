@@ -30,6 +30,11 @@ function createState() {
       get syncState() {
         return idx(state, _ => _._syncStateFromStream.current)
       },
+      get syncErrorMsg() {
+        return isValidRemotePouchUrl(state.pouchRemoteUrl)
+          ? null
+          : 'Invalid Pouch URL'
+      },
       get displayNotes() {
         return state.noteList
       },

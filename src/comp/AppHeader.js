@@ -16,7 +16,7 @@ function syncToIconName(sync) {
 
 const AppHeader = observer(({ openPouchSettingsDialog }) => {
   const [state, actions] = useAppStore()
-  const syncIconName = syncToIconName(state.syncResource)
+  const syncIconName = syncToIconName(state.syncRef)
 
   return (
     <div className="flex justify-between">

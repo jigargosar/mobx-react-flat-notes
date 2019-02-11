@@ -194,8 +194,8 @@ function combineDisposers(disposables) {
 }
 
 function cancelSync() {
-  if (state.syncResource) {
-    state.syncResource.current().cancel()
+  if (state.syncRef) {
+    state.syncRef.cancel()
   }
 }
 
@@ -209,13 +209,13 @@ async function reStartSync() {
   //   live: true,
   //   retry: true,
   // })
-  // state.syncResource = sync
+  // state.syncRef = sync
   //
   // multiEventStream(
   //   ['change', 'paused', 'active', 'denied', 'complete', 'error'],
   //   sync,
   // ).each(console.log)
-  state.syncResource = createObservableSyncState(state.pouchRemoteUrl)
+  state.syncRef = createObservableSyncState(state.pouchRemoteUrl)
 }
 
 async function setPouchUrlAndStartSync(newUrl) {

@@ -167,7 +167,7 @@ function combineDisposers(disposables) {
 }
 
 function createEventStream(eventName, emitter) {
-  return _(eventName, emitter, arg => [eventName, arg])
+  return _(eventName, emitter, message => [eventName, message, emitter])
 }
 
 function multiEventStream(eventNames, emitter) {
@@ -215,6 +215,7 @@ const actions = wrapActions({
   async init() {
     hydrateUIState()
     await hydrateFromPouchDb()
+    reStartSync().catch(console.error)
     return combineDisposers([
       m.autorun(cacheUIState, { name: 'cache-ui-state' }),
       m.autorun(cacheUserSettings, { name: 'cache-user-settings' }),

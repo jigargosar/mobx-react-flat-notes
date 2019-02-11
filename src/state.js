@@ -10,6 +10,7 @@ import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
 
 import isUrl from 'is-url-superb'
+import _ from 'highland'
 
 window.isUrl = isUrl
 
@@ -162,6 +163,10 @@ function combineDisposers(disposables) {
 
 let syncDisposable = R.identity()
 
+function es(eventName, sync) {
+  return _(eventName, sync, arg => [eventName, arg])
+}
+
 async function setPouchUrlAndStartSync(newUrl) {
   validate('S', arguments)
   state.pouchRemoteUrl = newUrl
@@ -171,11 +176,15 @@ async function setPouchUrlAndStartSync(newUrl) {
   if (!newUrl.startsWith('http://')) {
     throw new Error('Invalid Pouch URL' + newUrl)
   }
-  const sync = notesDb
-    .sync(newUrl, {
-      live: true,
-      retry: true,
-    })
+
+  const sync = notesDb.sync(newUrl, {
+    live: true,
+    retry: true,
+  })
+
+  es('change', sync)
+
+  sync
     .on('change', function(info) {
       // handle change
       console.log('change', info)
@@ -200,14 +209,18 @@ async function setPouchUrlAndStartSync(newUrl) {
       // handle error
       console.log('error', err)
     })
+    .on('*', function(err) {
+      // handle error
+      console.log('error', err)
+    })
 
   syncDisposable = () => {
     sync.cancel()
     syncDisposable = R.identity
   }
 
-  const notesDbInfo = await notesDb.info()
-  console.log(`notesDbInfo`, notesDbInfo)
+  // const notesDbInfo = await notesDb.info()
+  // console.log(`notesDbInfo`, notesDbInfo)
 
   // sync.cancel(); // whenever you want to cancel
 }

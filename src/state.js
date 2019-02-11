@@ -11,8 +11,7 @@ import { getCached, setCache } from './dom-helpers'
 
 import isUrl from 'is-url-superb'
 import PouchDb from 'pouchdb-browser'
-import { multiEventStream } from './highland-helpers'
-import _ from 'highland'
+import { multiEventStream } from './kefir-helpers'
 
 window.isUrl = isUrl
 
@@ -190,22 +189,25 @@ async function reStartSync() {
     retry: true,
   })
 
-  const syncEventStream = multiEventStream(
-    ['change', 'paused', 'active', 'denied', 'complete', 'error'],
-    state.syncRef,
-  )
+  const syncEventStream = multiEventStream(state.syncRef, [
+    'change',
+    'paused',
+    'active',
+    'denied',
+    'complete',
+    'error',
+  ])
 
-  syncEventStream
-    .tap(_.log)
-    .each(([name, message, sync]) => {
-      console.log(name, message, sync)
-      if (name === 'complete') {
-        syncEventStream.end()
-      }
-    })
-    .done(() => {
-      console.log('done')
-      cancelSync()
+  const sub = syncEventStream
+    .log('full')
+    .map(([eventName, value, emitter]) =>
+      R.pick(['canceled', 'push', 'pull', 'pushPaused', 'pullPaused'])(
+        emitter,
+      ),
+    )
+    .observe(v => console.log('value', v), console.error, function() {
+      debugger
+      return console.log('end')
     })
 }
 

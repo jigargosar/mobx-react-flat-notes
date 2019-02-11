@@ -23,7 +23,7 @@ function createState() {
       pouchRemoteUrl: '',
       syncRef: null,
       _syncStateFromStream: null,
-      get syncStateFromStream() {
+      get syncState() {
         return idx(state, _ => _._syncStateFromStream.current)
       },
       get displayNotes() {
@@ -58,7 +58,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 m.autorun(() => {
-  console.log(`state.syncStateFromStream`, state.syncStateFromStream)
+  console.log(`state.syncState`, state.syncState)
 })
 
 /*  NOTE HELPERS  */

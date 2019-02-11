@@ -1,6 +1,6 @@
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { types as t } from 'mobx-state-tree'
+import { getEnv, types as t } from 'mobx-state-tree'
 
 const Note = t.model('Note', {
   id: t.identifier,
@@ -31,6 +31,7 @@ export const NoteStore = t
   })
   .actions(self => ({
     addNew: () => self.map.put(newNote()),
+    hydrate: () => getEnv(self).notesDb._fetchAll,
   }))
 
 // class NoteStore extends SubStore {

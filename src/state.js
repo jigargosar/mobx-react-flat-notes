@@ -12,7 +12,7 @@ import { getCached, setCache } from './dom-helpers'
 import isUrl from 'is-url-superb'
 import PouchDb from 'pouchdb-browser'
 import { multiEventStream } from './kefir-helpers'
-import { fromResource } from 'mobx-utils'
+import { fromStream } from 'mobx-utils'
 
 window.isUrl = isUrl
 
@@ -25,7 +25,7 @@ function createState() {
       syncRef: null,
       syncStateObservable: null,
       get syncState() {
-        return idx(state, _ => _.syncStateObservable.current())
+        return idx(state, _ => _.syncStateObservable.current)
       },
       get displayNotes() {
         return state.noteList
@@ -176,13 +176,16 @@ function combineDisposers(disposables) {
 }
 
 function cancelSync() {
-  const { syncRef } = state
+  const { syncRef, syncStateObservable } = state
   if (syncRef) {
     syncRef.cancel()
   }
+  if (syncStateObservable) {
+    syncStateObservable.dispose()
+  }
 }
 
-function createSyncStateObservable(sync) {
+function createSyncState(sync) {
   const pickSyncProps = R.pick([
     'canceled',
     'push',
@@ -191,39 +194,23 @@ function createSyncStateObservable(sync) {
     'pullPaused',
   ])
 
-  let unsubscriber = R.identity
-  const subscriber = sink => {
-    const sub = multiEventStream(sync, [
-      'change',
-      'paused',
-      'active',
-      'denied',
-      'complete',
-      'error',
-    ]).observe(
-      ([eventName, value]) => {
-        const error = ['denied', 'error'].includes(eventName)
-          ? value
-          : null
-        sink({
-          error,
-          eventName,
-          ...pickSyncProps(sync),
-        })
-      },
-      error => {
-        debugger
-        console.error(error)
-      },
-      () => {
-        debugger
-        console.error('end')
-      },
-    )
+  const stream = multiEventStream(sync, [
+    'change',
+    'paused',
+    'active',
+    'denied',
+    'complete',
+    'error',
+  ]).map(([eventName, value]) => {
+    const error = ['denied', 'error'].includes(eventName) ? value : null
+    return {
+      error,
+      eventName,
+      ...pickSyncProps(sync),
+    }
+  })
 
-    unsubscriber = () => sub.unsubscribe()
-  }
-  return fromResource(subscriber, unsubscriber, null)
+  return fromStream(stream.toESObservable(), null)
 }
 
 async function reStartSync() {
@@ -242,7 +229,7 @@ async function reStartSync() {
     live: true,
     retry: true,
   })
-  state.syncStateObservable = createSyncStateObservable(state.syncRef)
+  state.syncStateObservable = createSyncState(state.syncRef)
 }
 
 async function setPouchUrlAndStartSync(newUrl) {

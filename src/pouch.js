@@ -1,6 +1,7 @@
 import PouchDb from 'pouchdb-browser'
 import * as R from 'ramda'
 import { renameKeys } from './ramda-helpers'
+import isUrl from 'is-url-superb'
 
 const allDocsHelperPlugin = {
   getAllDocsP: async function(db = this) {
@@ -46,4 +47,8 @@ export async function deleteAllDocs(db) {
   const deleteRes = await Promise.all(deletePromises)
   console.debug(`deleteRes`, deleteRes)
   return deleteRes
+}
+
+export function isValidRemotePouchUrl(remoteUrl) {
+  return isUrl(remoteUrl) && R.test(/^https?:\/\//i)(remoteUrl)
 }

@@ -4,7 +4,12 @@ import faker from 'faker'
 import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
-import { allDocsResultToDocs, deleteAllDocs, notesDb } from './pouch'
+import {
+  allDocsResultToDocs,
+  deleteAllDocs,
+  isValidRemotePouchUrl,
+  notesDb,
+} from './pouch'
 import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
@@ -212,15 +217,11 @@ function createSyncState(sync) {
   )
 }
 
-function isValidRemotePouchUrl(remoteUrl) {
-  return isUrl(remoteUrl) && R.test(/^https?:\/\//i, remoteUrl)
-}
-
 async function reStartSync() {
   cancelSync()
   const remoteUrl = state.pouchRemoteUrl
 
-  if (!(isUrl(remoteUrl) && isValidRemotePouchUrl(remoteUrl))) return
+  if (!isValidRemotePouchUrl(remoteUrl)) return
 
   // if (!remoteUrl.startsWith('http://')) {
   //   throw new Error('Invalid Remote Pouch URL' + remoteUrl)

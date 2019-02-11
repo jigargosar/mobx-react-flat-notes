@@ -11,18 +11,19 @@ const Note = t.model('Note', {
 
 function newNote() {
   return Note.create({
-    id: `N:${nanoid()}`,
+    id: `N__${nanoid()}`,
     rev: null,
     title: faker.name.lastName(null),
     content: faker.lorem.lines(),
   })
 }
 
-const noteFromPouchDoc = ({ _id, _rev, ...otherProps }) => ({
-  id: _id,
-  rev: _rev,
-  ...otherProps,
-})
+const noteFromPouchDoc = ({ _id, _rev, ...otherProps }) =>
+  Note.create({
+    id: _id,
+    rev: _rev,
+    ...otherProps,
+  })
 
 const NoteStore = t
   .model('NoteStore', {

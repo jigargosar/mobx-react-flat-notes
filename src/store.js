@@ -10,7 +10,7 @@ import {
   deleteAllDocs,
   isValidRemotePouchUrl,
   notesDb,
-} from './pouch'
+} from './pouch-helpers'
 import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'

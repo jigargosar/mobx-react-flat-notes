@@ -32,6 +32,9 @@ const allDocsHelperPlugin = {
 }
 
 PouchDb.plugin(allDocsHelperPlugin)
+PouchDb.plugin(require('pouchdb-adapter-memory'))
+
+export { PouchDb }
 
 export const notesDb = new PouchDb('flat-notes-db')
 
@@ -85,4 +88,8 @@ export function createSyncStateFromStream(sync) {
     }),
     null,
   )
+}
+
+export async function fetchAllDocs(db) {
+  return (await db.allDocs({ include_docs: true })).rows.map(R.prop('doc'))
 }

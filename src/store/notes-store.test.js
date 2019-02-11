@@ -1,17 +1,11 @@
-import PouchDb from 'pouchdb-browser'
 import * as R from 'ramda'
-
-PouchDb.plugin(require('pouchdb-adapter-memory'))
+import { fetchAllDocs, PouchDb } from '../pouch-helpers'
 
 //
 //
 test('adds 1 + 2 to equal 3', () => {
   expect(1 + 2).toBe(3)
 })
-
-async function fetchAllDocs(db) {
-  return (await db.allDocs({ include_docs: true })).rows.map(R.prop('doc'))
-}
 
 test('pouch', async () => {
   const db = new PouchDb('Foo')

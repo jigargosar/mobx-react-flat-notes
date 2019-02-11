@@ -12,7 +12,7 @@ export const FlatButton = createButtonComponent(
 )
 
 export const HeaderButton = createButtonComponent(
-  'pv2 ttu f7 grow underline-hover  pointer bn bg-inherit color-inherit',
+  'pv2 ttu f7 grow underline-hover  flex items-center pointer bn bg-inherit color-inherit',
   'HeaderButton',
 )
 

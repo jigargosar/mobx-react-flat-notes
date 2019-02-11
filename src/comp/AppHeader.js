@@ -10,8 +10,11 @@ const AppHeader = observer(({ openPouchSettingsDialog }) => {
     <div className="flex justify-between">
       <div className="ml2 pv2 flex items-center us-none ttu b">FN</div>
       <div className="flex items-center">
+        <i className="material-icons md-light md-inactive md-18">
+          cloud_off
+        </i>
         <HeaderButton onClick={openPouchSettingsDialog}>
-          Sync Settings
+          <div className="ml2">Sync Settings</div>
         </HeaderButton>
         <HeaderButton onClick={actions.addNewNote}>Add</HeaderButton>
         <HeaderButton onClick={actions.reset}>Reset</HeaderButton>

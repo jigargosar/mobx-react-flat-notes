@@ -1,5 +1,12 @@
 import { NoteStore } from './root-store'
 
-test('pouch', async () => {
-  NoteStore.create()
+describe('NoteStore Smoke Tests', function() {
+  test('NoteStore.create', async () => {
+    NoteStore.create()
+  })
+
+  test('NoteStore.addNote', async () => {
+    const noteStore = NoteStore.create()
+    noteStore.addNew()
+  })
 })

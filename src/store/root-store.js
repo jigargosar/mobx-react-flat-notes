@@ -12,7 +12,6 @@ const Note = t.model('Note', {
 function newNote() {
   return Note.create({
     id: `N__${nanoid()}`,
-    rev: null,
     title: faker.name.lastName(null),
     content: faker.lorem.lines(),
   })
@@ -30,11 +29,9 @@ export const NoteStore = t
   .model('NoteStore', {
     map: t.map(Note),
   })
-  .actions(self => {
-    return {
-      addNew: () => self.map.put(newNote()),
-    }
-  })
+  .actions(self => ({
+    addNew: () => self.map.put(newNote()),
+  }))
 
 // class NoteStore extends SubStore {
 //   @observable list = observable.array([])

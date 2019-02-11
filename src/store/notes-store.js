@@ -51,15 +51,13 @@ class NotesStore extends SubStore {
     this.list.unshift(note)
   }
 
+  get ndb() {
+    return this.rootStore.notesDb
+  }
+
   async hydrate() {
     const notes = this.ndb.fetchAllDocs().map(Note.fromPouch(rootStore))
     this.list.replace(notes)
-    // const allDocsRes = await notesDb.allDocs({ include_docs: true })
-    // const notes = allDocsResultToDocs(allDocsRes).map(
-    //   Note.fromPouch(rootStore),
-    // )
-    // console.debug(`[NotesStore] hydrating notes from pouch db`, notes)
-    // this.list.replace(notes)
   }
 }
 
@@ -81,7 +79,7 @@ class RootStore {
 
   constructor() {
     this.notesStore = new NotesStore(this)
-    this.notesDb = new NotesDb(this)
+    this.notesDb = new NotesDb()
   }
 
   static create() {

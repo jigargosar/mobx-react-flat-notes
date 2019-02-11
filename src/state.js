@@ -9,6 +9,10 @@ import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
 
+import isUrl from 'is-url-superb'
+
+window.isUrl = isUrl
+
 function createState() {
   const state = m.observable.object(
     {

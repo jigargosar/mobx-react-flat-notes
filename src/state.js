@@ -215,7 +215,7 @@ async function reStartSync() {
   //   ['change', 'paused', 'active', 'denied', 'complete', 'error'],
   //   sync,
   // ).each(console.log)
-  state.syncRef = createObservableSyncState(state.pouchRemoteUrl)
+  state.syncResource = createObservableSyncState(state.pouchRemoteUrl)
 }
 
 async function setPouchUrlAndStartSync(newUrl) {

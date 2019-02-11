@@ -188,11 +188,9 @@ async function setPouchUrlAndStartSync(newUrl) {
 
   cancelSync()
 
-  const remote = new PouchDb(newUrl)
-  remote
-    .info()
-    .then(console.log)
-    .catch(console.error)
+  const remoteDb = new PouchDb(newUrl)
+  const remoteInfo = await remoteDb.info()
+  console.log(`remoteInfo`, remoteInfo)
 
   const sync = notesDb.sync(newUrl, {
     live: true,
@@ -201,7 +199,7 @@ async function setPouchUrlAndStartSync(newUrl) {
   state.syncRef = sync
 
   if (process.env.NODE_ENV !== 'production') {
-    window.remote = remote
+    window.remote = remoteDb
   }
 
   multiEventStream(

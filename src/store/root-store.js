@@ -2,7 +2,7 @@ import { observable } from 'mobx'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import * as R from 'ramda'
-import PouchDb from 'pouchdb-browser'
+import { PouchDb } from '../pouch-helpers'
 
 class SubStore {
   rootStore
@@ -43,7 +43,7 @@ class Note extends SubStore {
   )
 }
 
-class NotesStore extends SubStore {
+class RootStore extends SubStore {
   @observable list = observable.array([])
 
   addNew() {
@@ -66,8 +66,8 @@ class NotesStore extends SubStore {
 export class NotesDb {
   db
 
-  constructor(db) {
-    this.db = db || new PouchDb('flat-notes-db')
+  constructor({ PouchDb }) {
+    this.db = new PouchDb('flat-notes-db')
   }
 
   fetchAllDocs() {
@@ -79,12 +79,12 @@ export class RootStore {
   @observable notesStore
   @observable notesDb
 
-  constructor() {
-    this.notesStore = new NotesStore(this)
-    this.notesDb = new NotesDb()
+  constructor({ PouchDb }) {
+    this.notesStore = new RootStore(this)
+    this.notesDb = new NotesDb({ PouchDb })
   }
 
   static create() {
-    return new RootStore()
+    return new RootStore({ PouchDb })
   }
 }

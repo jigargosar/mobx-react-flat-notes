@@ -1,90 +1,82 @@
-import { observable } from 'mobx'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import * as R from 'ramda'
-import { PouchDb } from '../pouch-helpers'
+import { types as t } from 'mobx-state-tree'
 
-class SubStore {
-  rootStore
+const Note = t.model('Note', {
+  id: t.reference,
+  rev: t.maybe(t.string),
+  title: t.string,
+  content: t.string,
+})
 
-  constructor(rootStore) {
-    this.rootStore = rootStore
-  }
+function newNote() {
+  return Note.create({
+    id: `N:${nanoid()}`,
+    rev: null,
+    title: faker.name.lastName(null),
+    content: faker.lorem.lines(),
+  })
 }
 
-class Note extends SubStore {
-  @observable id
-  @observable rev
-  @observable title
-  @observable content
+const noteFromPouchDoc = ({ _id, _rev, ...otherProps }) => ({
+  id: _id,
+  rev: _rev,
+  ...otherProps,
+})
 
-  constructor(rootStore, { id, rev, title, content }) {
-    super(rootStore)
-    Object.assign(this, { id, rev, title, content })
-  }
+const NoteStore = t
+  .model('NoteStore', {
+    map: t.map(Note),
+  })
+  .actions(self => {
+    return {
+      addNew: () => self,
+    }
+  })
 
-  static create() {
-    return new Note(undefined, {
-      id: `N:${nanoid()}`,
-      rev: null,
-      title: faker.name.lastName(null),
-      content: faker.lorem.lines(),
-    })
-  }
-
-  static fromPouch = R.curry(
-    (rootStore, { _id, _rev, title, content }) =>
-      new Note(rootStore, {
-        id: _id,
-        rev: _rev,
-        title,
-        content,
-      }),
-  )
-}
-
-class NoteStore extends SubStore {
-  @observable list = observable.array([])
-
-  addNew() {
-    const note = Note.create(this.rootStore)
-    this.list.unshift(note)
-  }
-
-  get ndb() {
-    return this.rootStore.notesDb
-  }
-
-  async hydrate() {
-    const notes = (await this.ndb.fetchAllDocs()).map(
-      Note.fromPouch(this.rootStore),
-    )
-    this.list.replace(notes)
-  }
-}
-
-class NotesDb {
-  db
-
-  constructor({ PouchDb }) {
-    this.db = new PouchDb('flat-notes-db')
-  }
-
-  fetchAllDocs() {
-    return this.db._fetchAll()
-  }
-}
-
-export class RootStore {
-  @observable notesStore
-  @observable notesDb
-
-  constructor({ PouchDb }) {
-    this.notesStore = new NoteStore(this)
-    this.notesDb = new NotesDb({ PouchDb })
-  }
-
-  static create({ PouchDb = PouchDb }) {
-    return new RootStore({ PouchDb })
-  }
-}
+// class NoteStore extends SubStore {
+//   @observable list = observable.array([])
+//
+//   addNew() {
+//     const note = Note.create(this.rootStore)
+//     this.list.unshift(note)
+//   }
+//
+//   get ndb() {
+//     return this.rootStore.notesDb
+//   }
+//
+//   async hydrate() {
+//     const notes = (await this.ndb.fetchAllDocs()).map(
+//       Note.fromPouch(this.rootStore),
+//     )
+//     this.list.replace(notes)
+//   }
+// }
+//
+// class NotesDb {
+//   db
+//
+//   constructor({ PouchDb }) {
+//     this.db = new PouchDb('flat-notes-db')
+//   }
+//
+//   fetchAllDocs() {
+//     return this.db._fetchAll()
+//   }
+// }
+//
+// export class RootStore extends MobxStore{
+//   @observable notesStore
+//   @observable notesDb
+//
+//   constructor({ PouchDb }) {
+//     super(, )
+//     this.notesStore = new NoteStore(this)
+//     this.notesDb = new NotesDb({ PouchDb })
+//   }
+//
+//   static create({ PouchDb = PouchDb }) {
+//     return new RootStore({ PouchDb })
+//   }
+// }

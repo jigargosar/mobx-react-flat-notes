@@ -183,7 +183,7 @@ async function setPouchUrlAndStartSync(newUrl) {
   state.pouchRemoteUrl = newUrl
 
   if (!newUrl.startsWith('http://')) {
-    throw new Error('Invalid Pouch URL' + newUrl)
+    throw new Error('Invalid Remote Pouch URL' + newUrl)
   }
 
   cancelSync()

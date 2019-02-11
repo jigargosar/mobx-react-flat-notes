@@ -41,11 +41,18 @@ export const NoteStore = t
   .model('NoteStore', {
     map: t.map(Note),
   })
+  .actions(self => ({
+    putAll: notes => notes.forEach(note => self.map.put(note)),
+  }))
   .actions(self => {
-    const putAll = notes => notes.forEach(note => self.map.put(note))
     return {
       addNew: () => self.map.put(newNote()),
-      hydrate: async () => putAll(await getEnv(self).notesDb._fetchAll()),
+      hydrate: async () =>
+        self.putAll(
+          await getEnv(self)
+            .notesDb._fetchAll()
+            .map(noteFromPouchDoc),
+        ),
     }
   })
 

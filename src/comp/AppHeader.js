@@ -21,6 +21,7 @@ function getSyncIconProps(state) {
   return {
     iconName: isSyncError ? 'sync_problem' : syncIconName,
     errorMsg: state.syncErrorMsg,
+    syncDisabled,
   }
 }
 
@@ -35,7 +36,9 @@ const AppHeader = observer(({ openPouchSettingsDialog }) => {
         <HeaderIconButton onClick={openPouchSettingsDialog}>
           {/*<div className="ml2">Sync Settings</div>*/}
           <i
-            className="material-icons md-light_  md-18 md-24"
+            className={`material-icons md-light  md-18 md-24 ${
+              syncIconProps.syncDisabled ? 'md-inactive' : ''
+            }`}
             title={syncIconProps.errorMsg}
           >
             {syncIconProps.iconName}

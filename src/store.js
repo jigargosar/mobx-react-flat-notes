@@ -73,7 +73,7 @@ m.autorun(() => {
 
 /*  NOTE HELPERS  */
 
-function createNewNote() {
+export function createNote() {
   return {
     id: `N:${nanoid()}`,
     rev: null,
@@ -149,7 +149,7 @@ function setSelectedNote(note) {
 }
 
 async function addNewNote() {
-  const note = createNewNote()
+  const note = createNote()
   insertNoteAt(0, note)
   setSelectedNote(note)
   const { rev } = await notesDb.put(noteToPouch(note))

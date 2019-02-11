@@ -1,4 +1,4 @@
-import { NoteStore } from './root-store'
+import { newNote, Note, NoteStore } from './root-store'
 import { getSnapshot } from 'mobx-state-tree'
 import { notesDb } from '../pouch-helpers'
 
@@ -10,13 +10,12 @@ describe('NoteStore Smoke Tests', function() {
   test('NoteStore.addNote', async () => {
     const noteStore = NoteStore.create({}, { notesDb })
     noteStore.addNew()
-    noteStore.hydrate()
-    console.log(`noteStore.map`, getSnapshot(noteStore.map))
   })
   test('NoteStore.hydrate', async () => {
-    notesDb.put()
+    notesDb.put(Note.create(newNote()).asPouch)
+
     const noteStore = NoteStore.create({}, { notesDb })
-    noteStore.addNew()
+    // noteStore.addNew()
     await noteStore.hydrate()
     console.log(`noteStore.map`, getSnapshot(noteStore.map))
   })

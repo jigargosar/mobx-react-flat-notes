@@ -2,7 +2,7 @@ import nanoid from 'nanoid'
 import faker from 'faker'
 import { getEnv, types as t } from 'mobx-state-tree'
 
-const Note = t
+export const Note = t
   .model('Note', {
     id: t.identifier,
     rev: t.maybe(t.string),
@@ -33,7 +33,7 @@ export function noteFromPouchDoc({ _id, _rev, ...otherProps }) {
   })
 }
 
-export function noteToPouch({ id, rev, title, content }) {
+function noteToPouch({ id, rev, title, content }) {
   return { _id: id, _rev: rev, title, content }
 }
 

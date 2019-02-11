@@ -191,8 +191,8 @@ function createSyncStateObservable(sync) {
     'pullPaused',
   ])
 
-  let disposer = R.identity
-  return fromResource(sink => {
+  let unsubscriber = R.identity
+  const subscriber = sink => {
     const sub = multiEventStream(sync, [
       'change',
       'paused',
@@ -221,19 +221,20 @@ function createSyncStateObservable(sync) {
       },
     )
 
-    disposer = () => sub.unsubscribe()
-  }, disposer)
+    unsubscriber = () => sub.unsubscribe()
+  }
+  return fromResource(subscriber, unsubscriber)
 }
 
 async function reStartSync() {
   cancelSync()
   const remoteUrl = state.pouchRemoteUrl
 
-  if (!remoteUrl.startsWith('http://')) {
-    throw new Error('Invalid Remote Pouch URL' + remoteUrl)
-  }
+  // if (!remoteUrl.startsWith('http://')) {
+  //   throw new Error('Invalid Remote Pouch URL' + remoteUrl)
+  // }
 
-  const remoteDb = new PouchDb(remoteUrl)
+  const remoteDb = new PouchDb(remoteUrl, { adapter: 'http' })
   const remoteInfo = await remoteDb.info()
   console.log(`remoteInfo`, remoteInfo)
 

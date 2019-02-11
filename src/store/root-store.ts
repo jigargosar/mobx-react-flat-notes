@@ -29,10 +29,13 @@ export const NoteStore = t
   .model('NoteStore', {
     map: t.map(Note),
   })
-  .actions(self => ({
-    addNew: () => self.map.put(newNote()),
-    hydrate: () => getEnv(self).notesDb._fetchAll,
-  }))
+  .actions(self => {
+    const putAll = notes => notes.forEach(note => self.map.put(note))
+    return {
+      addNew: () => self.map.put(newNote()),
+      hydrate: async () => putAll(await getEnv(self).notesDb._fetchAll()),
+    }
+  })
 
 // class NoteStore extends SubStore {
 //   @observable list = observable.array([])

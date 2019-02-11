@@ -166,12 +166,6 @@ function combineDisposers(disposables) {
   }
 }
 
-function cancelSync() {
-  if (state.syncRef) {
-    state.syncRef.cancel()
-  }
-}
-
 function createEventStream(eventName, emitter) {
   return _(eventName, emitter, arg => [eventName, arg])
 }
@@ -181,21 +175,19 @@ function multiEventStream(eventNames, emitter) {
   return _(eventStreams).merge()
 }
 
-async function setPouchUrlAndStartSync(newUrl) {
-  validate('S', arguments)
-  state.pouchRemoteUrl = newUrl
-
-  if (!newUrl.startsWith('http://')) {
-    throw new Error('Invalid Remote Pouch URL' + newUrl)
+function cancelSync() {
+  if (state.syncRef) {
+    state.syncRef.cancel()
   }
+}
 
+async function reStartSync() {
   cancelSync()
-
-  const remoteDb = new PouchDb(newUrl)
+  const remoteDb = new PouchDb(state.pouchRemoteUrl)
   const remoteInfo = await remoteDb.info()
   console.log(`remoteInfo`, remoteInfo)
 
-  const sync = notesDb.sync(newUrl, {
+  const sync = notesDb.sync(state.pouchRemoteUrl, {
     live: true,
     retry: true,
   })
@@ -205,6 +197,18 @@ async function setPouchUrlAndStartSync(newUrl) {
     ['change', 'paused', 'active', 'denied', 'complete', 'error'],
     sync,
   ).each(console.log)
+}
+
+async function setPouchUrlAndStartSync(newUrl) {
+  validate('S', arguments)
+  cancelSync()
+  state.pouchRemoteUrl = newUrl
+
+  if (!newUrl.startsWith('http://')) {
+    throw new Error('Invalid Remote Pouch URL' + newUrl)
+  }
+
+  await reStartSync()
 }
 
 const actions = wrapActions({

@@ -32,10 +32,6 @@ PouchDb.plugin(allDocsHelperPlugin)
 
 export const notesDb = new PouchDb('flat-notes-db')
 
-export const notesDb2 = new PouchDb('flat-notes-db')
-
-console.log(`notesDb, notesDb2`, notesDb, notesDb2)
-
 if (process.env.NODE_ENV !== 'production') {
   window.notesDb = notesDb
 }

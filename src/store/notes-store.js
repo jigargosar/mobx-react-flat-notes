@@ -3,6 +3,7 @@ import nanoid from 'nanoid'
 import faker from 'faker'
 import { allDocsResultToDocs, notesDb } from '../pouch'
 import * as R from 'ramda'
+import PouchDb from 'pouchdb-browser'
 
 class SubStore {
   rootStore
@@ -58,6 +59,14 @@ class NotesStore extends SubStore {
     )
     console.debug(`[NotesStore] hydrating notes from pouch db`, notes)
     this.list.replace(notes)
+  }
+}
+
+class NotesPouchDb {
+  db
+
+  constructor() {
+    this.db = new PouchDb('flat-notes-db')
   }
 }
 

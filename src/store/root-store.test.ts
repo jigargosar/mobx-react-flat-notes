@@ -13,4 +13,11 @@ describe('NoteStore Smoke Tests', function() {
     noteStore.hydrate()
     console.log(`noteStore.map`, getSnapshot(noteStore.map))
   })
+  test('NoteStore.hydrate', async () => {
+    notesDb.put()
+    const noteStore = NoteStore.create({}, { notesDb })
+    noteStore.addNew()
+    await noteStore.hydrate()
+    console.log(`noteStore.map`, getSnapshot(noteStore.map))
+  })
 })

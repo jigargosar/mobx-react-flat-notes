@@ -2,14 +2,22 @@ import nanoid from 'nanoid'
 import faker from 'faker'
 import { getEnv, types as t } from 'mobx-state-tree'
 
-const Note = t.model('Note', {
-  id: t.identifier,
-  rev: t.maybe(t.string),
-  title: t.string,
-  content: t.string,
-})
+const Note = t
+  .model('Note', {
+    id: t.identifier,
+    rev: t.maybe(t.string),
+    title: t.string,
+    content: t.string,
+  })
+  .views(self => {
+    return {
+      get asPouch() {
+        return noteToPouch(self)
+      },
+    }
+  })
 
-function newNote() {
+export function newNote() {
   return Note.create({
     id: `N__${nanoid()}`,
     title: faker.name.lastName(null),
@@ -17,13 +25,17 @@ function newNote() {
   })
 }
 
-// function noteFromPouchDoc({ _id, _rev, ...otherProps }) {
-//   return Note.create({
-//     id: _id,
-//     rev: _rev,
-//     ...otherProps,
-//   })
-// }
+export function noteFromPouchDoc({ _id, _rev, ...otherProps }) {
+  return Note.create({
+    id: _id,
+    rev: _rev,
+    ...otherProps,
+  })
+}
+
+export function noteToPouch({ id, rev, title, content }) {
+  return { _id: id, _rev: rev, title, content }
+}
 
 export const NoteStore = t
   .model('NoteStore', {

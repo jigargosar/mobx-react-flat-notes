@@ -17,24 +17,38 @@ import { fromResource } from 'mobx-utils'
 window.isUrl = isUrl
 
 function createObservableSyncResource(remote, local) {
-  let sync
+  let sync, remoteDb
   return fromResource(
-    sink => {
-      sync = local.sync(remote, {
-        live: true,
-        retry: true,
-      })
-      multiEventStream(
-        ['change', 'paused', 'active', 'denied', 'complete', 'error'],
-        sync,
-      ).each(() => sink(sync))
+    async sink => {
+      try {
+        remoteDb = new PouchDb(state.pouchRemoteUrl)
+        const remoteInfo = await remoteDb.info()
+        console.log(`remoteInfo`, remoteInfo)
 
-      // sink the current state
-      // sink(['init', null, sync])
-      sink(sync)
+        sync = local.sync(remote, {
+          live: true,
+          retry: true,
+        })
+
+        multiEventStream(
+          ['change', 'paused', 'active', 'denied', 'complete', 'error'],
+          sync,
+        ).each(() => sink(sync))
+
+        // sink the current state
+        // sink(['init', null, sync])
+        sink(sync)
+      } catch (e) {
+        sink(null)
+      }
     },
     () => {
-      sync.cancel()
+      if (sync) {
+        sync.cancel()
+      }
+      if (remoteDb) {
+        remoteDb.close()
+      }
     },
   )
 }
@@ -201,9 +215,6 @@ function cancelSync() {
 
 async function reStartSync() {
   cancelSync()
-  const remoteDb = new PouchDb(state.pouchRemoteUrl)
-  const remoteInfo = await remoteDb.info()
-  console.log(`remoteInfo`, remoteInfo)
 
   // const sync = notesDb.sync(state.pouchRemoteUrl, {
   //   live: true,
@@ -215,19 +226,22 @@ async function reStartSync() {
   //   ['change', 'paused', 'active', 'denied', 'complete', 'error'],
   //   sync,
   // ).each(console.log)
-  state.syncResource = createObservableSyncResource(state.pouchRemoteUrl)
+  state.syncResource = createObservableSyncResource(
+    state.pouchRemoteUrl,
+    notesDb,
+  )
 }
 
 async function setPouchUrlAndStartSync(newUrl) {
   validate('S', arguments)
   cancelSync()
   state.pouchRemoteUrl = newUrl
-
-  if (!newUrl.startsWith('http://')) {
-    throw new Error('Invalid Remote Pouch URL' + newUrl)
-  }
-
   await reStartSync()
+
+  // if (!newUrl.startsWith('http://')) {
+  //   throw new Error('Invalid Remote Pouch URL' + newUrl)
+  //
+  // }
 }
 
 const actions = wrapActions({

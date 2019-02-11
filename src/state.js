@@ -16,11 +16,11 @@ import { fromResource } from 'mobx-utils'
 
 window.isUrl = isUrl
 
-function createObservableSyncState(remote, local) {
+function createObservableSyncResource(remote, local) {
   let sync
   return fromResource(
     sink => {
-      sync = notesDb.sync(state.pouchRemoteUrl, {
+      sync = local.sync(remote, {
         live: true,
         retry: true,
       })
@@ -215,7 +215,7 @@ async function reStartSync() {
   //   ['change', 'paused', 'active', 'denied', 'complete', 'error'],
   //   sync,
   // ).each(console.log)
-  state.syncResource = createObservableSyncState(state.pouchRemoteUrl)
+  state.syncResource = createObservableSyncResource(state.pouchRemoteUrl)
 }
 
 async function setPouchUrlAndStartSync(newUrl) {

@@ -9,6 +9,7 @@ import {
 import validate from 'aproba'
 import * as R from 'ramda'
 import { clampIdx } from '../ramda-helpers'
+import { fromStream } from 'mobx-utils'
 
 export function toggle(target, prop) {
   validate('OS', arguments)
@@ -93,4 +94,8 @@ export function stringObservable(ini) {
     },
   })
   return obs
+}
+
+export function fromKefirStream(stream, initialValue) {
+  return fromStream(stream.toESObservable(), initialValue)
 }

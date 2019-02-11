@@ -1,4 +1,4 @@
-import { wrapActions } from './mobx/mobx-helpers'
+import { fromKefirStream, wrapActions } from './mobx/mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
 import * as R from 'ramda'
@@ -12,7 +12,6 @@ import { getCached, setCache } from './dom-helpers'
 import isUrl from 'is-url-superb'
 import PouchDb from 'pouchdb-browser'
 import { multiEventStream } from './kefir-helpers'
-import { fromStream } from 'mobx-utils'
 
 window.isUrl = isUrl
 
@@ -194,23 +193,24 @@ function createSyncState(sync) {
     'pullPaused',
   ])
 
-  const stream = multiEventStream(sync, [
-    'change',
-    'paused',
-    'active',
-    'denied',
-    'complete',
-    'error',
-  ]).map(([eventName, value]) => {
-    const error = ['denied', 'error'].includes(eventName) ? value : null
-    return {
-      error,
-      eventName,
-      ...pickSyncProps(sync),
-    }
-  })
-
-  return fromStream(stream.toESObservable(), null)
+  return fromKefirStream(
+    multiEventStream(sync, [
+      'change',
+      'paused',
+      'active',
+      'denied',
+      'complete',
+      'error',
+    ]).map(([eventName, value]) => {
+      const error = ['denied', 'error'].includes(eventName) ? value : null
+      return {
+        error,
+        eventName,
+        ...pickSyncProps(sync),
+      }
+    }),
+    null,
+  )
 }
 
 async function reStartSync() {

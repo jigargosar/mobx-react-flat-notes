@@ -3,7 +3,7 @@ import React, { useCallback, useImperativeHandle, useRef } from 'react'
 import { FocusTrapZone } from 'office-ui-fabric-react'
 import { pd, useOnEsc } from '../hooks/keyboard'
 import { FlatButton, PrimaryButton } from './Button'
-import { useAppStore } from '../state'
+import { useAppStore } from '../store'
 
 const PouchSettingsDialog = observer(
   (_, ref) => {

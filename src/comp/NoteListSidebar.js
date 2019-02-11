@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useAppStore } from '../state'
+import { useAppStore } from '../store'
 import React, { useRef } from 'react'
 import { useArrowKeys } from '../hooks/useArrowKeys'
 import { useFocusRef } from '../hooks/useFocusRef'

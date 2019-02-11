@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react'
 import { observer } from 'mobx-react-lite'
-import { useAppStore } from '../state'
+import { useAppStore } from '../store'
 import MonacoEditor from 'react-monaco-editor'
 import { turnOffTabFocusMode } from '../monaco-helpers'
 import { useAutoSizeMonacoEditorEffect } from '../hooks/monaco-hooks'

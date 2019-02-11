@@ -16,7 +16,8 @@ function syncToIconName(sync) {
 
 function getSyncIconProps(state) {
   const syncIconName = syncToIconName(state.syncRef)
-  const isSyncError = !R.isNil(state.syncErrorMsg)
+  const syncDisabled = state.isSyncDisabled
+  const isSyncError = !R.isNil(state.syncErrorMsg) && !syncDisabled
   return {
     iconName: isSyncError ? 'sync_problem' : syncIconName,
     errorMsg: state.syncErrorMsg,

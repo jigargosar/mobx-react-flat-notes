@@ -22,7 +22,10 @@ const AppHeader = observer(({ openPouchSettingsDialog }) => {
     <div className="flex justify-between">
       <div className="ml2 pv2 flex items-center us-none ttu b">FN</div>
       <div className="flex items-center">
-        <i className="material-icons md-light_  md-18 md-24">
+        <i
+          className="material-icons md-light_  md-18 md-24"
+          title={state.syncErrorMsg}
+        >
           {/*sync_disabled sync_problem sync*/}
           {syncIconName}
         </i>

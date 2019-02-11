@@ -43,7 +43,7 @@ class Note extends SubStore {
   )
 }
 
-class RootStore extends SubStore {
+class NoteStore extends SubStore {
   @observable list = observable.array([])
 
   addNew() {
@@ -63,7 +63,7 @@ class RootStore extends SubStore {
   }
 }
 
-export class NotesDb {
+class NotesDb {
   db
 
   constructor({ PouchDb }) {
@@ -80,7 +80,7 @@ export class RootStore {
   @observable notesDb
 
   constructor({ PouchDb }) {
-    this.notesStore = new RootStore(this)
+    this.notesStore = new NoteStore(this)
     this.notesDb = new NotesDb({ PouchDb })
   }
 

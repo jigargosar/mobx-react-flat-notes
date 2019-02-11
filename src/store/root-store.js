@@ -3,7 +3,7 @@ import faker from 'faker'
 import { types as t } from 'mobx-state-tree'
 
 const Note = t.model('Note', {
-  id: t.reference,
+  id: t.identifier,
   rev: t.maybe(t.string),
   title: t.string,
   content: t.string,
@@ -18,14 +18,15 @@ function newNote() {
   })
 }
 
-const noteFromPouchDoc = ({ _id, _rev, ...otherProps }) =>
-  Note.create({
-    id: _id,
-    rev: _rev,
-    ...otherProps,
-  })
+// function noteFromPouchDoc({ _id, _rev, ...otherProps }) {
+//   return Note.create({
+//     id: _id,
+//     rev: _rev,
+//     ...otherProps,
+//   })
+// }
 
-const NoteStore = t
+export const NoteStore = t
   .model('NoteStore', {
     map: t.map(Note),
   })

@@ -2387,6 +2387,11 @@ clean-css@4.2.x:
   dependencies:
     source-map "~0.6.0"
 
+cli-clear@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/cli-clear/-/cli-clear-1.0.4.tgz#42cf3052f25b7068386fb7dbaee82d534b64c899"
+  integrity sha1-Qs8wUvJbcGg4b7fbrugtU0tkyJk=
+
 cli-cursor@^2.0.0, cli-cursor@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-2.1.0.tgz#b35dac376479facc3e94747d41d0d0f5238ffcb5"

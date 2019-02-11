@@ -14,9 +14,18 @@ function syncToIconName(sync) {
   return R.cond(conditions)(sync)
 }
 
+function getSyncIconProps(state) {
+  const syncIconName = syncToIconName(state.syncRef)
+  const isSyncError = !R.isNil(state.syncErrorMsg)
+  return {
+    iconName: isSyncError ? 'sync_problem' : syncIconName,
+    errorMsg: state.syncErrorMsg,
+  }
+}
+
 const AppHeader = observer(({ openPouchSettingsDialog }) => {
   const [state, actions] = useAppStore()
-  const syncIconName = syncToIconName(state.syncRef)
+  const syncIconProps = getSyncIconProps(state)
 
   return (
     <div className="flex justify-between">
@@ -24,10 +33,9 @@ const AppHeader = observer(({ openPouchSettingsDialog }) => {
       <div className="flex items-center">
         <i
           className="material-icons md-light_  md-18 md-24"
-          title={state.syncErrorMsg}
+          title={syncIconProps.errorMsg}
         >
-          {/*sync_disabled sync_problem sync*/}
-          {syncIconName}
+          {syncIconProps.iconName}
         </i>
         <HeaderButton onClick={openPouchSettingsDialog}>
           <div className="ml2">Sync Settings</div>

@@ -23,6 +23,10 @@ function createState() {
       selectedNoteId: null,
       pouchRemoteUrl: '',
       syncRef: null,
+      syncStateObservable: null,
+      get syncState() {
+        return idx(state, _ => _.syncStateObservable.current())
+      },
       get displayNotes() {
         return state.noteList
       },
@@ -168,12 +172,9 @@ function combineDisposers(disposables) {
 }
 
 function cancelSync() {
-  const { syncSubRef, syncRef } = state
+  const { syncRef } = state
   if (syncRef) {
     syncRef.cancel()
-  }
-  if (syncSubRef) {
-    syncSubRef.unsubscribe()
   }
 }
 
@@ -236,25 +237,7 @@ async function reStartSync() {
     live: true,
     retry: true,
   })
-
-  state.syncSubRef = multiEventStream(state.syncRef, [
-    'change',
-    'paused',
-    'active',
-    'denied',
-    'complete',
-    'error',
-  ])
-    .log('full')
-    .map(([eventName, value, emitter]) =>
-      R.pick(['canceled', 'push', 'pull', 'pushPaused', 'pullPaused'])(
-        emitter,
-      ),
-    )
-    .observe(v => console.log('value', v), console.error, function() {
-      debugger
-      return console.log('end')
-    })
+  state.syncStateObservable = createSyncStateObservable(state.syncRef)
 }
 
 async function setPouchUrlAndStartSync(newUrl) {

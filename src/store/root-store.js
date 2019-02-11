@@ -31,7 +31,7 @@ const NoteStore = t
   })
   .actions(self => {
     return {
-      addNew: () => self,
+      addNew: () => self.map.put(newNote()),
     }
   })
 

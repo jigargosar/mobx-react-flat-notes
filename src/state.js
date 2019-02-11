@@ -221,15 +221,19 @@ async function reStartSync() {
   //   throw new Error('Invalid Remote Pouch URL' + remoteUrl)
   // }
 
-  const remoteDb = new PouchDb(remoteUrl, { adapter: 'http' })
-  const remoteInfo = await remoteDb.info()
-  console.log(`remoteInfo`, remoteInfo)
-
-  state.syncRef = notesDb.sync(remoteUrl, {
-    live: true,
-    retry: true,
-  })
-  state._syncStateFromStream = createSyncState(state.syncRef)
+  try {
+    const remoteDb = new PouchDb(remoteUrl, { adapter: 'http' })
+    const remoteInfo = await remoteDb.info()
+    console.log(`remoteInfo`, remoteInfo)
+    state.syncRef = notesDb.sync(remoteUrl, {
+      live: true,
+      retry: true,
+    })
+    state._syncStateFromStream = createSyncState(state.syncRef)
+  } catch (e) {
+    console.log('error', e)
+    state._syncStateFromStream = { error: e }
+  }
 }
 
 async function setPouchUrlAndStartSync(newUrl) {

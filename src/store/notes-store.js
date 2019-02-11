@@ -56,7 +56,7 @@ class NotesStore extends SubStore {
     const notes = allDocsResultToDocs(allDocsRes).map(
       Note.fromPouch(rootStore),
     )
-    console.debug(`[pouch] hydrating notes`, notes)
+    console.debug(`[NotesStore] hydrating notes from pouch db`, notes)
     this.list.replace(notes)
   }
 }

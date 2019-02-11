@@ -182,23 +182,23 @@ async function setPouchUrlAndStartSync(newUrl) {
   validate('S', arguments)
   state.pouchRemoteUrl = newUrl
 
-  cancelSync()
-
   if (!newUrl.startsWith('http://')) {
     throw new Error('Invalid Pouch URL' + newUrl)
   }
 
-  const sync = notesDb.sync(newUrl, {
-    live: true,
-    retry: true,
-  })
-  state.syncRef = sync
+  cancelSync()
 
   const remote = new PouchDb(newUrl)
   remote
     .info()
     .then(console.log)
     .catch(console.error)
+
+  const sync = notesDb.sync(newUrl, {
+    live: true,
+    retry: true,
+  })
+  state.syncRef = sync
 
   if (process.env.NODE_ENV !== 'production') {
     window.remote = remote

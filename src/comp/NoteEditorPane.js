@@ -7,8 +7,6 @@ import { useAutoSizeMonacoEditorEffect } from '../hooks/monaco-hooks'
 
 import { editor } from 'monaco-editor'
 
-console.log(`monaco editor`, editor)
-
 if (process.env.NODE_ENV !== 'production') {
   window.me = editor
 }

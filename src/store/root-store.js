@@ -84,7 +84,7 @@ export class RootStore {
     this.notesDb = new NotesDb({ PouchDb })
   }
 
-  static create() {
+  static create({ PouchDb = PouchDb }) {
     return new RootStore({ PouchDb })
   }
 }

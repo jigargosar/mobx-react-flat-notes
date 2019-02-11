@@ -15,6 +15,10 @@ export const HeaderButton = createButtonComponent(
   'pv2 ttu f7 grow underline-hover  flex items-center pointer bn bg-inherit color-inherit',
   'HeaderButton',
 )
+export const HeaderIconButton = createButtonComponent(
+  'pv2 ttu f7 grow   flex items-center pointer bn bg-inherit color-inherit',
+  'HeaderButton',
+)
 
 function createButtonComponent(className, displayName) {
   const withDefaultProps = R.pipe(

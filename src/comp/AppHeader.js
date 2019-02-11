@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useAppStore } from '../state'
 import React from 'react'
-import { HeaderButton } from './Button'
+import { HeaderButton, HeaderIconButton } from './Button'
 import * as R from 'ramda'
 
 function syncToIconName(sync) {
@@ -31,7 +31,7 @@ const AppHeader = observer(({ openPouchSettingsDialog }) => {
     <div className="flex justify-between">
       <div className="ml2 pv2 flex items-center us-none ttu b">FN</div>
       <div className="flex items-center">
-        <HeaderButton onClick={openPouchSettingsDialog}>
+        <HeaderIconButton onClick={openPouchSettingsDialog}>
           {/*<div className="ml2">Sync Settings</div>*/}
           <i
             className="material-icons md-light_  md-18 md-24"
@@ -39,7 +39,7 @@ const AppHeader = observer(({ openPouchSettingsDialog }) => {
           >
             {syncIconProps.iconName}
           </i>
-        </HeaderButton>
+        </HeaderIconButton>
         <HeaderButton onClick={actions.addNewNote}>Add</HeaderButton>
         <HeaderButton onClick={actions.reset}>Reset</HeaderButton>
       </div>

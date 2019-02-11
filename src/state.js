@@ -10,8 +10,8 @@ import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
 
 import isUrl from 'is-url-superb'
-import _ from 'highland'
 import PouchDb from 'pouchdb-browser'
+import { multiEventStream } from './highland-helpers'
 
 window.isUrl = isUrl
 
@@ -164,15 +164,6 @@ function combineDisposers(disposables) {
   return () => {
     disposables.forEach(d => d())
   }
-}
-
-function createEventStream(eventName, emitter) {
-  return _(eventName, emitter, message => [eventName, message, emitter])
-}
-
-function multiEventStream(eventNames, emitter) {
-  const eventStreams = eventNames.map(n => createEventStream(n, emitter))
-  return _(eventStreams).merge()
 }
 
 function cancelSync() {

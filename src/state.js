@@ -11,6 +11,7 @@ import { getCached, setCache } from './dom-helpers'
 
 import isUrl from 'is-url-superb'
 import _ from 'highland'
+import PouchDb from 'pouchdb-browser'
 
 window.isUrl = isUrl
 
@@ -163,8 +164,13 @@ function combineDisposers(disposables) {
 
 let syncDisposable = R.identity()
 
-function es(eventName, sync) {
-  return _(eventName, sync, arg => [eventName, arg])
+function createEventStream(eventName, emitter) {
+  return _(eventName, emitter, arg => [eventName, arg])
+}
+
+function multiEventStream(eventNames, emitter) {
+  const eventStreams = eventNames.map(n => createEventStream(n, emitter))
+  return _(eventStreams).merge()
 }
 
 async function setPouchUrlAndStartSync(newUrl) {
@@ -182,8 +188,23 @@ async function setPouchUrlAndStartSync(newUrl) {
     retry: true,
   })
 
-  es('change', sync)
+  const remote = new PouchDb(newUrl)
+  remote
+    .info()
+    .then(console.log)
+    .catch(console.error)
 
+  if (process.env.NODE_ENV !== 'production') {
+    window.remote = remote
+  }
+
+  // multiEventStream(
+  //   ['change', 'paused', 'active', 'denied', 'complete', 'error'],
+  //   sync,
+  // ).each(console.log)
+  if (process.env.NODE_ENV !== 'production') {
+    window.sync = sync
+  }
   sync
     .on('change', function(info) {
       // handle change
@@ -191,7 +212,7 @@ async function setPouchUrlAndStartSync(newUrl) {
     })
     .on('paused', function(err) {
       // replication paused (e.g. replication up to date, user went offline)
-      console.log('paused', err)
+      console.log('paused', err, this)
     })
     .on('active', function() {
       // replicate resumed (e.g. new changes replicating, user went back online)
@@ -209,12 +230,8 @@ async function setPouchUrlAndStartSync(newUrl) {
       // handle error
       console.log('error', err)
     })
-    .on('*', function(err) {
-      // handle error
-      console.log('error', err)
-    })
 
-  syncDisposable = () => {
+  syncDisposable = function() {
     sync.cancel()
     syncDisposable = R.identity
   }

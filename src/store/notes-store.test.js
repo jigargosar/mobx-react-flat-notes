@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { fetchAllDocs, PouchDb } from '../pouch-helpers'
+import { PouchDb } from '../pouch-helpers'
 
 //
 test('adds 1 + 2 to equal 3', () => {
@@ -14,5 +14,5 @@ test('pouch', async () => {
   const sync = db.sync(remoteDb)
   await sync
 
-  console.log(`await fetchAllDocs(db)`, R.take(2)(await fetchAllDocs(db)))
+  console.log(`await fetchAllDocs(db)`, R.take(2)(await db.getAllDocsP()))
 })

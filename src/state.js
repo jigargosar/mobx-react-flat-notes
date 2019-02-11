@@ -40,6 +40,7 @@ function createObservableSyncResource(remote, local) {
         sink(sync)
       } catch (e) {
         sink(null)
+        console.error(`e`, e)
       }
     },
     () => {

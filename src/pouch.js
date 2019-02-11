@@ -6,11 +6,13 @@ import { fromKefirStream } from './mobx/mobx-helpers'
 import { multiEventStream } from './kefir-helpers'
 
 const allDocsHelperPlugin = {
-  getAllDocsP: async function(db = this) {
+  getAllDocsP: async function() {
+    const db = this
     const { rows } = await db.allDocs({ include_docs: true })
     return rows.map(R.prop('doc'))
   },
-  getAllDocsNormalizedP: async function(db = this) {
+  getAllDocsNormalizedP: async function() {
+    const db = this
     const { rows } = await db.allDocs({ include_docs: true })
     return rows.map(
       R.pipe(
@@ -19,7 +21,8 @@ const allDocsHelperPlugin = {
       ),
     )
   },
-  async deleteAllDocsP(db = this) {
+  async deleteAllDocsP() {
+    const db = this
     const docs = await db.getAllDocsP()
     const deleteRes = await db.bulkDocs(
       docs.map(R.mergeLeft({ _deleted: true })),

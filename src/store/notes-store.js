@@ -1,7 +1,7 @@
 import { observable } from 'mobx'
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { allDocsResultToDocs, notesDb } from '../pouch'
+import { allDocsResultToDocs } from '../pouch'
 import * as R from 'ramda'
 import PouchDb from 'pouchdb-browser'
 
@@ -53,20 +53,25 @@ class NotesStore extends SubStore {
   }
 
   async hydrate() {
-    const allDocsRes = await notesDb.allDocs({ include_docs: true })
-    const notes = allDocsResultToDocs(allDocsRes).map(
-      Note.fromPouch(rootStore),
-    )
-    console.debug(`[NotesStore] hydrating notes from pouch db`, notes)
-    this.list.replace(notes)
+    // const allDocsRes = await notesDb.allDocs({ include_docs: true })
+    // const notes = allDocsResultToDocs(allDocsRes).map(
+    //   Note.fromPouch(rootStore),
+    // )
+    // console.debug(`[NotesStore] hydrating notes from pouch db`, notes)
+    // this.list.replace(notes)
   }
 }
 
-class NotesPouchDb {
+class NotesDb {
   db
 
   constructor() {
     this.db = new PouchDb('flat-notes-db')
+  }
+
+  async fetchAllDocs() {
+    const allDocsRes = await this.db.getAllDocsP()
+    return allDocsResultToDocs(allDocsRes).map(Note.fromPouch(rootStore))
   }
 }
 

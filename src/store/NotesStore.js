@@ -2,19 +2,50 @@ import * as m from 'mobx'
 import { wrapActions } from '../mobx/mobx-helpers'
 import nanoid from 'nanoid'
 import faker from 'faker'
+import validate from 'aproba'
 
-export function createNote() {
-  return {
-    id: `N:${nanoid()}`,
-    rev: null,
+function validateNoteProps({ _id, _rev, title, content }) {
+  validate('SSS', [_id, title, content])
+  validate('S|Z', [_rev])
+}
+
+function Note(props) {
+  console.assert(!m.isObservable(props))
+  validateNoteProps(props)
+
+  const id = props._id
+  const n = m.extendObservable(
+    props,
+    {
+      get id() {
+        return n._id
+      },
+      get rev() {
+        return n._rev
+      },
+    },
+    null,
+    { name: `Note:${id}` },
+  )
+  console.debug('created Note', n)
+  return n
+}
+
+function newNoteObs() {
+  return Note({
+    _id: `NID:${nanoid()}`,
+    _rev: null,
     title: faker.name.lastName(null),
     content: faker.lorem.lines(),
-  }
+  })
 }
 
 export function NotesStore() {
   const lookup = m.observable.map({})
-  const put = note => m.set(lookup, note.id, note)
+  const put = note => {
+    note = m.isObservable(note) ? note : Note(note)
+    return m.set(lookup, note.id, note)
+  }
   const ns = m.observable.object(
     {
       get allAsList() {
@@ -32,7 +63,7 @@ export function NotesStore() {
           lst.forEach(put)
         },
         addNew() {
-          const note = createNote()
+          const note = newNoteObs()
           put(note)
           return note
         },

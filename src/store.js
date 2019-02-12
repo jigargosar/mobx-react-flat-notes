@@ -13,6 +13,7 @@ import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
 import { NotesStore } from './store/NotesStore'
+import { invariant } from 'mobx-utils'
 
 // function validateNoteProps({ _id, _rev, title, content }) {
 //   validate('SSS', [_id, title, content])
@@ -177,7 +178,12 @@ const setNoteContentDebounced = debounce(setNoteContent, 500, {
 })
 
 function setSelectedNoteContent(newContent) {
-  setNoteContentDebounced(newContent, state.selectedNote)
+  const selectedNote = state.selectedNote
+  invariant(
+    selectedNote,
+    "Can't set selectedContent unless there is selectedNote",
+  )
+  setNoteContentDebounced(newContent, selectedNote)
 }
 
 /*  ACTIONS  */

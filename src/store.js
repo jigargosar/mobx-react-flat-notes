@@ -2,6 +2,8 @@ import { wrapActions } from './mobx/mobx-helpers'
 import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
+import * as mu from 'mobx-utils'
+import { invariant } from 'mobx-utils'
 import {
   allDocsResultToDocs,
   createSyncStateFromStream,
@@ -13,11 +15,38 @@ import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
 import { NotesStore } from './store/NotesStore'
-import { invariant } from 'mobx-utils'
+
+function ToastStore() {
+  const ts = m.observable.object(
+    {
+      msg: null,
+      st: null,
+      ...wrapActions({
+        addMsg(msg) {
+          ts.msg = msg
+          ts.st = Date.now()
+        },
+      }),
+    },
+    null,
+    { name: 'ToastStore' },
+  )
+
+  m.autorun(() => {
+    if (ts.msg && mu.now() - ts.st > 3000) {
+      ts.msg = null
+      ts.st = null
+    }
+  })
+
+  console.debug(`'created ToastStore'`, 'created ToastStore')
+  return ts
+}
 
 function createState() {
   const s = m.observable.object(
     {
+      ts: ToastStore(),
       ns: NotesStore(),
       selectedNoteId: null,
       pouchRemoteUrl: '',

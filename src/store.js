@@ -36,7 +36,7 @@ function ToastStore() {
   )
 
   m.autorun(() => {
-    if (ts.msg && mu.now() - ts.st > 3000) {
+    if (ts.msg && mu.now() - ts.st > 5000) {
       ts.msg = null
       ts.st = null
     }
@@ -92,7 +92,7 @@ function createState() {
 
 const s = createState()
 if (process.env.NODE_ENV !== 'production') {
-  window.state = s
+  window.s = s
 }
 
 // m.autorun(() => {
@@ -220,7 +220,7 @@ async function setPouchUrlAndStartSync(newUrl) {
 
 const logErr = function(...a) {
   console.error(...a)
-  s.ts.addMsg(JSON.stringify(a))
+  s.ts.addMsg(a[0].message)
 }
 
 const actions = wrapActions({

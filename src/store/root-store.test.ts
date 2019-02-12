@@ -1,8 +1,6 @@
 import { newNote, Note, NoteStore } from './root-store'
 import { getSnapshot } from 'mobx-state-tree'
-import PouchDB from 'pouchdb-browser'
-
-PouchDB.plugin(require('pouchdb-adapter-memory'))
+import { createTestPouchDb } from './test-helper'
 
 describe('NoteStore Smoke Tests', function() {
   test('NoteStore.create', async () => {
@@ -10,7 +8,7 @@ describe('NoteStore Smoke Tests', function() {
   })
 
   test('NoteStore.addNote', async () => {
-    const notesDb = new PouchDB('notesDb-test', { adapter: 'memory' })
+    const notesDb = createTestPouchDb('notesDb')
 
     const noteStore = NoteStore.create({}, { notesDb })
     noteStore.addNew()
@@ -18,7 +16,7 @@ describe('NoteStore Smoke Tests', function() {
     await notesDb.destroy()
   })
   test('NoteStore.hydrate', async () => {
-    const notesDb = new PouchDB('notesDb-test', { adapter: 'memory' })
+    const notesDb = createTestPouchDb('notesDb')
 
     await notesDb.put(Note.create(newNote()).asPouch)
 

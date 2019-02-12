@@ -2,6 +2,7 @@ import nanoid from 'nanoid'
 import faker from 'faker'
 import { flow, getEnv, types as t } from 'mobx-state-tree'
 import { pouchFetchDocs } from '../pouch-pure'
+import * as R from 'ramda'
 
 export const Note = t
   .model('Note', {
@@ -66,12 +67,18 @@ export const NoteStore = t
     },
   }))
   .actions(self => {
+    const put = (note: NoteData) => self.map.put(note)
     return {
-      addNew: () => self.map.put(newNote()),
+      addNew: () => put(newNote()),
       hydrate: flow(function*() {
         const db = self.db
         const docs: PouchNoteDoc[] = yield pouchFetchDocs(db)
-        docs.forEach(d => self.map.put(noteFromPouchDoc(d)))
+        docs.forEach(
+          R.pipe(
+            noteFromPouchDoc,
+            put,
+          ),
+        )
       }),
     }
   })

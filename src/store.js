@@ -218,5 +218,3 @@ actions.init().catch(actions.logErr)
 export function useAppStore() {
   return [s, actions]
 }
-
-// actions.logErr(new Error('Lol'))

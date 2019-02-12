@@ -1,6 +1,6 @@
 import { newNote, Note, NoteStore } from './root-store'
 import { getSnapshot } from 'mobx-state-tree'
-import { notesDb } from '../pouch-helpers'
+import { notesDb } from '../pouch'
 
 describe('NoteStore Smoke Tests', function() {
   test('NoteStore.create', async () => {
@@ -15,7 +15,7 @@ describe('NoteStore Smoke Tests', function() {
     notesDb.put(Note.create(newNote()).asPouch)
 
     const noteStore = NoteStore.create({}, { notesDb })
-    // noteStore.addNew()
+    noteStore.addNew()
     await noteStore.hydrate()
     console.log(`noteStore.map`, getSnapshot(noteStore.map))
   })

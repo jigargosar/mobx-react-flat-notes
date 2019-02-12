@@ -1,7 +1,7 @@
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { getEnv, types as t } from 'mobx-state-tree'
-import { pouchFetchDocs } from '../pouch-helpers'
+import { pouchFetchDocs } from '../pouch-pure'
 
 export const Note = t
   .model('Note', {

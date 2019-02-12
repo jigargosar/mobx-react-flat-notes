@@ -21,12 +21,30 @@ export const Note = t
 export function newNote() {
   return Note.create({
     id: `N__${nanoid()}`,
-    title: faker.name.lastName(null),
+    title: faker.name.lastName(),
     content: faker.lorem.lines(),
   })
 }
 
-export function noteFromPouchDoc({ _id, _rev, ...otherProps }) {
+type PouchNoteDoc = {
+  _id: string
+  _rev?: string
+  title: string
+  content: string
+}
+
+type NoteData = {
+  id: string
+  rev?: string
+  title: string
+  content: string
+}
+
+export function noteFromPouchDoc({
+  _id,
+  _rev,
+  ...otherProps
+}: PouchNoteDoc): NoteData {
   return Note.create({
     id: _id,
     rev: _rev,
@@ -34,7 +52,7 @@ export function noteFromPouchDoc({ _id, _rev, ...otherProps }) {
   })
 }
 
-function noteToPouch({ id, rev, title, content }) {
+function noteToPouch({ id, rev, title, content }: NoteData) {
   return { _id: id, _rev: rev, title, content }
 }
 
@@ -48,14 +66,15 @@ export const NoteStore = t
     },
   }))
   .actions(self => ({
-    putAll: notes => notes.forEach(note => self.map.put(note)),
+    putAll: (notes: NoteData[]) =>
+      notes.forEach((note: NoteData) => self.map.put(note)),
   }))
   .actions(self => {
     return {
       addNew: () => self.map.put(newNote()),
       hydrate: async () => {
-        const docs = await pouchFetchDocs(self.db)
-        return self.putAll(docs.map(noteFromPouchDoc))
+        const docs = (await pouchFetchDocs(self.db)) as PouchNoteDoc[]
+        return self.putAll(docs.map(d => noteFromPouchDoc(d)))
       },
     }
   })

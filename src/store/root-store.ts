@@ -1,6 +1,6 @@
 import nanoid from 'nanoid'
 import faker from 'faker'
-import { getEnv, types as t } from 'mobx-state-tree'
+import { flow, getEnv, types as t } from 'mobx-state-tree'
 import { pouchFetchDocs } from '../pouch-pure'
 
 export const Note = t
@@ -45,15 +45,19 @@ export function noteFromPouchDoc({
   _rev,
   ...otherProps
 }: PouchNoteDoc): NoteData {
-  return Note.create({
+  return {
     id: _id,
     rev: _rev,
     ...otherProps,
-  })
+  }
 }
 
 function noteToPouch({ id, rev, ...otherProps }: NoteData) {
   return { _id: id, _rev: rev, ...otherProps }
+}
+
+function fetchNoteDocs(db: PouchDB.Database) {
+  return pouchFetchDocs(db) as Promise<PouchNoteDoc[]>
 }
 
 export const NoteStore = t
@@ -65,17 +69,14 @@ export const NoteStore = t
       return getEnv(self).notesDb
     },
   }))
-  .actions(self => ({
-    putAll: (notes: NoteData[]) =>
-      notes.forEach((note: NoteData) => self.map.put(note)),
-  }))
   .actions(self => {
     return {
       addNew: () => self.map.put(newNote()),
-      hydrate: async () => {
-        const docs = (await pouchFetchDocs(self.db)) as PouchNoteDoc[]
-        return self.putAll(docs.map(d => noteFromPouchDoc(d)))
-      },
+      hydrate: flow(function*() {
+        const db = self.db
+        const docs: PouchNoteDoc[] = yield fetchNoteDocs(db)
+        docs.forEach(d => self.map.put(noteFromPouchDoc(d)))
+      }),
     }
   })
 

@@ -23,13 +23,13 @@ describe('NoteStore Smoke Tests', function() {
   })
 
   test('NoteStore.hydrate', async () => {
-    const notesDb = createTestPouchDb('notesDb')
-    await notesDb.put(Note.create(newNote()).asPouch)
+    return withNotesDb(async (notesDb: PouchDB.Database) => {
+      await notesDb.put(Note.create(newNote()).asPouch)
 
-    const noteStore = NoteStore.create({}, { notesDb })
-    noteStore.addNew()
-    await noteStore.hydrate()
-    console.log(`noteStore.map`, getSnapshot(noteStore.map))
-    await notesDb.destroy()
+      const noteStore = NoteStore.create({}, { notesDb })
+      noteStore.addNew()
+      await noteStore.hydrate()
+      console.log(`noteStore.map`, getSnapshot(noteStore.map))
+    })
   })
 })

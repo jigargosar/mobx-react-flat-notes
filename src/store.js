@@ -15,6 +15,31 @@ import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
 
+function Note(props) {
+  console.assert(!m.isObservable(props))
+
+  const id = props.id
+  const n = m.extendObservable(props, {}, null, { name: `Note:${id}` })
+  console.debug('created Note', n)
+  return n
+}
+
+function newNoteObs() {
+  return Note(createNote())
+}
+
+function NotesStore() {
+  const ns = m.observable.object(
+    {
+      lst: [],
+    },
+    null,
+    { name: 'NotesStore' },
+  )
+  console.debug('created NotesStore', ns)
+  return ns
+}
+
 function createState() {
   const state = m.observable.object(
     {

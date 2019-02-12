@@ -67,9 +67,9 @@ function NotesStore() {
       ...wrapActions({
         replace(lst) {
           lk.clear()
-          lst.forEach(ns.add)
+          lst.forEach(ns.put)
         },
-        add(n) {
+        put(n) {
           m.set(lk, n.id, n)
         },
       }),
@@ -208,7 +208,7 @@ function setSelectedNote(note) {
 
 async function addNewNote() {
   const note = createNote()
-  state.ns.add(note)
+  state.ns.put(note)
   setSelectedNote(note)
   const { rev } = await notesDb.put(noteToPouch(note))
   noteActions.setNoteRev(rev, note)

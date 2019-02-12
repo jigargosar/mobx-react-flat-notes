@@ -44,18 +44,17 @@ export const NoteEditorPane = observer(() => {
   }, [])
 
   return (
-    !R.isNil(state.selectedNoteContent) && (
-      <div
-        className="overflow-hidden h-100 mw-100 bg-light-pink "
-        style={{ width: '34em' }}
-      >
-        <MonacoEditor
-          editorDidMount={editorDidMount}
-          value={state.selectedNoteContent}
-          onChange={actions.setSelectedNoteContent}
-        />
-      </div>
-    )
+    <div
+      className="overflow-hidden h-100 mw-100 bg-light-pink "
+      style={{ width: '34em' }}
+    >
+      <MonacoEditor
+        editorDidMount={editorDidMount}
+        value={state.selectedNoteContent || ''}
+        onChange={actions.setSelectedNoteContent}
+        options={{ readOnly: R.isNil(state.selectedNoteContent) }}
+      />
+    </div>
   )
 })
 NoteEditorPane.displayName = 'NoteEditorPane'

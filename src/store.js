@@ -50,6 +50,24 @@ import { getCached, setCache } from './dom-helpers'
 //     content: faker.lorem.lines(),
 //   })
 // }
+/*  NOTE HELPERS  */
+
+export function createNote() {
+  return {
+    id: `N:${nanoid()}`,
+    rev: null,
+    title: faker.name.lastName(null),
+    content: faker.lorem.lines(),
+  }
+}
+
+function noteToPouch({ id, rev, title, content }) {
+  return { _id: id, _rev: rev, title, content }
+}
+
+function noteFromPouchDoc({ _id, _rev, title, content }) {
+  return { id: _id, rev: _rev, title, content }
+}
 
 function NotesStore() {
   const lk = m.observable.map({})
@@ -142,35 +160,6 @@ m.autorun(() => {
   console.log(`state.syncState`, state.syncState)
 })
 
-/*  NOTE HELPERS  */
-
-export function createNote() {
-  return {
-    id: `N:${nanoid()}`,
-    rev: null,
-    title: faker.name.lastName(null),
-    content: faker.lorem.lines(),
-  }
-}
-
-function noteToPouch({ id, rev, title, content }) {
-  return { _id: id, _rev: rev, title, content }
-}
-
-function noteFromPouchDoc({ _id, _rev, title, content }) {
-  return { id: _id, rev: _rev, title, content }
-}
-
-/*  NOTE ACTIONS   */
-
-function setNoteRev(rev, { id }) {
-  const note = state.getNoteById(id)
-  console.assert(m.isObservable(note))
-  note.rev = rev
-}
-
-const noteActions = wrapActions({ setNoteRev })
-
 /*  STATE ACTIONS HELPERS  */
 
 function hydrateUIState() {
@@ -226,7 +215,7 @@ async function setNoteContent(newContent, { id }) {
   if (note) {
     note.content = newContent
     const { rev } = await notesDb.put(noteToPouch(note))
-    noteActions.setNoteRev(rev, note)
+    state.ns.setRev(rev, note.id)
   }
 }
 

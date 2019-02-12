@@ -54,21 +54,22 @@ import { getCached, setCache } from './dom-helpers'
 function NotesStore() {
   const ns = m.observable.object(
     {
-      _l: m.observable.array([]),
+      _l: m.observable.map({}),
       get allAsList() {
-        return ns._l
+        return m.values(ns._l)
       },
       get first() {
-        return m.get(ns._l, 0)
+        return ns.allAsList[0]
       },
       byId(id) {
-        return ns._l.find(R.propEq('id', id))
+        return m.get(ns._l, id)
       },
       replace(lst) {
-        ns._l.replace(lst)
+        ns._l.clear()
+        lst.forEach(ns.add)
       },
       add(n) {
-        ns._l.unshift(n)
+        m.set(ns._l, n.id, n)
       },
     },
     null,

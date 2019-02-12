@@ -91,7 +91,6 @@ function createState() {
 }
 
 const state = createState()
-const s = state
 if (process.env.NODE_ENV !== 'production') {
   window.state = state
 }

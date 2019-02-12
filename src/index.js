@@ -1,19 +1,17 @@
-import React from 'react'
-import * as ReactDOM from 'react-dom'
-import 'tachyons'
-import './index.css'
-import * as serviceWorker from './serviceWorker'
-import App from './App'
+import * as R from 'ramda'
 
-function render() {
-  ReactDOM.render(<App />, document.getElementById('root'))
+const oldError = console.error
+const oldWarn = console.warn
+
+console.error = R.converge(R.identity, [
+  oldError,
+  (...args) => {
+    // console.log(...args)
+    // use this place to send notifications, or collect errors.
+  },
+])
+console.warn = function(...a) {
+  oldWarn(...a)
 }
 
-render()
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister()
-
-// if (module.hot) module.hot.accept('./App', () => render())
+require('./render')

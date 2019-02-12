@@ -218,11 +218,17 @@ async function setPouchUrlAndStartSync(newUrl) {
   await reStartSync()
 }
 
+const logErr = function(...a) {
+  console.error(...a)
+  s.ts.addMsg(JSON.stringify(a))
+}
+
 const actions = wrapActions({
+  logErr,
   async init() {
     hydrateUIState()
     await hydrateFromPouchDb()
-    reStartSync().catch(console.error)
+    reStartSync().catch(logErr)
     return combineDisposers([
       m.autorun(cacheUIState, { name: 'cache-ui-state' }),
       m.autorun(cacheUserSettings, { name: 'cache-user-settings' }),
@@ -235,7 +241,7 @@ const actions = wrapActions({
   setPouchUrlAndStartSync,
 })
 
-actions.init().catch(console.error)
+actions.init().catch(actions.logErr)
 
 /*  HOOKS  */
 

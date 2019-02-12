@@ -1,6 +1,7 @@
 import nanoid from 'nanoid'
 import faker from 'faker'
 import { getEnv, types as t } from 'mobx-state-tree'
+import { pouchFetchDocs } from '../pouch-helpers'
 
 export const Note = t
   .model('Note', {
@@ -41,16 +42,21 @@ export const NoteStore = t
   .model('NoteStore', {
     map: t.map(Note),
   })
+  .views(self => ({
+    get db() {
+      return getEnv(self).notesDb
+    },
+  }))
   .actions(self => ({
     putAll: notes => notes.forEach(note => self.map.put(note)),
   }))
   .actions(self => {
     return {
       addNew: () => self.map.put(newNote()),
-      hydrate: async () =>
-        self.putAll(
-          (await getEnv(self).notesDb._fetchAll()).map(noteFromPouchDoc),
-        ),
+      hydrate: async () => {
+        const docs = await pouchFetchDocs(self.db)
+        return self.putAll(docs.map(noteFromPouchDoc))
+      },
     }
   })
 

@@ -5,11 +5,14 @@ import isUrl from 'is-url-superb'
 import { fromKefirStream } from './mobx/mobx-helpers'
 import { multiEventStream } from './kefir-helpers'
 
+export async function pouchFetchDocs(db) {
+  const { rows } = await db.allDocs({ include_docs: true })
+  return rows.map(R.prop('doc'))
+}
+
 const allDocsHelperPlugin = {
-  _fetchAll: async function() {
-    const db = this
-    const { rows } = await db.allDocs({ include_docs: true })
-    return rows.map(R.prop('doc'))
+  _fetchAll: function() {
+    return pouchFetchDocs(this)
   },
   getAllDocsNormalizedP: async function() {
     const db = this

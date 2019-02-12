@@ -171,11 +171,6 @@ function reset() {
   return deleteAllDocs(notesDb)
 }
 
-function insertNoteAt(idx, note) {
-  validate('NO', arguments)
-  state.noteList.splice(idx, 0, note)
-}
-
 function setSelectedNote(note) {
   validate('O', arguments)
   state.selectedNoteId = note.id
@@ -183,7 +178,7 @@ function setSelectedNote(note) {
 
 async function addNewNote() {
   const note = createNote()
-  insertNoteAt(0, note)
+  state.noteList.unshift(note)
   setSelectedNote(note)
   const { rev } = await notesDb.put(noteToPouch(note))
   noteActions.setNoteRev(rev, note)

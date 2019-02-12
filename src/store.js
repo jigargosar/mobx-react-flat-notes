@@ -98,6 +98,14 @@ function NotesStore() {
           console.assert(m.isObservable(note))
           note.rev = rev
         },
+        setContent(c, id) {
+          const n = ns.byId(id)
+          if (n) {
+            n.content = c
+            return n
+          }
+          return null
+        },
       }),
     },
     null,
@@ -211,9 +219,8 @@ async function addNewNote() {
 }
 
 async function setNoteContent(newContent, { id }) {
-  const note = state.getNoteById(id)
+  const note = state.ns.setContent(newContent, id)
   if (note) {
-    note.content = newContent
     const { rev } = await notesDb.put(noteToPouch(note))
     state.ns.setRev(rev, note.id)
   }

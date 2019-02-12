@@ -249,4 +249,4 @@ export function useAppStore() {
   return [s, actions]
 }
 
-actions.logErr(new Error('Lol'))
+// actions.logErr(new Error('Lol'))

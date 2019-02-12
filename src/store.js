@@ -81,7 +81,6 @@ function NotesStore() {
 function createState() {
   const s = m.observable.object(
     {
-      noteList: m.observable.array([]),
       ns: NotesStore(),
       selectedNoteId: null,
       pouchRemoteUrl: '',
@@ -101,19 +100,18 @@ function createState() {
         return R.isEmpty(s.pouchRemoteUrl)
       },
       get displayNotes() {
-        return s.noteList
+        return s.ns.lst
       },
       get selectedNote() {
         const selectedById = s.getNoteById(s.selectedNoteId)
-        return selectedById || m.get(s.noteList, 0) || s.ns.first
+        return selectedById || s.ns.first
       },
       get selectedNoteContent() {
         return idx(s, _ => _.selectedNote.content)
       },
       isNoteSelected: note => R.eqProps('id', note, s.selectedNote),
       shouldFocusNote: note => s.isNoteSelected(note),
-      getNoteById: id =>
-        s.noteList.find(R.propEq('id', id)) || s.ns.byId(s.selectedNoteId),
+      getNoteById: id => s.ns.byId(s.selectedNoteId),
     },
     null,
     {
@@ -191,12 +189,10 @@ async function hydrateFromPouchDb() {
   const allDocsRes = await notesDb.allDocs({ include_docs: true })
   const notes = allDocsResultToDocs(allDocsRes).map(noteFromPouchDoc)
   console.debug(`[pouch] hydrating notes`, notes)
-  state.noteList.replace(notes)
   state.ns.replace(notes)
 }
 
 function reset() {
-  state.noteList.clear()
   state.ns.replace([])
   state.selectedNoteId = null
   return deleteAllDocs(notesDb)
@@ -209,7 +205,6 @@ function setSelectedNote(note) {
 
 async function addNewNote() {
   const note = createNote()
-  state.noteList.unshift(note)
   state.ns.add(note)
   setSelectedNote(note)
   const { rev } = await notesDb.put(noteToPouch(note))

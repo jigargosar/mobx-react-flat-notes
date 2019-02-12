@@ -23,9 +23,11 @@ function Note(props) {
       get rev() {
         return n._rev
       },
-      setRev(rev) {
-        n._rev = rev
-      },
+      ...wrapActions({
+        setRev(rev) {
+          n._rev = rev
+        },
+      }),
     },
     null,
     { name: `Note:${id}` },

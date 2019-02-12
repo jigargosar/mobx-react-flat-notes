@@ -96,10 +96,6 @@ if (process.env.NODE_ENV !== 'production') {
   window.state = state
 }
 
-m.autorun(() => {
-  console.log(`s.ts.toast`, s.ts.toast)
-})
-
 // m.autorun(() => {
 //   console.log(`state.syncState`, state.syncState)
 // })

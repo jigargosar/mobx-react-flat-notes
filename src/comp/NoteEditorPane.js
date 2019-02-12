@@ -44,7 +44,7 @@ export const NoteEditorPane = observer(() => {
   }, [])
 
   return (
-    R.isNil(state.selectedNoteContent) && (
+    !R.isNil(state.selectedNoteContent) && (
       <div
         className="overflow-hidden h-100 mw-100 bg-light-pink "
         style={{ width: '34em' }}

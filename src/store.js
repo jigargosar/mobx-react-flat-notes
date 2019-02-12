@@ -72,6 +72,11 @@ function NotesStore() {
         put(n) {
           m.set(lk, n.id, n)
         },
+        addNew() {
+          const note = createNote()
+          ns.put(note)
+          return note
+        },
       }),
     },
     null,
@@ -207,8 +212,7 @@ function setSelectedNote(note) {
 }
 
 async function addNewNote() {
-  const note = createNote()
-  state.ns.put(note)
+  const note = state.ns.addNew()
   setSelectedNote(note)
   const { rev } = await notesDb.put(noteToPouch(note))
   noteActions.setNoteRev(rev, note)

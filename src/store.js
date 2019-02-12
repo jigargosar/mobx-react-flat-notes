@@ -15,41 +15,41 @@ import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
 
-function validateNoteProps({ _id, _rev, title, content }) {
-  validate('SSS', [_id, title, content])
-  validate('S|Z', [_rev])
-}
-
-function Note(props) {
-  console.assert(!m.isObservable(props))
-  validateNoteProps(props)
-
-  const id = props._id
-  const n = m.extendObservable(
-    props,
-    {
-      get id() {
-        return n._id
-      },
-      get rev() {
-        return n._rev
-      },
-    },
-    null,
-    { name: `Note:${id}` },
-  )
-  console.debug('created Note', n)
-  return n
-}
-
-function newNoteObs() {
-  return Note({
-    _id: `NID:${nanoid()}`,
-    _rev: null,
-    title: faker.name.lastName(null),
-    content: faker.lorem.lines(),
-  })
-}
+// function validateNoteProps({ _id, _rev, title, content }) {
+//   validate('SSS', [_id, title, content])
+//   validate('S|Z', [_rev])
+// }
+//
+// function Note(props) {
+//   console.assert(!m.isObservable(props))
+//   validateNoteProps(props)
+//
+//   const id = props._id
+//   const n = m.extendObservable(
+//     props,
+//     {
+//       get id() {
+//         return n._id
+//       },
+//       get rev() {
+//         return n._rev
+//       },
+//     },
+//     null,
+//     { name: `Note:${id}` },
+//   )
+//   console.debug('created Note', n)
+//   return n
+// }
+//
+// function newNoteObs() {
+//   return Note({
+//     _id: `NID:${nanoid()}`,
+//     _rev: null,
+//     title: faker.name.lastName(null),
+//     content: faker.lorem.lines(),
+//   })
+// }
 
 function NotesStore() {
   const ns = m.observable.object(
@@ -62,7 +62,13 @@ function NotesStore() {
         return m.get(ns.lst, 0)
       },
       byId(id) {
-        ns.lst.find(R.propEq('_id', id))
+        return ns.lst.find(R.propEq('id', id))
+      },
+      replace(lst) {
+        this.lst.replace(lst)
+      },
+      add(n) {
+        this.lst.unshift(n)
       },
     },
     null,
@@ -98,8 +104,7 @@ function createState() {
         return s.noteList
       },
       get selectedNote() {
-        const selectedById =
-          s.getNoteById(s.selectedNoteId) || s.ns.byId(s.selectedNoteId)
+        const selectedById = s.getNoteById(s.selectedNoteId)
         return selectedById || m.get(s.noteList, 0) || s.ns.first
       },
       get selectedNoteContent() {
@@ -107,7 +112,8 @@ function createState() {
       },
       isNoteSelected: note => R.eqProps('id', note, s.selectedNote),
       shouldFocusNote: note => s.isNoteSelected(note),
-      getNoteById: id => s.noteList.find(R.propEq('id', id)),
+      getNoteById: id =>
+        s.noteList.find(R.propEq('id', id)) || s.ns.byId(s.selectedNoteId),
     },
     null,
     {
@@ -186,10 +192,12 @@ async function hydrateFromPouchDb() {
   const notes = allDocsResultToDocs(allDocsRes).map(noteFromPouchDoc)
   console.debug(`[pouch] hydrating notes`, notes)
   state.noteList.replace(notes)
+  state.ns.replace(notes)
 }
 
 function reset() {
   state.noteList.clear()
+  state.ns.replace([])
   state.selectedNoteId = null
   return deleteAllDocs(notesDb)
 }
@@ -202,6 +210,7 @@ function setSelectedNote(note) {
 async function addNewNote() {
   const note = createNote()
   state.noteList.unshift(note)
+  state.ns.add(note)
   setSelectedNote(note)
   const { rev } = await notesDb.put(noteToPouch(note))
   noteActions.setNoteRev(rev, note)

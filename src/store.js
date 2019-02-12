@@ -90,9 +90,9 @@ function createState() {
   return s
 }
 
-const state = createState()
+const s = createState()
 if (process.env.NODE_ENV !== 'production') {
-  window.state = state
+  window.state = s
 }
 
 // m.autorun(() => {
@@ -104,55 +104,55 @@ if (process.env.NODE_ENV !== 'production') {
 function hydrateUIState() {
   const uiState = getCached('app-ui-state')
   if (uiState) {
-    state.selectedNoteId = uiState.selectedNoteId
+    s.selectedNoteId = uiState.selectedNoteId
   }
   const settings = getCached('app-user-settings')
   if (settings) {
-    state.pouchRemoteUrl = settings.pouchRemoteUrl
+    s.pouchRemoteUrl = settings.pouchRemoteUrl
   }
 }
 
 const pickUIState = R.pick(['selectedNoteId'])
 
 function cacheUIState() {
-  setCache('app-ui-state', pickUIState(state))
+  setCache('app-ui-state', pickUIState(s))
 }
 
 const pickUserSettings = R.pick(['pouchRemoteUrl'])
 
 function cacheUserSettings() {
-  setCache('app-user-settings', pickUserSettings(state))
+  setCache('app-user-settings', pickUserSettings(s))
 }
 
 async function hydrateFromPouchDb() {
   const allDocsRes = await notesDb.allDocs({ include_docs: true })
   const notes = allDocsResultToDocs(allDocsRes)
   console.debug(`[pouch] hydrating notes`, notes)
-  state.ns.replace(notes)
+  s.ns.replace(notes)
 }
 
 function reset() {
-  state.ns.replace([])
-  state.selectedNoteId = null
+  s.ns.replace([])
+  s.selectedNoteId = null
   return deleteAllDocs(notesDb)
 }
 
 function setSelectedNote(note) {
   validate('O', arguments)
-  state.selectedNoteId = note.id
+  s.selectedNoteId = note.id
 }
 
 async function addNewNote() {
-  const note = state.ns.addNew()
+  const note = s.ns.addNew()
   setSelectedNote(note)
   const { rev } = await notesDb.put(note)
-  state.ns.setRev(rev, note.id)
+  s.ns.setRev(rev, note.id)
 }
 
 async function setNoteContent(newContent, { id }) {
-  const note = state.ns.setContent(newContent, id)
+  const note = s.ns.setContent(newContent, id)
   const { rev } = await notesDb.put(note)
-  state.ns.setRev(rev, note.id)
+  s.ns.setRev(rev, note.id)
 }
 
 const setNoteContentDebounced = debounce(setNoteContent, 500, {
@@ -162,7 +162,7 @@ const setNoteContentDebounced = debounce(setNoteContent, 500, {
 })
 
 function setSelectedNoteContent(newContent) {
-  const selectedNote = state.selectedNote
+  const selectedNote = s.selectedNote
   invariant(
     selectedNote,
     "Can't set selectedContent unless there is selectedNote",
@@ -180,7 +180,7 @@ function combineDisposers(disposables) {
 }
 
 function cancelSync() {
-  const { syncRef, _syncStateFromStream } = state
+  const { syncRef, _syncStateFromStream } = s
   if (syncRef) {
     syncRef.cancel()
   }
@@ -191,19 +191,19 @@ function cancelSync() {
 
 async function reStartSync() {
   cancelSync()
-  const remoteUrl = state.pouchRemoteUrl
+  const remoteUrl = s.pouchRemoteUrl
 
   if (!isValidRemotePouchUrl(remoteUrl)) return
 
   try {
-    state.syncRef = notesDb.sync(remoteUrl, {
+    s.syncRef = notesDb.sync(remoteUrl, {
       live: true,
       retry: true,
     })
-    state._syncStateFromStream = createSyncStateFromStream(state.syncRef)
+    s._syncStateFromStream = createSyncStateFromStream(s.syncRef)
   } catch (e) {
     console.error(`e`, e)
-    state._syncStateFromStream = {
+    s._syncStateFromStream = {
       current: { error: e },
       dispose: R.identity,
     }
@@ -213,7 +213,7 @@ async function reStartSync() {
 async function setPouchUrlAndStartSync(newUrl) {
   validate('S', arguments)
   cancelSync()
-  state.pouchRemoteUrl = newUrl
+  s.pouchRemoteUrl = newUrl
 
   await reStartSync()
 }
@@ -240,5 +240,5 @@ actions.init().catch(console.error)
 /*  HOOKS  */
 
 export function useAppStore() {
-  return [state, actions]
+  return [s, actions]
 }

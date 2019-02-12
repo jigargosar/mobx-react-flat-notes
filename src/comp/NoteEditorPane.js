@@ -27,7 +27,7 @@ function setupMonacoEditor(codeEditor, monaco) {
     renderIndentGuides: false,
   })
 
-  turnOffTabFocusMode(codeEditor)
+  turnOffTabFocusMode(codeEditor).catch(console.error)
 }
 
 export const NoteEditorPane = observer(() => {

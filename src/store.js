@@ -55,7 +55,7 @@ function NotesStore() {
   const ns = m.observable.object(
     {
       lst: m.observable.array([]),
-      get list() {
+      get allAsList() {
         return ns.lst
       },
       get first() {
@@ -65,10 +65,10 @@ function NotesStore() {
         return ns.lst.find(R.propEq('id', id))
       },
       replace(lst) {
-        this.lst.replace(lst)
+        ns.lst.replace(lst)
       },
       add(n) {
-        this.lst.unshift(n)
+        ns.lst.unshift(n)
       },
     },
     null,
@@ -100,7 +100,7 @@ function createState() {
         return R.isEmpty(s.pouchRemoteUrl)
       },
       get displayNotes() {
-        return s.ns.lst
+        return s.ns.allAsList
       },
       get selectedNote() {
         const selectedById = s.getNoteById(s.selectedNoteId)

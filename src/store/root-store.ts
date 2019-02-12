@@ -56,10 +56,6 @@ function noteToPouch({ id, rev, ...otherProps }: NoteData) {
   return { _id: id, _rev: rev, ...otherProps }
 }
 
-function fetchNoteDocs(db: PouchDB.Database) {
-  return pouchFetchDocs(db) as Promise<PouchNoteDoc[]>
-}
-
 export const NoteStore = t
   .model('NoteStore', {
     map: t.map(Note),
@@ -74,7 +70,7 @@ export const NoteStore = t
       addNew: () => self.map.put(newNote()),
       hydrate: flow(function*() {
         const db = self.db
-        const docs: PouchNoteDoc[] = yield fetchNoteDocs(db)
+        const docs: PouchNoteDoc[] = yield pouchFetchDocs(db)
         docs.forEach(d => self.map.put(noteFromPouchDoc(d)))
       }),
     }

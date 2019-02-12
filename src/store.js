@@ -1,6 +1,4 @@
 import { wrapActions } from './mobx/mobx-helpers'
-import nanoid from 'nanoid'
-import faker from 'faker'
 import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
@@ -14,6 +12,7 @@ import {
 import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
+import { NotesStore } from './store/NotesStore'
 
 // function validateNoteProps({ _id, _rev, title, content }) {
 //   validate('SSS', [_id, title, content])
@@ -52,66 +51,12 @@ import { getCached, setCache } from './dom-helpers'
 // }
 /*  NOTE HELPERS  */
 
-export function createNote() {
-  return {
-    id: `N:${nanoid()}`,
-    rev: null,
-    title: faker.name.lastName(null),
-    content: faker.lorem.lines(),
-  }
-}
-
 function noteToPouch({ id, rev, title, content }) {
   return { _id: id, _rev: rev, title, content }
 }
 
 function noteFromPouchDoc({ _id, _rev, title, content }) {
   return { id: _id, rev: _rev, title, content }
-}
-
-function NotesStore() {
-  const lk = m.observable.map({})
-  const put = n => m.set(lk, n.id, n)
-  const ns = m.observable.object(
-    {
-      get allAsList() {
-        return m.values(lk)
-      },
-      get first() {
-        return ns.allAsList[0]
-      },
-      byId(id) {
-        return m.get(lk, id)
-      },
-      ...wrapActions({
-        replace(lst) {
-          lk.clear()
-          lst.forEach(put)
-        },
-        addNew() {
-          const note = createNote()
-          put(note)
-          return note
-        },
-        setRev(rev, id) {
-          const n = ns.byId(id)
-          n.rev = rev
-        },
-        setContent(c, id) {
-          const n = ns.byId(id)
-          if (n) {
-            n.content = c
-            return n
-          }
-          return null
-        },
-      }),
-    },
-    null,
-    { name: 'NotesStore' },
-  )
-  console.debug('created NotesStore', ns)
-  return ns
 }
 
 function createState() {

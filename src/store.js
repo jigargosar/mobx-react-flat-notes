@@ -15,17 +15,28 @@ import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
 
+function validateNoteProps({ _id, _rev, title, content }) {
+  validate('SSS', [_id, title, content])
+  validate('S|Z', [_rev])
+}
+
 function Note(props) {
   console.assert(!m.isObservable(props))
+  validateNoteProps(props)
 
-  const id = props.id
+  const id = props._id
   const n = m.extendObservable(props, {}, null, { name: `Note:${id}` })
   console.debug('created Note', n)
   return n
 }
 
 function newNoteObs() {
-  return Note(createNote())
+  return Note({
+    _id: `NID:${nanoid()}`,
+    _rev: null,
+    title: faker.name.lastName(null),
+    content: faker.lorem.lines(),
+  })
 }
 
 function NotesStore() {

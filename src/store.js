@@ -21,6 +21,9 @@ function ToastStore() {
     {
       msg: null,
       st: null,
+      get toast() {
+        return ts.msg
+      },
       ...wrapActions({
         addMsg(msg) {
           ts.msg = msg
@@ -88,9 +91,14 @@ function createState() {
 }
 
 const state = createState()
+const s = state
 if (process.env.NODE_ENV !== 'production') {
   window.state = state
 }
+
+m.autorun(() => {
+  console.log(`s.ts.toast`, s.ts.toast)
+})
 
 // m.autorun(() => {
 //   console.log(`state.syncState`, state.syncState)

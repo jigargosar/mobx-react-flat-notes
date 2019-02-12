@@ -85,7 +85,7 @@ function createState() {
         return s.ns.allAsList
       },
       get selectedNote() {
-        const selectedById = s.getNoteById(s.selectedNoteId)
+        const selectedById = s.ns.byId(s.selectedNoteId)
         return selectedById || s.ns.first
       },
       get selectedNoteContent() {
@@ -93,7 +93,6 @@ function createState() {
       },
       isNoteSelected: note => R.eqProps('id', note, s.selectedNote),
       shouldFocusNote: note => s.isNoteSelected(note),
-      getNoteById: id => s.ns.byId(s.selectedNoteId),
     },
     null,
     {

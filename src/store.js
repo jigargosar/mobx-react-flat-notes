@@ -75,12 +75,9 @@ function createState() {
       get displayNotes() {
         return state.noteList
       },
-      get firstNote() {
-        return m.get(state.noteList, 0)
-      },
       get selectedNote() {
         const selectedById = state.getNoteById(state.selectedNoteId)
-        return selectedById || state.firstNote
+        return selectedById || m.get(state.noteList, 0)
       },
       get selectedNoteContent() {
         return idx(state, _ => _.selectedNote.content)

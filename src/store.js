@@ -2,7 +2,6 @@ import { wrapActions } from './mobx/mobx-helpers'
 import * as R from 'ramda'
 import validate from 'aproba'
 import * as m from 'mobx'
-import * as mu from 'mobx-utils'
 import { invariant } from 'mobx-utils'
 import {
   allDocsResultToDocs,
@@ -15,36 +14,7 @@ import idx from 'idx.macro'
 import debounce from 'lodash.debounce'
 import { getCached, setCache } from './dom-helpers'
 import { NotesStore } from './store/NotesStore'
-
-function ToastStore() {
-  const ts = m.observable.object(
-    {
-      msg: null,
-      st: null,
-      get toast() {
-        return ts.msg
-      },
-      ...wrapActions({
-        addMsg(msg) {
-          ts.msg = msg
-          ts.st = Date.now()
-        },
-      }),
-    },
-    null,
-    { name: 'ToastStore' },
-  )
-
-  m.autorun(() => {
-    if (ts.msg && mu.now() - ts.st > 5000) {
-      ts.msg = null
-      ts.st = null
-    }
-  })
-
-  console.debug(`'created ToastStore'`, 'created ToastStore')
-  return ts
-}
+import { ToastStore } from './store/ToastStore'
 
 function createState() {
   const s = m.observable.object(

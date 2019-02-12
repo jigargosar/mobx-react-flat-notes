@@ -94,8 +94,8 @@ function NotesStore() {
           return note
         },
         setRev(rev, id) {
-          const note = ns.byId(id)
-          note.rev = rev
+          const n = ns.byId(id)
+          n.rev = rev
         },
         setContent(c, id) {
           const n = ns.byId(id)

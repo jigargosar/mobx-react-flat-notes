@@ -53,6 +53,7 @@ import { getCached, setCache } from './dom-helpers'
 
 function NotesStore() {
   const lk = m.observable.map({})
+  const put = n => m.set(lk, n.id, n)
   const ns = m.observable.object(
     {
       get allAsList() {
@@ -67,15 +68,17 @@ function NotesStore() {
       ...wrapActions({
         replace(lst) {
           lk.clear()
-          lst.forEach(ns.put)
-        },
-        put(n) {
-          m.set(lk, n.id, n)
+          lst.forEach(put)
         },
         addNew() {
           const note = createNote()
-          ns.put(note)
+          put(note)
           return note
+        },
+        setRev(rev, id) {
+          const note = ns.byId(id)
+          console.assert(m.isObservable(note))
+          note.rev = rev
         },
       }),
     },
@@ -215,7 +218,7 @@ async function addNewNote() {
   const note = state.ns.addNew()
   setSelectedNote(note)
   const { rev } = await notesDb.put(noteToPouch(note))
-  noteActions.setNoteRev(rev, note)
+  state.ns.setRev(rev, note.id)
 }
 
 async function setNoteContent(newContent, { id }) {

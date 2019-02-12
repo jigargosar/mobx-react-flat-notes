@@ -25,7 +25,19 @@ function Note(props) {
   validateNoteProps(props)
 
   const id = props._id
-  const n = m.extendObservable(props, {}, null, { name: `Note:${id}` })
+  const n = m.extendObservable(
+    props,
+    {
+      get id() {
+        return n._id
+      },
+      get rev() {
+        return n._rev
+      },
+    },
+    null,
+    { name: `Note:${id}` },
+  )
   console.debug('created Note', n)
   return n
 }
@@ -42,7 +54,16 @@ function newNoteObs() {
 function NotesStore() {
   const ns = m.observable.object(
     {
-      lst: [],
+      lst: m.observable.array([]),
+      get list() {
+        return ns.lst
+      },
+      get first() {
+        return m.get(ns.lst, 0)
+      },
+      byId(id) {
+        ns.lst.find(R.propEq('_id', id))
+      },
     },
     null,
     { name: 'NotesStore' },
@@ -52,39 +73,41 @@ function NotesStore() {
 }
 
 function createState() {
-  const state = m.observable.object(
+  const s = m.observable.object(
     {
       noteList: m.observable.array([]),
+      ns: NotesStore(),
       selectedNoteId: null,
       pouchRemoteUrl: '',
       syncRef: null,
       _syncStateFromStream: null,
       get syncState() {
-        return idx(state, _ => _._syncStateFromStream.current)
+        return idx(s, _ => _._syncStateFromStream.current)
       },
       get syncErrorMsg() {
-        const remoteUrl = state.pouchRemoteUrl
+        const remoteUrl = s.pouchRemoteUrl
         if (R.isEmpty(remoteUrl)) return ''
         return isValidRemotePouchUrl(remoteUrl)
           ? null
           : 'Invalid Pouch URL'
       },
       get isSyncDisabled() {
-        return R.isEmpty(state.pouchRemoteUrl)
+        return R.isEmpty(s.pouchRemoteUrl)
       },
       get displayNotes() {
-        return state.noteList
+        return s.noteList
       },
       get selectedNote() {
-        const selectedById = state.getNoteById(state.selectedNoteId)
-        return selectedById || m.get(state.noteList, 0)
+        const selectedById =
+          s.getNoteById(s.selectedNoteId) || s.ns.byId(s.selectedNoteId)
+        return selectedById || m.get(s.noteList, 0) || s.ns.first
       },
       get selectedNoteContent() {
-        return idx(state, _ => _.selectedNote.content)
+        return idx(s, _ => _.selectedNote.content)
       },
-      isNoteSelected: note => R.eqProps('id', note, state.selectedNote),
-      shouldFocusNote: note => state.isNoteSelected(note),
-      getNoteById: id => state.noteList.find(R.propEq('id', id)),
+      isNoteSelected: note => R.eqProps('id', note, s.selectedNote),
+      shouldFocusNote: note => s.isNoteSelected(note),
+      getNoteById: id => s.noteList.find(R.propEq('id', id)),
     },
     null,
     {
@@ -92,7 +115,7 @@ function createState() {
     },
   )
 
-  return state
+  return s
 }
 
 const state = createState()

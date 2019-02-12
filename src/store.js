@@ -95,7 +95,6 @@ function NotesStore() {
         },
         setRev(rev, id) {
           const note = ns.byId(id)
-          console.assert(m.isObservable(note))
           note.rev = rev
         },
         setContent(c, id) {

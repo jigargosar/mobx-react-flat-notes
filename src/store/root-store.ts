@@ -52,8 +52,8 @@ export function noteFromPouchDoc({
   })
 }
 
-function noteToPouch({ id, rev, title, content }: NoteData) {
-  return { _id: id, _rev: rev, title, content }
+function noteToPouch({ id, rev, ...otherProps }: NoteData) {
+  return { _id: id, _rev: rev, ...otherProps }
 }
 
 export const NoteStore = t

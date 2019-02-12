@@ -15,10 +15,6 @@ import { getCached, setCache } from './dom-helpers'
 import { NotesStore } from './store/NotesStore'
 import { invariant } from 'mobx-utils'
 
-/*  NOTE HELPERS  */
-
-const noteToPouch = R.identity
-
 function createState() {
   const s = m.observable.object(
     {
@@ -117,16 +113,14 @@ function setSelectedNote(note) {
 async function addNewNote() {
   const note = state.ns.addNew()
   setSelectedNote(note)
-  const { rev } = await notesDb.put(noteToPouch(note))
+  const { rev } = await notesDb.put(note)
   state.ns.setRev(rev, note.id)
 }
 
 async function setNoteContent(newContent, { id }) {
   const note = state.ns.setContent(newContent, id)
-  if (note) {
-    const { rev } = await notesDb.put(noteToPouch(note))
-    state.ns.setRev(rev, note.id)
-  }
+  const { rev } = await notesDb.put(note)
+  state.ns.setRev(rev, note.id)
 }
 
 const setNoteContentDebounced = debounce(setNoteContent, 500, {

@@ -23,6 +23,9 @@ function Note(props) {
       get rev() {
         return n._rev
       },
+      setRev(rev) {
+        n._rev = rev
+      },
     },
     null,
     { name: `Note:${id}` },
@@ -68,16 +71,13 @@ export function NotesStore() {
           return note
         },
         setRev(rev, id) {
-          const n = ns.byId(id)
-          n.rev = rev
+          ns.byId(id).setRev(rev)
         },
         setContent(c, id) {
           const n = ns.byId(id)
-          if (n) {
-            n.content = c
-            return n
-          }
-          return null
+          validate('O', n)
+          n.content = c
+          return n
         },
       }),
     },

@@ -6,6 +6,7 @@ import { turnOffTabFocusMode } from '../monaco-helpers'
 import { useAutoSizeMonacoEditorEffect } from '../hooks/monaco-hooks'
 
 import { editor } from 'monaco-editor'
+import * as R from 'ramda'
 
 if (process.env.NODE_ENV !== 'production') {
   window.me = editor
@@ -43,16 +44,18 @@ export const NoteEditorPane = observer(() => {
   }, [])
 
   return (
-    <div
-      className="overflow-hidden h-100 mw-100 bg-light-pink "
-      style={{ width: '34em' }}
-    >
-      <MonacoEditor
-        editorDidMount={editorDidMount}
-        value={state.selectedNoteContent}
-        onChange={actions.setSelectedNoteContent}
-      />
-    </div>
+    R.isNil(state.selectedNoteContent) && (
+      <div
+        className="overflow-hidden h-100 mw-100 bg-light-pink "
+        style={{ width: '34em' }}
+      >
+        <MonacoEditor
+          editorDidMount={editorDidMount}
+          value={state.selectedNoteContent}
+          onChange={actions.setSelectedNoteContent}
+        />
+      </div>
+    )
   )
 })
 NoteEditorPane.displayName = 'NoteEditorPane'
